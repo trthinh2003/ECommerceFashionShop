@@ -76,42 +76,42 @@
 
                         </li>
                         <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#base">
+                            <a data-bs-toggle="collapse" href="#base1">
                                 <i class="fas fa-layer-group"></i>
-                                <p>Loại sản phẩm</p>
+                                <p>Quản lý Danh mục</p>
                                 <span class="caret"></span>
                             </a>
-                            <div class="collapse" id="base">
+                            <div class="collapse" id="base1">
                                 <ul class="nav nav-collapse">
                                     <li>
                                         <a href="{{ route('category.index') }}">
-                                            <span class="sub-item">Thông tin</span>
+                                            <span class="sub-item">Thông tin Danh mục</span>
                                         </a>
                                     </li>
                                     <li>
                                         <a href="{{ route('category.create') }}">
-                                            <span class="sub-item">Thêm mới</span>
+                                            <span class="sub-item">Thêm mới Danh mục</span>
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a data-bs-toggle="collapse" href="#base">
+                            <a data-bs-toggle="collapse" href="#base2">
                                 <i class="fas fa-layer-group"></i>
-                                <p>Sản phẩm</p>
+                                <p>Quản lý Sản phẩm</p>
                                 <span class="caret"></span>
                             </a>
-                            <div class="collapse" id="base">
+                            <div class="collapse" id="base2">
                                 <ul class="nav nav-collapse">
                                     <li>
-                                        <a href="components/avatars.html">
-                                            <span class="sub-item">Thông tin</span>
+                                        <a href="{{ route('product.index') }}">
+                                            <span class="sub-item">Thông tin Sản phẩm</span>
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="components/buttons.html">
-                                            <span class="sub-item">Thêm mới</span>
+                                        <a href="{{ route('product.create') }}">
+                                            <span class="sub-item">Thêm mới Sản phẩm</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -149,18 +149,6 @@
                 <!-- Navbar Header -->
                 <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
                     <div class="container-fluid">
-                        <nav
-                            class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <button type="submit" class="btn btn-search pe-1">
-                                        <i class="fa fa-search search-icon"></i>
-                                    </button>
-                                </div>
-                                <input type="text" placeholder="Search ..." class="form-control" />
-                            </div>
-                        </nav>
-
                         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
                             <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
@@ -423,7 +411,14 @@
             </div>
 
             <div class="container">
-              @yield('content')
+                <div class="page-inner">
+                    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+                        <div>
+                            <h3 class="fw-bold mb-3">@yield('title')</h3>
+                        </div>
+                    </div>
+                    @yield('content')
+                </div>
             </div>
 
             <footer class="footer">
@@ -484,6 +479,10 @@
 
     <!-- Kaiadmin JS -->
     <script src="assets/js/kaiadmin.min.js"></script>
+
+    <!-- JQuery Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
 
 </body>
 

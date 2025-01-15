@@ -13,4 +13,6 @@ Route::group(['prefix' => 'admin'], function () {
             'product' => ProductController::class
         ]
     );
+    Route::get('/search', [CategoryController::class, 'search'])->name('category.search');
+    Route::get('/search', [ProductController::class, 'search'])->name('product.search');
 });

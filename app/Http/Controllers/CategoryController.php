@@ -30,12 +30,11 @@ class CategoryController extends Controller
     public function store(Request $request) //[]
     {
         $rule = [
-            'name' => 'required|unique',
+            'name' => 'required',
             'status' => 'required'
         ];
         $message = [
-            'name.required' => 'Trường này bắt buộc nhâp',
-            'name.unique' => 'Trường này phải là duy nhất'
+            'name.required' => 'Trường này bắt buộc nhâp'
         ];
         $data = $request->validate($rule, $message);
         $categories = new Category();
@@ -58,22 +57,48 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Category::find($id); //$data = Category::all()->get($id - 1);
+        // dd($data); die dump
+        return view('admin.category.edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'status' => 'required'
+        ], [
+            'name.required' => 'Trường này bắt buộc nhâp'
+        ]);
+        $category->category_name = $data['name'];
+        $category->status = $data['status'];
+        $category->save();
+
+        return redirect()->route('category.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category $category)
     {
-        //
+        if ($category->Products->count() == 0) {
+            $category->delete();
+            return redirect()->back();
+        }
+        return redirect()->back();
+    }
+
+     /**
+     * Search Engine the specified resource from storage.
+     */
+    public function search(Request $request)
+    {
+        $keyword = $request->input('query');
+        $data = Category::where('category_name', 'like', "%$keyword%")->paginate();
+        return view('admin.category.index', compact('data', 'keyword'));
     }
 }
