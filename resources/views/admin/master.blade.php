@@ -34,9 +34,6 @@
     <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="assets/css/plugins.min.css" />
     <link rel="stylesheet" href="assets/css/kaiadmin.min.css" />
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="assets/css/demo.css" />
 </head>
 
 <body>
@@ -372,7 +369,7 @@
                                     </div>
                                     <span class="profile-username">
                                         <span class="op-7">Hi,</span>
-                                        <span class="fw-bold">Hizrian</span>
+                                        <span class="fw-bold">{{ auth()->user()->name }}</span>
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -384,8 +381,8 @@
                                                         class="avatar-img rounded" />
                                                 </div>
                                                 <div class="u-text">
-                                                    <h4>Hizrian</h4>
-                                                    <p class="text-muted">hello@example.com</p>
+                                                    <h4>{{ auth()->user()->name }}</h4>
+                                                    <p class="text-muted">{{ auth()->user()->email }}</p>
                                                     <a href="profile.html"
                                                         class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                                 </div>
@@ -399,7 +396,7 @@
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">Account Setting</a>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Logout</a>
+                                            <a class="dropdown-item" href="{{ route('admin.logout') }}">Logout</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -479,11 +476,6 @@
 
     <!-- Kaiadmin JS -->
     <script src="assets/js/kaiadmin.min.js"></script>
-
-    <!-- JQuery Libraries -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-
-
 </body>
 
 </html>

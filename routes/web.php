@@ -5,14 +5,29 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'admin'], function () {
-    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
+Route::post('/login', [AdminController::class, 'post_login']);
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::resources(
         [
             'category' => CategoryController::class,
             'product' => ProductController::class
         ]
     );
-    Route::get('/search', [CategoryController::class, 'search'])->name('category.search');
-    Route::get('/search', [ProductController::class, 'search'])->name('product.search');
+    Route::get('/search_category', [CategoryController::class, 'search'])->name('category.search');
+    Route::get('/search_product', [ProductController::class, 'search'])->name('product.search');
 });
