@@ -27,7 +27,7 @@ class AdminController extends Controller
         $data = $request->only('email', 'password');
         // dd($data);
         if (auth()->attempt($data)) {
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.dashboard')->with('ok', 'Đăng nhập thành công!');
         }
         return redirect()->back();
     }

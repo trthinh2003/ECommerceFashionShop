@@ -114,6 +114,48 @@
                                 </ul>
                             </div>
                         </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#base3">
+                                <i class="fas fa-layer-group"></i>
+                                <p>Quản lý Nhà cung cấp</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="base3">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="{{ route('provider.index') }}">
+                                            <span class="sub-item">Thông tin Nhà cung cấp</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('provider.create') }}">
+                                            <span class="sub-item">Thêm mới Nhà cung cấp</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#base4">
+                                <i class="fas fa-layer-group"></i>
+                                <p>Quản lý Nhập hàng</p>
+                                <span class="caret"></span>
+                            </a>
+                            <div class="collapse" id="base4">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="{{ route('inventory.index') }}">
+                                            <span class="sub-item">Thông tin Phiếu nhập hàng</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('inventory.create') }}">
+                                            <span class="sub-item">Thêm mới Phiếu nhập hàng</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
