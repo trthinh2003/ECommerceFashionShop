@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('price', 10,2);
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('order_id')->references('id')->on('orders');
+            $table->primary(['product_id', 'order_id']);
             $table->timestamps();
         });
     }

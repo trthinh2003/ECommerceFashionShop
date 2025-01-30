@@ -6,13 +6,18 @@
             <div class="card-sub">
                 <form method="GET" class="form-inline row" action="{{ route('product.search') }}">
                     @csrf
-                    <div class="col-9">
-                        <label for="inputProduct" class="visually-hidden">Tên sản phẩm</label>
-                        <input name="query" type="text" class="form-control" id="inputProduct" placeholder="Nhập vào tên sản phẩm cần tìm...">
+                    <div class="col-9 navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <button type="submit" class="btn btn-search pe-1">
+                                    <i class="fa fa-search search-icon"></i>
+                                </button>
+                            </div>
+                            <input name="query" type="text" placeholder="Nhập vào tên sản phẩm cần tìm..." class="form-control" />
+                        </div>
                     </div>
                     <div class="col-3">
-                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i></button>
-                        <a href="{{ route('product.create') }}" class="btn btn-warning"><i class="fa fa-plus"></i>Thêm mới</a>
+                        <a href="{{ route('product.create') }}" class="btn btn-success"><i class="fa fa-plus"></i>Thêm mới</a>
                     </div>
                 </form>
             </div>

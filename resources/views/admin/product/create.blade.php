@@ -13,14 +13,6 @@
         </div>
 
         <div class="form-group">
-            <label for="">Giá:</label>
-            <input type="text" name="price" id="" class="form-control" placeholder="">
-            @error('price')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
-        </div>
-
-        <div class="form-group">
             <label for="">Danh mục:</label>
             <select class="form-control" name="category_id">
                 <option>Chọn danh mục</option>
@@ -29,6 +21,14 @@
                 @endforeach
             </select>
             @error('category_id')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+
+        <div class="form-group">
+            <label for="">Giá:</label>
+            <input type="text" name="price" id="" class="form-control" placeholder="">
+            @error('price')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>

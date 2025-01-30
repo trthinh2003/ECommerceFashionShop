@@ -15,5 +15,8 @@ class Provider extends Model
         'phone'
     ];
 
-
+    //1 NCC cho n PhieuNhap
+    public function Inventories() {
+        return $this->hasMany(Inventory::class);
+    }
 }

@@ -16,8 +16,14 @@ class Discount extends Model
         'end_date'
     ];
 
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime'
+    ];
+
     //1 KM cho n SP
-    public function Products() {
+    public function Products()
+    {
         return $this->hasMany(Product::class);
     }
 }

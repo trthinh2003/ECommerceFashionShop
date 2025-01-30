@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
+use App\Http\Controllers\StaffController;
+use App\Models\Staff;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,11 +31,15 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::resources(
         [
             'category' => CategoryController::class,
+            'discount' => DiscountController::class,
             'product' => ProductController::class,
+            'order' => OrderController::class,
             'provider' => ProviderController::class,
-            'inventory' => InventoryController::class
+            'inventory' => InventoryController::class,
+            'staff' => StaffController::class
         ]
     );
     Route::get('/search_category', [CategoryController::class, 'search'])->name('category.search');
+    Route::get('/search_discount', [DiscountController::class, 'search'])->name('discount.search');
     Route::get('/search_product', [ProductController::class, 'search'])->name('product.search');
 });

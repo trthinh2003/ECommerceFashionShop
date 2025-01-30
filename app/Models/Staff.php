@@ -21,4 +21,9 @@ class Staff extends Model
         'role',
         'status',
     ];
+
+    //1 NhanVien tao n PhieuNhap
+    public function Inventories() {
+        return $this->hasMany(Inventory::class);
+    }
 }

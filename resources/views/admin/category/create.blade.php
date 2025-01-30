@@ -5,7 +5,7 @@
     <form method="POST" action="{{ route('category.store') }}">
         @csrf
         <div class="form-group">
-            <label for="">Tên loại</label>
+            <label for="">Tên danh mục:</label>
             <input type="text" name="name" id="" class="form-control" placeholder="">
             @error('name')
                 <small class="text-danger">{{ $message }}</small>

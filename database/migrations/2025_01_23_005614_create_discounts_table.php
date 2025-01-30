@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('discounts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('percent_discount');
+            $table->decimal('percent_discount', 10,3);
             $table->datetime('start_date');
             $table->datetime('end_date');
+            $table->timestamps();
         });
     }
 
