@@ -12,7 +12,8 @@ class ProviderController extends Controller
      */
     public function index()
     {
-        //
+        $data = Provider::orderby('id', 'ASC')->paginate();
+        return view('admin.provider.index', compact('data'));
     }
 
     /**
@@ -21,6 +22,7 @@ class ProviderController extends Controller
     public function create()
     {
         //
+        return view('admin.provider.create');
     }
 
     /**
@@ -28,7 +30,24 @@ class ProviderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rule = [
+            'name' => 'required',
+            'address' => 'required',
+            'phone' => 'required'
+        ];
+        $message = [
+            'name.required' => 'Trường này bắt buộc nhâp',
+            'address.required' => 'Trường này bắt buộc nhâp',
+            'phone.required' => 'Trường này bắt buộc nhâp',
+
+        ];
+        $data = $request->validate($rule, $message);
+        $providers = new Provider();
+        $providers->name = $data['name']; 
+        $providers->address = $data['address'];
+        $providers->phone = $data['phone'];
+        $providers->save();
+        return redirect()->route('provider.index')->with("createSuccess", "Thêm nhà cung cấp thành công");
     }
 
     /**
@@ -44,7 +63,7 @@ class ProviderController extends Controller
      */
     public function edit(Provider $provider)
     {
-        //
+        return view('admin.provider.edit', compact('provider'));
     }
 
     /**
@@ -52,7 +71,24 @@ class ProviderController extends Controller
      */
     public function update(Request $request, Provider $provider)
     {
-        //
+        $rule = [
+            'name' => 'required',
+            'address' => 'required',
+            'phone' => 'required'
+        ];
+        $message = [
+            'name.required' => 'Trường này bắt buộc nhâp',
+            'address.required' => 'Trường này bắt buộc nhâp',
+            'phone.required' => 'Trường này bắt buộc nhâp',
+
+        ];
+        $data = $request->validate($rule, $message);
+        // $provider = new Provider();
+        $provider->name = $data['name']; 
+        $provider->address = $data['address'];
+        $provider->phone = $data['phone'];
+        $provider->save();
+        return redirect()->route('provider.index');
     }
 
     /**
@@ -60,6 +96,19 @@ class ProviderController extends Controller
      */
     public function destroy(Provider $provider)
     {
-        //
+        // if ($provider->Inventory->count() == 0) {
+            $provider->delete();
+            return redirect()->back();
+        // }
+        // return redirect()->back();
     }
+
+    public function search(Request $request){
+        $keyword = $request->input('query');
+        $data = Provider::where('name', 'like', "%$keyword%")
+                        ->orWhere('phone', 'like', "%$keyword%")
+                        ->paginate();
+        return view('admin.provider.index', compact('data', 'keyword'));
+    }
+    
 }

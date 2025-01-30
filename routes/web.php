@@ -42,4 +42,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/search_category', [CategoryController::class, 'search'])->name('category.search');
     Route::get('/search_discount', [DiscountController::class, 'search'])->name('discount.search');
     Route::get('/search_product', [ProductController::class, 'search'])->name('product.search');
+    Route::get('/search_provider', [ProviderController::class, 'search'])->name('provider.search');
 });
