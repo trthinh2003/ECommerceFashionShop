@@ -43,7 +43,7 @@ class ProviderController extends Controller
         ];
         $data = $request->validate($rule, $message);
         $providers = new Provider();
-        $providers->name = $data['name']; 
+        $providers->name = $data['name'];
         $providers->address = $data['address'];
         $providers->phone = $data['phone'];
         $providers->save();
@@ -84,7 +84,7 @@ class ProviderController extends Controller
         ];
         $data = $request->validate($rule, $message);
         // $provider = new Provider();
-        $provider->name = $data['name']; 
+        $provider->name = $data['name'];
         $provider->address = $data['address'];
         $provider->phone = $data['phone'];
         $provider->save();
@@ -110,5 +110,5 @@ class ProviderController extends Controller
                         ->paginate();
         return view('admin.provider.index', compact('data', 'keyword'));
     }
-    
+
 }
