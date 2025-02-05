@@ -33,9 +33,9 @@ class StaffController extends Controller
             'name' => 'required|string|min:0|max:255',
             'phone' => 'required',
             'address' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
             'sex' => 'required',
-            'username' => 'required',
+            'username' => 'required|unique:staff',
             'password' => 'required',
             'position' => 'required',
             'role' => 'required',
@@ -43,14 +43,15 @@ class StaffController extends Controller
         ];
 
         $message= [
-            'name.required' => 'Trường này bắt buộc nhâp',
-            'phone.required' => 'Trường này bắt buộc nhâp',
-            'address.required' => 'Trường này bắt buộc nhâp',
+            'name.required' => 'Họ tên nhân viên không được để trống.',
+            'phone.required' => 'Số điện thoại không được để trống',
+            'address.required' => 'Vui lòng nhập địa chỉ của nhân viên.',
             'email.required' => 'Trường này bắt buộc nhâp',
             'sex.required' => 'Trường này bắt buộc nhâp',
-            'username.required' => 'Trường này bắt buộc nhâp',
-            'password.required' => 'Trường này bắt buộc nhâp',
-            'position.required' => 'Trường này bắt buộc nhâp',
+            'username.required' => 'Tên tài khoản không được để trống.',
+            'username.unique' => 'Tài khoản này đã tồn tại.',
+            'password.required' => 'Mật khẩu không được để trống.',
+            'position.required' => 'Vui lòng chọn chức vụ.',
             'role.required' => 'Trường này bắt buộc nhâp',
             'status.required' => 'Trường này bắt buộc nhâp',
         ];
@@ -63,7 +64,7 @@ class StaffController extends Controller
         $staff->email = $data['email'];
         $staff->sex = $data['sex'];
         $staff->username = $data['username'];
-        $staff->password = $data['password'];
+        $staff->password = bcrypt($data['password']);
         $staff->position = $data['position'];
         $staff->role = $data['role'];
         $staff->status = $data['status'];

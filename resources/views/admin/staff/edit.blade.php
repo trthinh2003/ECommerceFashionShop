@@ -35,13 +35,13 @@
         <div class="form-group">
             <div class="form-check">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="sex" value="1" checked @checked($staff->sex == 1)>
+                    <input type="radio" class="form-check-input" name="sex" value="1" @checked($staff->sex == 1)>
                     Nam
                 </label>
             </div>
             <div class="form-check">
                 <label class="form-check-label">
-                    <input type="radio" class="form-check-input" name="sex" value="0" checked @checked($staff->sex == 0)>
+                    <input type="radio" class="form-check-input" name="sex" value="0" @checked($staff->sex == 0)>
                     Nữ
                 </label>
             </div>

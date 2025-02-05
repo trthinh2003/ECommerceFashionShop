@@ -1,8 +1,8 @@
 @extends('admin.master')
-@section('title', 'Thông tin nhà cung cấp')
+@section('title', 'Thông tin Nhà cung cấp')
 @section('content')
     @if (Session::has('createSuccess'))
-        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 28rem; display:flex; text-align:center">
+        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 26rem; display:flex; text-align:center">
             <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('createSuccess') }}
         </div>
     @endif
@@ -19,7 +19,7 @@
                                     <i class="fa fa-search search-icon"></i>
                                 </button>
                             </div>
-                            <input name="query" type="text" placeholder="Nhập vào tên chương trình khuyến mãi..."
+                            <input name="query" type="text" placeholder="Nhập vào tên hoặc số điện thoại nhà cung cấp..."
                                 class="form-control" />
                         </div>
                     </div>

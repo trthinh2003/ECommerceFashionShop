@@ -21,7 +21,6 @@ class DiscountController extends Controller
      */
     public function create()
     {
-        return view('admin.discount.create');
     }
 
     /**
@@ -35,12 +34,12 @@ class DiscountController extends Controller
             'start_date' => 'required',
             'end_date' => 'required'
         ], [
-            'name.required' => 'Tên chương trình không được để trống!',
+            'name.required' => 'Tên chương trình không được để trống.',
             'percent_discount.required' => 'Vui lòng nhập phần trăm khuyến mãi.',
             'percent_discount.numeric' => 'Phần trăm khuyến mãi phải là kiểu số.',
-            'percent_discount.min' => 'Vui lòng nhập số dương',
-            'start_date.required' => 'Vui lòng nhập ngày bắt đầu cho chương trình',
-            'end_date.required' => 'Vui lòng nhập ngày kết thúc cho chương trình'
+            'percent_discount.min' => 'Vui lòng nhập số dương.',
+            'start_date.required' => 'Vui lòng nhập ngày bắt đầu cho chương trình.',
+            'end_date.required' => 'Vui lòng nhập ngày kết thúc cho chương trình.'
         ]);
         $discount = new Discount();
         $discount->name = $data['name'];

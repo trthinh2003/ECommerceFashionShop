@@ -17,7 +17,7 @@
                 @csrf
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email:</label>
-                    <input name="email" type="email" class="form-control border border-primary" id="exampleInputEmail1"
+                    <input name="login" type="text" class="form-control border border-primary" id="exampleInputEmail1"
                         aria-describedby="emailHelp">
                     @error('email')
                         <small class="text-danger">{{ $message }}</small>
@@ -42,5 +42,4 @@
         </div>
     </div>
 </body>
-
 </html>

@@ -1,8 +1,8 @@
 @extends('admin.master')
-@section('title', 'Thông tin nhân viên')
+@section('title', 'Thông tin Nhân viên')
 @section('content')
-    @if (Session::has('createSuccess'))
-        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 28rem; display:flex; text-align:center">
+    @if (Session::has('success'))
+        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 25rem; display:flex; text-align:center">
             <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('success') }}
         </div>
     @endif
@@ -33,17 +33,17 @@
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Tên nhân viên</th>
+                        <th scope="col">Họ tên nhân viên</th>
                         <th scope="col">Số điện thoại</th>
                         <th scope="col">Địa chỉ</th>
                         <th scope="col">Email</th>
                         <th scope="col">Giới tính</th>
-                        <th scope="col">Tài khoản</th>
-                        <th scope="col">Mật khẩu</th>
+                        {{-- <th scope="col">Tài khoản</th>
+                        <th scope="col">Mật khẩu</th> --}}
                         <th scope="col">Chức vụ</th>
-                        <th scope="col">Role</th>
+                        {{-- <th scope="col">Role</th> --}}
                         <th scope="col">Trạng thái</th>
-                        <th scope="col">Ngày Thêm</th>
+                        {{-- <th scope="col">Ngày Thêm</th> --}}
                         <th scope="col" class="text-center">Hành động</th>
                     </tr>
                 </thead>
@@ -55,16 +55,18 @@
                             <td>{{ $model->phone }}</td>
                             <td>{{ $model->address }}</td>
                             <td>{{ $model->email }}</td>
-                            <td>{{ $model->sex }}</td>
-                            <td>{{ $model->username }}</td>
-                            <td>{{ $model->password }}</td>
+                            <td>{{ $model->sex == 1 ? "Nam" : "Nữ" }}</td>
+                            {{-- <td>{{ $model->username }}</td>
+                            <td>{{ $model->password }}</td> --}}
                             <td>{{ $model->position }}</td>
-                            <td>{{ $model->role }}</td>
+                            {{-- <td>{{ $model->role }}</td> --}}
                             <td>{{ $model->status }}</td>
-                            <td>{{ $model->created_at->format('d/m/Y') }}</td>
+                            {{-- <td>{{ $model->created_at->format('d/m/Y') }}</td> --}}
                             <td class="text-center">
                                 <form method="post" action="{{ route('staff.destroy', $model->id) }}">
                                     @csrf @method('DELETE')
+                                    <a class="btn btn-sm btn-secondary" href=""><i class="fa fa-edit pe-2"></i>Chi
+                                        tiết</a>
                                     <a class="btn btn-sm btn-primary" href="{{ route('staff.edit', $model->id) }}"><i
                                             class="fa fa-edit pe-2"></i>Sửa</a>
                                     <button class="btn btn-sm btn-danger"

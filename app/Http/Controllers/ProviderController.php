@@ -47,7 +47,7 @@ class ProviderController extends Controller
         $providers->address = $data['address'];
         $providers->phone = $data['phone'];
         $providers->save();
-        return redirect()->route('provider.index')->with("createSuccess", "Thêm nhà cung cấp thành công");
+        return redirect()->route('provider.index')->with("createSuccess", "Thêm nhà cung cấp mới thành công");
     }
 
     /**
@@ -83,7 +83,6 @@ class ProviderController extends Controller
 
         ];
         $data = $request->validate($rule, $message);
-        // $provider = new Provider();
         $provider->name = $data['name'];
         $provider->address = $data['address'];
         $provider->phone = $data['phone'];
