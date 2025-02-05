@@ -11,7 +11,7 @@ class InventoryController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.inventory.index');
     }
 
     /**
@@ -19,7 +19,7 @@ class InventoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.inventory.create');
     }
 
     /**
@@ -60,5 +60,9 @@ class InventoryController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function search(Request $request) {
+
     }
 }
