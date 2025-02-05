@@ -13,7 +13,8 @@ class InventoryDetail extends Model
         'product_id',
         'inventory_id',
         'quantity',
-        'price'
+        'price',
+        'size'
     ];
 
     /** Tao QH Thuc the yeu **/

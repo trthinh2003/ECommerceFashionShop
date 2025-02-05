@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('inventory_id');
             $table->unsignedInteger('quantity')->default(1);
             $table->decimal('price', 10,2);
+            $table->string('size', 30)->nullable();
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('inventory_id')->references('id')->on('inventories');
             $table->primary(['product_id', 'inventory_id']);
