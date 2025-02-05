@@ -15,9 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//JWT: json web token
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 Route::get('discount', [ApiController::class, 'discounts'])->name('api.discounts');
 Route::get('discount/{id}', [ApiController::class, 'discount'])->name('api.discount');
+Route::get('category', [ApiController::class, 'categories'])->name('api.categories');
+

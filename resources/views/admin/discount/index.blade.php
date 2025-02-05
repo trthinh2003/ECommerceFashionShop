@@ -1,9 +1,9 @@
 @extends('admin.master')
 @section('title', 'Thông tin Khuyến mãi')
 @section('content')
-    @if (Session::has('addSuccess'))
+    @if (Session::has('success'))
         <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 28rem; display:flex; text-align:center">
-            <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('addSuccess') }}
+            <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('success') }}
         </div>
     @endif
     <div class="card">
@@ -51,9 +51,9 @@
                             <td class="text-center">
                                 <form method="post" action="{{ route('discount.destroy', $model->id) }}">
                                     @csrf @method('DELETE')
-                                    <a class="btn btn-sm btn-secondary" href=""><i class="fa fa-edit pe-2"></i>Chi
+                                    <a class="btn btn-sm btn-secondary btn-detail" href=""><i class="fa fa-edit pe-2"></i>Chi
                                         tiết</a>
-                                    <a class="btn btn-sm btn-primary" href=""><i class="fa fa-edit pe-2"></i>Sửa</a>
+                                    <a class="btn btn-sm btn-primary btn-edit" href=""><i class="fa fa-edit pe-2"></i>Sửa</a>
                                     <button class="btn btn-sm btn-danger"
                                         onclick="return confirm('Bạn có chắc muốn xóa không?')">
                                         <i class="fa fa-trash pe-2"></i>
@@ -72,6 +72,7 @@
     <!--Modal Thêm khuyến mãi-->
     <form id="modal-discount" class="modal modal-add js-modal" method="POST" action="{{ route('discount.store') }}">
         @csrf
+        <input type="hidden" name="_method" value="POST">
         <div class="modal-container-add js-modal-container p-3">
             <div class="modal-close js-modal-close">
                 <i class="fas fa-times"></i>
@@ -174,12 +175,12 @@
 
     <script>
         $(document).ready(function() {
-            $(".btn-secondary").click(function(event) {
+            $(".btn-detail").click(function(event) {
                 event.preventDefault();
                 let row = $(this).closest("tr");
                 let promoId = row.find("td:first").text().trim();
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/discount/${promoId}`,
+                    url: `http://127.0.0.1:8000/api/discount/${promoId}`, //url, type, datatype, success,
                     type: "GET",
                     dataType: "json",
                     success: function(response) {
@@ -192,8 +193,9 @@
                             $("#promo-start").text(new Date(promo.start_date).toLocaleString(
                                 'vi-VN'));
                             $("#promo-end").text(new Date(promo.end_date).toLocaleString(
-                                'vi-VN'));
+                                'vi-VN')); //text->h1,..h7, p, span,...
                             $("#detailModal").modal("show");
+                            // console.log(response);
                         } else {
                             alert("Không thể lấy dữ liệu chi tiết!");
                         }
@@ -206,5 +208,41 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('.btn-edit').click(function(e) {
+                e.preventDefault();
+                let modalEdit = $('#modal-discount');
+                modalEdit.addClass('open');
+                $('.modal-header').text("Sửa thông tin khuyến mãi");
+                let row = $(this).closest("tr");
+                let promoId = row.find("td:first").text().trim();
+                let actionUpdate = "{{ route('discount.update', ':id') }}".replace(':id', promoId);
+                $("input[name='_method']").val("PUT");
+                // console.log(actionUpdate);
+                modalEdit.attr('action', actionUpdate);
+                $.ajax({
+                    url: `http://127.0.0.1:8000/api/discount/${promoId}`,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status_code === 200) {
+                            let promo = response.data;
+                            $('#name').val(promo.name); //val->input, select,...
+                            $('#percent_discount').val(promo.percent_discount);
+                            $('#start_date').val(new Date(promo.start_date).toISOString().slice(0, 16)); //yyyy-mm-dd hh-mm-ss
+                            $('#end_date').val(new Date(promo.end_date).toISOString().slice(0, 16));
+                        }
+                        else {
+                            alert('Dữ liệu không tìm thấy!');
+                        }
+                    },
+                    error: function() {
+                        alert('Đã có lỗi xảy ra.');
+                    }
+                });
+            })
+        });
+    </script>
 
 @endsection
