@@ -24,4 +24,7 @@ Route::get('discount', [ApiController::class, 'discounts'])->name('api.discounts
 Route::get('discount/{id}', [ApiController::class, 'discount'])->name('api.discount');
 Route::get('category', [ApiController::class, 'categories'])->name('api.categories');
 
+Route::get('product', [ApiController::class, 'products'])->name('api.products');
+Route::get('product-variant', [ApiController::class, 'productVariants'])->name('api.productVariants');
+
 Route::get('inventory', [ApiController::class, 'inventories'])->name('api.inventories');
