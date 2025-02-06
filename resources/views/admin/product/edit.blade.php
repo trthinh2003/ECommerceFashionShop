@@ -36,7 +36,7 @@
         <div class="form-group">
             <label for="">Hình ảnh:</label>
             <input type="file" name="image" id="" class="form-control" placeholder="">
-            <img src="uploads/{{ $product->image }}" alt="{{ $product->image }}" width="250">
+            <img src="uploads/{{ $product->image }}" alt="{{ $product->image }}" width="200">
             <br />
             @error('image')
                 <small class="text-danger">{{ $message }}</small>

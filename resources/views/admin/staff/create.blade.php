@@ -33,7 +33,7 @@
             @enderror
         </div>
         <div class="form-group">
-            <div class="row">
+            <div class="row m-2">
                 <h7 class="col-2 mt-2">Giới tính:</h7>
                 <div class="form-check col-2">
                     <label class="form-check-label">

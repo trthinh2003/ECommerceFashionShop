@@ -26,6 +26,7 @@ class InventoryResource extends JsonResource
             ],
             'detail' => $this->inventoryDetails->map(function($detail) {
                 return [
+                    'sizes' => $detail->size,
                     'price' => $detail->price,
                     'quantity' => $detail->quantity,
                     'product' => [

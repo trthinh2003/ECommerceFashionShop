@@ -10,41 +10,33 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
+    public function apiStatus($data, $status_code, $message = null) {
+        return response()->json([
+            'data' => $data,
+            'status_code' => $status_code,
+            'message' => $message
+        ]);
+    }
+
     public function discounts()
     {
         $discounts = Discount::orderBy('id', 'ASC')->get();
-        return response()->json([
-            'data' => $discounts,
-            'status_code' => 200,
-            'message' => 'ok'
-        ]);
+        return $this->apiStatus($discounts, 200, 'ok');
     }
 
     public function discount($id)
     {
         $discount = Discount::find($id);
         if ($discount) {
-            return response()->json([
-                'data' => $discount,
-                'status_code' => 200,
-                'message' => 'ok'
-            ]);
+            return $this->apiStatus($discount, 200, 'ok');
         }
-        return response()->json([
-            'data' => null,
-            'status_code' => 404,
-            'message' => 'Data not found.'
-        ]);
+        return $this->apiStatus(null, 404, 'Data not found.');
     }
 
     public function categories()
     {
         $categories = Category::orderBy('id', 'ASC')->get();
-        return response()->json([
-            'data' => $categories,
-            'status_code' => 200,
-            'message' => 'ok'
-        ]);
+        return $this->apiStatus($categories, 200, 'ok');
     }
 
     public function inventories()
@@ -56,10 +48,6 @@ class ApiController extends Controller
             'InventoryDetails.Product.ProductVariants'
         ])->get();
         $inventoriesResource = InventoryResource::collection($inventories);
-        return response()->json([
-            'data' => $inventoriesResource,
-            'status_code' => 200,
-            'message' => 'ok'
-        ]);
+        return $this->apiStatus($inventoriesResource, 200, 'ok');
     }
 }
