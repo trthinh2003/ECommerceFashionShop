@@ -25,6 +25,10 @@ class Staff extends Authenticatable
         'status',
     ];
 
+    protected $hidden = [
+        'password',
+    ];
+
     //1 NhanVien tao n PhieuNhap
     public function Inventories() {
         return $this->hasMany(Inventory::class);

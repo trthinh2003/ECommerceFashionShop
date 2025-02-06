@@ -13,7 +13,7 @@
     <div class="vh-100 d-flex justify-content-center align-items-center ">
         <div class="col-md-5 p-5 shadow-sm border rounded-5 border-primary bg-white">
             <h2 class="text-center mb-4 text-primary">Đăng nhập</h2>
-            <form method="POST">
+            <form method="POST"  action="{{ route('admin.post_login') }}">
                 @csrf
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email:</label>
