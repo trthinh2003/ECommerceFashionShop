@@ -1,85 +1,71 @@
 @can('managers')
     @extends('admin.master')
-    @section('title', 'Sửa thông tin nhân viên')
+    @section('title', 'Sửa thông tin')
 
     @section('content')
         <form method="POST" action="{{ route('staff.update', $staff->id) }}">
             @csrf @method('PUT')
             <div class="form-group">
-                <label for="">Tên nhân viên</label>
+                <label for="">Họ tên nhân viên:</label>
                 <input type="text" name="name" id="" class="form-control" placeholder="" value="{{ $staff->name }}">
                 @error('name')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="">Số điện thoại</label>
+                <label for="">Số điện thoại:</label>
                 <input type="text" name="phone" id="" class="form-control" placeholder="" value="{{ $staff->phone }}">
                 @error('phone')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="">Địa chỉ nhân viên</label>
+                <label for="">Địa chỉ:</label>
                 <input type="text" name="address" id="" class="form-control" placeholder="" value="{{ $staff->address }}">
                 @error('address')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="">Email nhân viên</label>
-                <input type="text" name="email" id="" class="form-control" placeholder="" value="{{ $staff->email }}">
+                <label for="">Email</label>
+                <input type="email" name="email" id="" class="form-control" placeholder="" value="{{ $staff->email }}">
                 @error('email')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
             <div class="form-group">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="sex" value="1" @checked($staff->sex == 1)>
-                        Nam
-                    </label>
-                </div>
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="radio" class="form-check-input" name="sex" value="0" @checked($staff->sex == 0)>
-                        Nữ
-                    </label>
+                <div class="row m-2">
+                    <h7 class="col-2 mt-2">Giới tính:</h7>
+                    <div class="form-check col-2">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="sex" value="1" @checked( $staff->sex == 1 )>
+                            Nam
+                        </label>
+                    </div>
+                    <div class="form-check col-2">
+                        <label class="form-check-label">
+                            <input type="radio" class="form-check-input" name="sex" value="0" @checked( $staff->sex == 0 )>
+                            Nữ
+                        </label>
+                    </div>
                 </div>
                 @error('sex')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="">Tài khoản</label>
-                <input type="text" name="username" id="" class="form-control" placeholder="" value="{{ $staff->username }}">
-                @error('username')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="">Mật khẩu</label>
-                <input type="text" name="password" id="" class="form-control" placeholder="" value="{{ $staff->password }}">
-                @error('password')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="">Chức vụ</label>
-                <input type="text" name="position" id="" class="form-control" placeholder="" value="{{ $staff->position }}">
+                <label for="">Chức vụ:</label>
+                <select class="form-control" name="position">
+                    <option value="Quản lý" @selected($staff->position === "Quản lý")>Quản lý</option>
+                    <option value="Nhân viên bán hàng" @selected($staff->position === "Nhân viên bán hàng")>Nhân viên bán hàng</option>
+                    <option value="Nhân viên kho" @selected($staff->position === "Nhân viên kho")>Nhân viên kho</option>
+                </select>
                 @error('position')
                     <small class="text-danger">{{ $message }}</small>
                 @enderror
             </div>
             <div class="form-group">
-                <label for="">Role</label>
-                <input type="text" name="role" id="" class="form-control" placeholder="" value="{{ $staff->role }}">
-                @error('role')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="form-group">
-                <label for="">Trạng thái làm việc</label>
+                <label for="">Trạng thái làm việc:</label>
                 <input type="text" name="status" id="" class="form-control" placeholder="" value="{{ $staff->status }}">
                 @error('status')
                     <small class="text-danger">{{ $message }}</small>
@@ -90,5 +76,5 @@
         </form>
     @endsection
 @else
- {{ abort(403, 'Bạn không có quyền truy cập trang này!') }}
+    {{ abort(403, 'Bạn không có quyền truy cập trang này') }}
 @endcan

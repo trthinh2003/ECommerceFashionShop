@@ -16,16 +16,16 @@
             <form method="POST"  action="{{ route('admin.post_login') }}">
                 @csrf
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email:</label>
-                    <input name="login" type="text" class="form-control border border-primary" id="exampleInputEmail1"
+                    <label for="exampleInputLogin" class="form-label">Email hoặc Username:</label>
+                    <input name="login" type="text" class="form-control border border-primary" id="exampleInputLogin"
                         aria-describedby="emailHelp">
-                    @error('email')
+                    @error('login')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Mật khẩu</label>
-                    <input name="password" type="password" class="form-control border border-primary" id="exampleInputPassword1">
+                    <label for="exampleInputPassword" class="form-label">Mật khẩu</label>
+                    <input name="password" type="password" class="form-control border border-primary" id="exampleInputPassword">
                     @error('password')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -35,10 +35,6 @@
                     <input class="btn btn-primary" type="submit" value="Đăng nhập">
                 </div>
             </form>
-            <div class="mt-3">
-                <p class="mb-0  text-center">Bạn chưa có tài khoản? <a href="signup.html"
-                        class="text-primary fw-bold">Đăng ký</a></p>
-            </div>
         </div>
     </div>
 </body>

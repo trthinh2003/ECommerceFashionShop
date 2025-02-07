@@ -33,7 +33,7 @@ class StaffController extends Controller
     {
         $rule = [
             'name' => 'required|string|min:0|max:255',
-            'phone' => 'required',
+            'phone' => 'required|unique:staff,phone',
             'address' => 'required',
             'email' => 'required|email',
             'sex' => 'required',
@@ -46,6 +46,7 @@ class StaffController extends Controller
         $message= [
             'name.required' => 'Họ tên nhân viên không được để trống.',
             'phone.required' => 'Số điện thoại không được để trống',
+            'phone.unique' => 'Số điện thoại đã tồn tại.',
             'address.required' => 'Vui lòng nhập địa chỉ của nhân viên.',
             'email.required' => 'Trường này bắt buộc nhâp',
             'sex.required' => 'Trường này bắt buộc nhâp',
@@ -72,6 +73,7 @@ class StaffController extends Controller
         $user = new User();
         $user->name = $data['name'];
         $user->email = $data['email'];
+        $user->username = $data['username'];
         $user->password = bcrypt($data['password']);
         if ($data['position'] === 'Quản lý') {
             $user->roles = 'manage,sale,inventory';
@@ -109,46 +111,25 @@ class StaffController extends Controller
      */
     public function update(Request $request, Staff $staff)
     {
-        $rule = [
+        $data = $request->validate([
             'name' => 'required|string|min:0|max:255',
             'phone' => 'required',
             'address' => 'required',
             'email' => 'required',
             'sex' => 'required',
-            'username' => 'required',
-            'password' => 'required',
             'position' => 'required',
-            'role' => 'required',
             'status' => 'required',
-        ];
-
-        $message= [
+        ], [
             'name.required' => 'Trường này bắt buộc nhâp',
             'phone.required' => 'Trường này bắt buộc nhâp',
             'address.required' => 'Trường này bắt buộc nhâp',
             'email.required' => 'Trường này bắt buộc nhâp',
             'sex.required' => 'Trường này bắt buộc nhâp',
-            'username.required' => 'Trường này bắt buộc nhâp',
-            'password.required' => 'Trường này bắt buộc nhâp',
             'position.required' => 'Trường này bắt buộc nhâp',
-            'role.required' => 'Trường này bắt buộc nhâp',
             'status.required' => 'Trường này bắt buộc nhâp',
-        ];
-
-        $data = $request->validate($rule, $message);
-        // $staff = new Staff();
-        $staff->name = $data['name'];
-        $staff->phone = $data['phone'];
-        $staff->address = $data['address'];
-        $staff->email = $data['email'];
-        $staff->sex = $data['sex'];
-        $staff->username = $data['username'];
-        $staff->password = $data['password'];
-        $staff->position = $data['position'];
-        $staff->role = $data['role'];
-        $staff->status = $data['status'];
-        $staff->save();
-        return redirect()->route('staff.index');
+        ]);
+        $staff->update($data);
+        return redirect()->route('staff.index')->with('success', 'Cập nhật thông tin nhân viên thành công');
     }
 
     /**
