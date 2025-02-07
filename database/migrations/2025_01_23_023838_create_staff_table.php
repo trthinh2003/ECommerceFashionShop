@@ -20,8 +20,7 @@ return new class extends Migration
             $table->tinyInteger('sex')->default(0);
             $table->string('username', 100)->unique();
             $table->string('password');
-            $table->string('position');
-            $table->unsignedInteger('role');
+            $table->string('position', 50);
             $table->string('status');
             $table->timestamps();
         });

@@ -73,6 +73,7 @@
                         <li class="nav-item">
                             <a><p>Dashboard</p></a>
                         </li>
+                        @can('salers')
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#base1">
                                 <i class="fas fa-layer-group"></i>
@@ -157,6 +158,8 @@
                                 </ul>
                             </div>
                         </li>
+                        @endcan
+                        @can('warehouse workers')
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#base4">
                                 <i class="fas fa-store-alt"></i>
@@ -199,6 +202,8 @@
                                 </ul>
                             </div>
                         </li>
+                        @endcan
+                        @can('managers')
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#base6">
                                 <i class="fas fa-users"></i>
@@ -220,6 +225,7 @@
                                 </ul>
                             </div>
                         </li>
+                        @endcan
                         <li class="nav-item">
                             <a>
                                 <i class="fas fa-chart-line"></i>

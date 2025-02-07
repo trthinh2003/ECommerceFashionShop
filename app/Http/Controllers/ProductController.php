@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
+    // public function __construct()
+    // {
+    //     if (!Gate::allows('salers')) {
+    //         return abort(403);
+    //     }
+    // }
+
     /**
      * Display a listing of the resource.
      */

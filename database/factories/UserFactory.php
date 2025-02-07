@@ -22,6 +22,7 @@ class UserFactory extends Factory
             'email' => 'trivo@gmail.com',
             'email_verified_at' => now(),
             'password' => bcrypt('trivo123'),
+            'roles' => 'admin,manage,sale,inventory',
             'remember_token' => Str::random(10),
         ];
     }

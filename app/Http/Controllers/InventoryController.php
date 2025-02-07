@@ -8,6 +8,7 @@ use App\Models\InventoryDetail;
 use App\Models\Provider;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -29,7 +30,8 @@ class InventoryController extends Controller
     {
         $cats = Category::all();
         $providers = Provider::all();
-        return view('admin.inventory.create', compact('cats', 'providers'));
+        $staff = Staff::where('id', auth()->user()->id)->first();
+        return view('admin.inventory.create', compact('cats', 'providers', 'staff'));
     }
 
     /**
@@ -52,7 +54,9 @@ class InventoryController extends Controller
             'product_name.min' => 'Tên sản phẩm phải có ít nhất 3 ký tự.',
             'product_name.max' => 'Tên sản phẩm đã vượt quá 150 ký tự.',
             'product_name.unique' => 'Tên sản phẩm này đã tồn tại.',
+            'image.required' => 'Vui lòng chọn hình ảnh.',
             'category_id.required' => 'Vui lòng chọn danh mục.',
+            'category_id.exists' => 'Tên danh mục không hợp lệ.',
             'provider_id.required' => 'Vui lòng chọn tên nhà cung cấp.',
             'provider_id.exists' => 'Tên nhà cung cấp không hợp lệ.',
             'price.required' => 'Vui lòng điền giá nhập.',

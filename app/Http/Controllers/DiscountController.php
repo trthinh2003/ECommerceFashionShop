@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Discount;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class DiscountController extends Controller
 {
@@ -21,6 +22,7 @@ class DiscountController extends Controller
      */
     public function create()
     {
+        return abort(404);
     }
 
     /**
@@ -89,7 +91,7 @@ class DiscountController extends Controller
         $discount->start_date = $data['start_date'];
         $discount->end_date = $data['end_date'];
         $discount->save();
-        return redirect()->route('discount.index')->with('success', 'Sửa chương trình khuyến mãi mới thành công!');
+        return redirect()->route('discount.index')->with('success', 'Sửa chương trình khuyến mãi thành công!');
     }
 
     /**

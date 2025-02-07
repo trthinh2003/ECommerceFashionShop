@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class StaffController extends Controller
 {
@@ -38,7 +40,6 @@ class StaffController extends Controller
             'username' => 'required|unique:staff',
             'password' => 'required',
             'position' => 'required',
-            'role' => 'required',
             'status' => 'required',
         ];
 
@@ -52,7 +53,6 @@ class StaffController extends Controller
             'username.unique' => 'Tài khoản này đã tồn tại.',
             'password.required' => 'Mật khẩu không được để trống.',
             'position.required' => 'Vui lòng chọn chức vụ.',
-            'role.required' => 'Trường này bắt buộc nhâp',
             'status.required' => 'Trường này bắt buộc nhâp',
         ];
 
@@ -66,9 +66,25 @@ class StaffController extends Controller
         $staff->username = $data['username'];
         $staff->password = bcrypt($data['password']);
         $staff->position = $data['position'];
-        $staff->role = $data['role'];
         $staff->status = $data['status'];
         $staff->save();
+
+        $user = new User();
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = bcrypt($data['password']);
+        if ($data['position'] === 'Quản lý') {
+            $user->roles = 'manage,sale,inventory';
+        } else if ($data['position'] === 'Nhân viên bán hàng') {
+            $user->roles = 'sale';
+        } else if ($data['position'] === 'Nhân viên kho'){
+            $user->roles = 'inventory';
+        } else {
+            $user->roles = '';
+        }
+        $user->remember_token = Str::random(10);
+        $user->save();
+
         return redirect()->route('staff.index')->with('success', 'Thêm nhân viên mới thành công');
     }
 
