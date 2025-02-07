@@ -128,8 +128,26 @@ class StaffController extends Controller
             'position.required' => 'Trường này bắt buộc nhâp',
             'status.required' => 'Trường này bắt buộc nhâp',
         ]);
+        $user = User::where('username', $staff->username)->first();
+        $user->name = $data['name'];
+        if ($data['position'] === 'Quản lý') {
+            $user->roles = 'manage,sale,inventory';
+        } else if ($data['position'] === 'Nhân viên bán hàng') {
+            $user->roles = 'sale';
+        } else if ($data['position'] === 'Nhân viên kho'){
+            $user->roles = 'inventory';
+        } else {
+            $user->roles = '';
+        }
+        $user->save();
         $staff->update($data);
-        return redirect()->route('staff.index')->with('success', 'Cập nhật thông tin nhân viên thành công');
+        if ($staff->position === 'Quản lý') {
+            return redirect()->route('staff.index')->with('success', 'Cập nhật thông tin nhân viên thành công!');
+        }
+        else {
+            return redirect()->route('admin.dashboard')->with('success', 'Cập nhật thông tin nhân viên thành công!');
+        }
+        return redirect()->route('staff.index')->with('success', 'Cập nhật thông tin nhân viên thành công!');
     }
 
     /**
