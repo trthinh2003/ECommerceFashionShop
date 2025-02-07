@@ -28,3 +28,4 @@ Route::get('product', [ApiController::class, 'products'])->name('api.products');
 Route::get('product-variant', [ApiController::class, 'productVariants'])->name('api.productVariants');
 
 Route::get('inventory', [ApiController::class, 'inventories'])->name('api.inventories');
+Route::get('staff/{id}', [ApiController::class, 'staff'])->name('api.staff');

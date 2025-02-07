@@ -8,6 +8,7 @@ use App\Models\Discount;
 use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\Staff;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -19,6 +20,14 @@ class ApiController extends Controller
             'total' => $total,
             'message' => $message
         ]);
+    }
+
+    public function staff($id){
+        $staff = Staff::find($id);
+        if ($staff) {
+            return $this->apiStatus($staff, 200, 1, 'ok');
+        }
+        return $this->apiStatus(null, 404, $staff->count(), 'Data not found.');
     }
 
     public function discounts()
