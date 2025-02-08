@@ -46,7 +46,6 @@ class InventoryController extends Controller
             'category_id' => 'required|exists:categories,id',
             'provider_id' => 'required|exists:providers,id',
             'price' => 'required|numeric|min:1',
-            'quantity' => 'required|numeric|min:1',
             'color' => 'required',
             'sizes' => 'required',
         ], [
@@ -61,17 +60,31 @@ class InventoryController extends Controller
             'provider_id.exists' => 'Tên nhà cung cấp không hợp lệ.',
             'price.required' => 'Vui lòng điền giá nhập.',
             'price.min' => 'Giá tiền phải lớn hơn 0.',
-            'quantity.required' => 'Vui lòng điền số lượng nhập.',
-            'quantity.min' => 'Số lượng nhập phải lớn hơn 0.',
             'color.required' => 'Vui lòng nhập màu sắc cho sản phẩm.',
             'sizes.required' => 'Vui lòng chọn kích cỡ cho sản phẩm.',
         ]);
 
         //Thêm vào Phiếu nhập hàng
+        // dd($request->formatted_sizes);
         $inventory = new Inventory();
         $inventory->provider_id = $data['provider_id'];
         $inventory->staff_id = $data['id'];
-        $inventory->total = $data['quantity'] * $data['price'];
+        //Xử lý chuỗi {size}-{số lượng}
+        $size_and_quantitys = explode(',', $request->formatted_sizes);
+        // dd($size_and_quantitys);
+        $totalQuantity = 0;
+        $sizes = "";
+        $size_assoc = [];
+        foreach ($size_and_quantitys as $size_and_quantity) {
+            $item = explode('-', $size_and_quantity);
+            list($key, $value) = $item;
+            $size_assoc[$key] = (int)$value;
+            $sizes .= $item[0] . ",";
+            $totalQuantity += $item[1];
+        }
+        $sizes = rtrim($sizes, ',');
+        // dd($sizes, $totalQuantity, $size_assoc);
+        $inventory->total = $totalQuantity * $data['price'];
         $inventory->save();
 
         //Thêm vào Sản phẩm
@@ -87,10 +100,12 @@ class InventoryController extends Controller
 
         // dd($query)
         //Thêm vào Mô tả sản phẩm
-        foreach ($request->sizes as $size) { //S, M, XL
+
+        foreach (explode(',', $sizes) as $size) { //S, M, XL
             ProductVariant::firstOrCreate([
                 'color' => $data['color'],
                 'size' => $size,
+                'stock' => $size_assoc[$size],
                 'product_id' => $product->id
             ]);
         };
@@ -100,9 +115,9 @@ class InventoryController extends Controller
         $inventoryDetail->product_id = $product->id;
         $inventoryDetail->inventory_id = $inventory->id;
         $inventoryDetail->price = $data['price'];
-        $inventoryDetail->quantity = $data['quantity'];
+        $inventoryDetail->quantity = $totalQuantity;
         //Xử lý chuỗi sizes
-        $inventoryDetail->size = join(', ', $data['sizes']);
+        $inventoryDetail->size = $sizes;
         $inventoryDetail->save();
 
         return redirect()->route('inventory.index')->with('success', "Thêm phiếu nhập mới thành công!");
@@ -138,6 +153,17 @@ class InventoryController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function add_extra() {
+        $cats = Category::all();
+        $providers = Provider::all();
+        $staff = Staff::where('id', auth()->user()->id)->first();
+        return view('admin.inventory.add_extra', compact('cats', 'providers', 'staff'));
+    }
+
+    public function post_add_extra() {
+
     }
 
     public function search(Request $request) {

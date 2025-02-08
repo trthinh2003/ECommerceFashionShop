@@ -25,7 +25,7 @@
                             </div>
                         </div>
                         <div class="col-3">
-                            <button type="button" class="btn btn-success add-new-modal"><i class="fa fa-plus"></i>Thêm
+                            <button type="button" class="btn btn-success add-new-modal btn-create"><i class="fa fa-plus"></i>Thêm
                                 mới</button>
                         </div>
                     </form>
@@ -88,14 +88,14 @@
                         <label for="name">Tên Chương trình Khuyến mãi:</label>
                         <input type="text" name="name" id="name" class="form-control" placeholder="">
                         @error('name')
-                            <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger error_validate">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="percent_discount">Phần trăm khuyến mãi:</label>
                         <input type="text" name="percent_discount" id="percent_discount" class="form-control" placeholder="">
                         @error('percent_discount')
-                            <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger error_validate">{{ $message }}</small>
                         @enderror
                     </div>
                     <div class="row p-3">
@@ -103,14 +103,14 @@
                             <i class="far fa-calendar pe-2"></i><label for="start_date">Ngày bắt đầu:</label>
                             <input type="datetime-local" name="start_date" id="start_date" class="form-control" placeholder="">
                             @error('start_date')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger error_validate">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-6 form-group">
                             <i class="far fa-calendar pe-2"></i><label for="end_date">Ngày kết thúc:</label>
                             <input type="datetime-local" name="end_date" id="end_date" class="form-control" placeholder="">
                             @error('end_date')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger error_validate">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
@@ -172,6 +172,9 @@
             @if ($errors->any())
                 $(document).ready(function() {
                     $('#modal-discount').addClass("open");
+                    $('.btn-edit').click(function(e) {
+                        $('.error_validate').text("");
+                    })
                 })
             @endif
         </script>
@@ -210,6 +213,16 @@
                 });
             });
         </script>
+
+        {{-- <script>
+            $(document).ready(function() {
+                $('.btn-create').click(function(e) {
+                    e.preventDefault();
+                    let modalCreate = $('#modal-discount');
+
+                })
+            })
+        </script> --}}
 
         <script>
             $(document).ready(function() {

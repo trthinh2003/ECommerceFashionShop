@@ -190,7 +190,7 @@
                             $("#staff-info").text(staffInfo.name);
                             $("#staff-id").text(staffInfo.id);
                             $("#staff-name").text(staffInfo.name);
-                            $("#staff-sex").text(staffInfo.sex === 1 ? 'Nam' : 'Nữ');   
+                            $("#staff-sex").text(staffInfo.sex === 1 ? 'Nam' : 'Nữ');
                             $("#staff-address").text(staffInfo.address);
                             $("#staff-phone").text(staffInfo.phone);
                             $("#staff-email").text(staffInfo.email);

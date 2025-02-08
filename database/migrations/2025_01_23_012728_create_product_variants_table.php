@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('size', 10)->nullable();
             $table->string('image')->nullable();
             $table->decimal('price', 10,3)->nullable();
+            $table->unsignedInteger('stock')->nullable();
             $table->unsignedInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
             $table->timestamps();

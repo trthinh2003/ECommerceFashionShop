@@ -3,14 +3,14 @@
     @section('title', 'Thêm Phiếu nhập')
 
     @section('content')
-        <form id="formCreateInventory" method="POST" action="{{ route('inventory.store') }}" enctype="multipart/form-data">
+        <form id="formCreateInventory" method="POST" action="{{ route('inventory.post_add_extra') }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id" value="{{ auth()->user()->id - 1 }}">
 
             <div class="row form-group">
                 <div class="col-6 ">
                     <label for="">Tên sản phẩm:</label>
-                    <input type="text" name="product_name" id="" class="form-control" placeholder="">
+                    <input type="text" name="product_name" id="product_name" class="form-control" placeholder="">
                     @error('product_name')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -31,8 +31,7 @@
             <div class="row form-group">
                 <div class="col-6">
                     <label for="">Danh mục:</label>
-                    <select class="form-control" name="category_id">
-                        <option>--Chọn danh mục--</option>
+                    <select class="form-control" name="category_id" disabled>
                         @foreach ($cats as $cat)
                             <option value="{{ $cat->id }}">{{ $cat->category_name }}</option>
                         @endforeach
@@ -150,33 +149,8 @@
 
             });
         </script>
-        {{-- <script>
-            $(document).ready(function() {
-                $('#priceInput').on('input', function() {
-                    let value = $(this).val().replace(/,/g, '');
-                    if (!isNaN(value) && value !== '') {
-                        $(this).val(Number(value).toLocaleString('en-US'));
-                    }
-                });
-            });
-        </script> --}}
 
         <script>
-            // $(document).ready(function(e) {
-                // $('.showModal').click(function() {
-                //     $('#modal-quantity').modal('show');
-                // })
-                // $('#sizes').change(function() {
-                //     $('#modal-quantity').modal('show');
-                //     $('#modal-quantity-label').text("Nhập số lượng cho size " + $('#sizes').val());
-                //     $('.btn-quantity-submit').click(function(e) {
-                        // $('.select2-selection__choice__remove').empty();
-                        // $('.select2-selection__choice__remove').text($('.select2-selection__choice__remove').text() + "-" + $('#quantity_variant').val());
-            //             console.log($('.select2-selection__choice__remove').val());
-            //         })
-            //     })
-            // })
-
             $(document).ready(function () {
                 let selectedSize = null;
                 let sizesWithQuantities = {}; // Lưu size và số lượng
@@ -226,6 +200,18 @@
                 });
 
             });
+        </script>
+
+        @php
+            if (isset($_GET['inventory_id']) && $_GET['inventory_id']) {
+                $inventory_id = $_GET['inventory_id'];
+            } else {
+                $inventory_id = null;
+            }
+        @endphp
+
+        <script>
+            console.log(<?= json_encode($inventory_id) ?>);
         </script>
     @endsection
 @else

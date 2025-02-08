@@ -36,7 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $model)
+                        {{-- @foreach ($data as $model)
                             <tr>
                                 <td>{{ $model->id }}</td>
                                 <td>{{ $model->product_name }}</td>
@@ -58,7 +58,7 @@
                                     </form>
                                 </td>
                             </tr>
-                        @endforeach
+                        @endforeach --}}
                     </tbody>
                 </table>
             </div>

@@ -5,6 +5,7 @@
     @section('content')
         <form method="POST" action="{{ route('staff.update', $staff->id) }}">
             @csrf @method('PUT')
+            <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
             <div class="form-group">
                 <label for="">Họ tên nhân viên:</label>
                 <input type="text" name="name" id="" class="form-control" placeholder="" value="{{ $staff->name }}">

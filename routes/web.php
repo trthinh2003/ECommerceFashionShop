@@ -39,6 +39,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             'staff' => StaffController::class
         ]
     );
+    Route::get('/add_extra', [InventoryController::class, 'add_extra'])->name('inventory.add_extra');
+    Route::post('/post_add_extra', [InventoryController::class, 'post_add_extra'])->name('inventory.post_add_extra');
     Route::get('/search_category', [CategoryController::class, 'search'])->name('category.search');
     Route::get('/search_discount', [DiscountController::class, 'search'])->name('discount.search');
     Route::get('/search_product', [ProductController::class, 'search'])->name('product.search');

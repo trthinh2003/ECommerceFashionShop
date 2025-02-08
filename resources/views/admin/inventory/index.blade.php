@@ -94,6 +94,10 @@
                                             <td>${totalMoney.toLocaleString()} VNĐ</td>
                                             <td class="text-center">
                                                 <button class="btn btn-secondary btn-sm">Chi tiết</button>
+                                                <form method="GET" action="{{ route('inventory.add_extra') }}">
+                                                    <input type="hidden" name="inventory_id" value="${inventory.id}">
+                                                    <input type="submit" class="btn btn-success btn-sm btn-add-extra" value="Nhập thêm">
+                                                </form>
                                             </td>
                                         </tr>
                                     `;
@@ -109,6 +113,17 @@
                     }
                 });
             }
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.btn-add-extra').click(function(e) {
+                    e.preventDefault();
+                    let row = $(this).closest("tr");
+                    let promoId = row.find("td:first").text().trim();
+                    window.location.href = "/" + promoId;
+                });
+            });
         </script>
     @endsection
 

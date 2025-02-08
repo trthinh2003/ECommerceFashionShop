@@ -3,10 +3,13 @@ const modal = document.querySelector(".js-modal");
 const modalContainer = document.querySelector(".js-modal-container");
 const modalClose = document.querySelector(".js-modal-close");
 
-console.log(addBtns);
-
 function showModal() {
     modal.classList.add("open");
+    document.querySelector('.modal-header').textContent = "Thêm Chương trình khuyến mãi";
+    document.querySelector('#name').value = "";
+    document.querySelector('#percent_discount').value = "";
+    document.querySelector('#start_date').value = "";
+    document.querySelector('#end_date').value = "";
 }
 
 function hideModal() {

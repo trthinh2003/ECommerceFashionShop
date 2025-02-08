@@ -37,12 +37,19 @@ class InventoryResource extends JsonResource
                             'id' => $detail->product->category->id,
                             'name' => $detail->product->category->category_name,
                         ],
-                        'product-variant' => [
-                            'id' => optional($detail->product->productVariants->first())->id
-                        ],
+                        'product-variant' => $detail->product->productVariants->map(function ($variant) {
+                            return [
+                                'id' => $variant->id,
+                                'color' => $variant->color,
+                                'size' => $variant->size,
+                                'stock' => $variant->stock
+                            ];
+                        }),
                     ],
                 ];
             }),
         ];
     }
 }
+
+

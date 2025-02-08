@@ -63,6 +63,23 @@ class ApiController extends Controller
         return $this->apiStatus($inventoriesResource, 200, $inventoriesResource->count(), 'ok');
     }
 
+    public function inventory($id)
+    {
+        $inventories = Inventory::with([
+            'Staff',
+            'Provider',
+            'InventoryDetails.Product.Category',
+            'InventoryDetails.Product.ProductVariants'
+        ])->find($id);
+        $inventoriesResource = new InventoryResource($inventories);
+        if ($inventories) {
+            return $this->apiStatus($inventoriesResource, 200, $inventoriesResource->count(), 'ok');
+        }
+        else {
+            return $this->apiStatus(null, 404, $inventoriesResource->count(), 'Data not found.');
+        }
+    }
+
     public function products()
     {
         $products = Product::orderBy('id', 'ASC')->paginate(5);

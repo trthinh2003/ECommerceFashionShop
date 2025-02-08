@@ -6,6 +6,7 @@ use App\Models\Staff;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class StaffController extends Controller
 {
@@ -37,9 +38,9 @@ class StaffController extends Controller
             'address' => 'required',
             'email' => 'required|email',
             'sex' => 'required',
-            'username' => 'required|unique:staff',
+            'username' => 'required|unique:staff,username',
             'password' => 'required',
-            'position' => 'required',
+            'position' => ['required', Rule::in(['Quản lý', 'Nhân viên bán hàng', 'Nhân viên kho'])],
             'status' => 'required',
         ];
 
@@ -54,6 +55,7 @@ class StaffController extends Controller
             'username.unique' => 'Tài khoản này đã tồn tại.',
             'password.required' => 'Mật khẩu không được để trống.',
             'position.required' => 'Vui lòng chọn chức vụ.',
+            'position.in' => 'Vui lòng chọn chức vụ phù hợp.',
             'status.required' => 'Trường này bắt buộc nhâp',
         ];
 
@@ -141,7 +143,8 @@ class StaffController extends Controller
         }
         $user->save();
         $staff->update($data);
-        if ($staff->position === 'Quản lý') {
+        $user_current = User::where('id', $request->input('user_id'))->first();
+        if (in_array('admin', $user_current->roles()) || in_array('manage', $user_current->roles())) {
             return redirect()->route('staff.index')->with('success', 'Cập nhật thông tin nhân viên thành công!');
         }
         else {

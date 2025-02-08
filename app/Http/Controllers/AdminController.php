@@ -69,7 +69,7 @@ class AdminController extends Controller
             'password' => $request->input('password'),
         ];
         if (auth()->attempt($credentials)) {
-            return redirect()->route('admin.dashboard')->with('ok', 'Đăng nhập thành công!');
+            return redirect()->route('admin.dashboard')->with('success', 'Đăng nhập thành công!');
         }
         return redirect()->back();
     }
