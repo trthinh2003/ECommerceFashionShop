@@ -16,16 +16,20 @@ use Illuminate\Support\Facades\Route;
 */
 
 //JWT: json web token
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
+// Route::middleware('auth:sanctum')->group(function () {
+// });
 Route::get('discount', [ApiController::class, 'discounts'])->name('api.discounts');
 Route::get('discount/{id}', [ApiController::class, 'discount'])->name('api.discount');
 
 Route::get('category', [ApiController::class, 'categories'])->name('api.categories');
 
 Route::get('product', [ApiController::class, 'products'])->name('api.products');
+Route::get('product/{id}', [ApiController::class, 'product'])->name('api.product');
+
 Route::get('product-variant', [ApiController::class, 'productVariants'])->name('api.productVariants');
 
 Route::get('inventory', [ApiController::class, 'inventories'])->name('api.inventories');

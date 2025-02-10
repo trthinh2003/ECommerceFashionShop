@@ -95,6 +95,7 @@
                                             <td class="text-center">
                                                 <button class="btn btn-secondary btn-sm">Chi tiết</button>
                                                 <form method="GET" action="{{ route('inventory.add_extra') }}">
+                                                    @csrf
                                                     <input type="hidden" name="inventory_id" value="${inventory.id}">
                                                     <input type="submit" class="btn btn-success btn-sm btn-add-extra" value="Nhập thêm">
                                                 </form>

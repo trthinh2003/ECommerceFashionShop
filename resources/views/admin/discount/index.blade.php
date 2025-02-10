@@ -214,16 +214,6 @@
             });
         </script>
 
-        {{-- <script>
-            $(document).ready(function() {
-                $('.btn-create').click(function(e) {
-                    e.preventDefault();
-                    let modalCreate = $('#modal-discount');
-
-                })
-            })
-        </script> --}}
-
         <script>
             $(document).ready(function() {
                 $('.btn-edit').click(function(e) {

@@ -30,7 +30,6 @@ class InventoryController extends Controller
     {
         $cats = Category::all();
         $providers = Provider::all();
-        $staff = Staff::where('id', auth()->user()->id)->first();
         return view('admin.inventory.create', compact('cats', 'providers', 'staff'));
     }
 
@@ -158,12 +157,36 @@ class InventoryController extends Controller
     public function add_extra() {
         $cats = Category::all();
         $providers = Provider::all();
-        $staff = Staff::where('id', auth()->user()->id)->first();
-        return view('admin.inventory.add_extra', compact('cats', 'providers', 'staff'));
+        return view('admin.inventory.add_extra', compact('cats', 'providers'));
     }
 
-    public function post_add_extra() {
-
+    public function post_add_extra(Request $request) {
+        $data = $request->validate([
+            'id' => 'required',
+            'product_name' => 'required|min:3|max:150',
+            'image' => 'required|mimes:jpg,jpeg,gif,png,webp',
+            'category_id' => 'required|exists:categories,id',
+            'provider_id' => 'required|exists:providers,id',
+            'price' => 'required|numeric|min:1',
+            'color' => 'required',
+            'sizes' => 'required',
+        ], [
+            'product_name.required' => 'Tên sản phẩm không được để trống.',
+            'product_name.min' => 'Tên sản phẩm phải có ít nhất 3 ký tự.',
+            'product_name.max' => 'Tên sản phẩm đã vượt quá 150 ký tự.',
+            'image.required' => 'Vui lòng chọn hình ảnh.',
+            'category_id.required' => 'Vui lòng chọn danh mục.',
+            'category_id.exists' => 'Tên danh mục không hợp lệ.',
+            'provider_id.required' => 'Vui lòng chọn tên nhà cung cấp.',
+            'provider_id.exists' => 'Tên nhà cung cấp không hợp lệ.',
+            'price.required' => 'Vui lòng điền giá nhập.',
+            'price.min' => 'Giá tiền phải lớn hơn 0.',
+            'color.required' => 'Vui lòng nhập màu sắc cho sản phẩm.',
+            'sizes.required' => 'Vui lòng chọn kích cỡ cho sản phẩm.',
+        ]);
+        $size_and_quantitys = explode(',', $request->formatted_sizes);
+        $totalQuantity = 0;
+        dd($size_and_quantitys);
     }
 
     public function search(Request $request) {

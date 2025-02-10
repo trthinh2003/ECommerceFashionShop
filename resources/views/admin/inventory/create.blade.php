@@ -91,7 +91,6 @@
                 <input type="hidden" name="formatted_sizes" id="formatted_sizes"> <!-- Ẩn để lưu giá trị -->
             </div>
             <input class="btn btn-primary m-3" name="" type="submit" value="Lưu thông tin">
-            <button class="showModal" type="button">Show</button>
         </form>
 
         <div class="modal fade" id="modal-quantity" tabindex="-1" aria-labelledby="modal-quantity-label" aria-hidden="true">
@@ -138,16 +137,6 @@
                         }
                     }
                 });
-
-
-                //Xử lý input nhập kích cỡ
-                // $("#sizes").select2({
-                //     tags: true,
-                //     tokenSeparators: [','],
-                //     placeholder: "  Chọn hoặc nhập kích cỡ sản phẩm..."
-                // });
-                //
-
             });
         </script>
         {{-- <script>
@@ -162,21 +151,6 @@
         </script> --}}
 
         <script>
-            // $(document).ready(function(e) {
-                // $('.showModal').click(function() {
-                //     $('#modal-quantity').modal('show');
-                // })
-                // $('#sizes').change(function() {
-                //     $('#modal-quantity').modal('show');
-                //     $('#modal-quantity-label').text("Nhập số lượng cho size " + $('#sizes').val());
-                //     $('.btn-quantity-submit').click(function(e) {
-                        // $('.select2-selection__choice__remove').empty();
-                        // $('.select2-selection__choice__remove').text($('.select2-selection__choice__remove').text() + "-" + $('#quantity_variant').val());
-            //             console.log($('.select2-selection__choice__remove').val());
-            //         })
-            //     })
-            // })
-
             $(document).ready(function () {
                 let selectedSize = null;
                 let sizesWithQuantities = {}; // Lưu size và số lượng

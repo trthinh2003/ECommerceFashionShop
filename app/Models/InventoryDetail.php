@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Thiagoprz\CompositeKey\HasCompositeKey;
 use Illuminate\Database\Eloquent\Model;
 
 class InventoryDetail extends Model
 {
-    use HasFactory;
-
+    use HasFactory, HasCompositeKey;
+    protected $primaryKey = ['product_id', 'inventory_id'];
     protected $fillable = [
         'product_id',
         'inventory_id',

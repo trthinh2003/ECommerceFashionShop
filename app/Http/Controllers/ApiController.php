@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\InventoryResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Discount;
 use App\Models\Inventory;
@@ -27,7 +28,7 @@ class ApiController extends Controller
         if ($staff) {
             return $this->apiStatus($staff, 200, 1, 'ok');
         }
-        return $this->apiStatus(null, 404, $staff->count(), 'Data not found.');
+        return $this->apiStatus(null, 404, 0, 'Data not found.');
     }
 
     public function discounts()
@@ -42,7 +43,7 @@ class ApiController extends Controller
         if ($discount) {
             return $this->apiStatus($discount, 200, 1, 'ok');
         }
-        return $this->apiStatus(null, 404, $discount->count(), 'Data not found.');
+        return $this->apiStatus(null, 404, 0, 'Data not found.');
     }
 
     public function categories()
@@ -76,7 +77,7 @@ class ApiController extends Controller
             return $this->apiStatus($inventoriesResource, 200, $inventoriesResource->count(), 'ok');
         }
         else {
-            return $this->apiStatus(null, 404, $inventoriesResource->count(), 'Data not found.');
+            return $this->apiStatus(null, 404, 0, 'Data not found.');
         }
     }
 
@@ -84,6 +85,18 @@ class ApiController extends Controller
     {
         $products = Product::orderBy('id', 'ASC')->paginate(5);
         return $this->apiStatus($products, 200, $products->count(), 'ok');
+    }
+
+    public function product($id)
+    {
+        $products = Product::with('Category', 'ProductVariants')->find($id);
+        $productResource = new ProductResource($products);
+        if ($productResource) {
+            return $this->apiStatus($productResource, 200, 1, 'ok');
+        }
+        else {
+            return $this->apiStatus(null, 404, 0, 'Data not found.');
+        }
     }
 
     public function productVariants()

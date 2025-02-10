@@ -17,9 +17,9 @@
                                 <input name="query" type="text" placeholder="Nhập vào tên sản phẩm cần tìm..." class="form-control" />
                             </div>
                         </div>
-                        <div class="col-3">
+                        {{-- <div class="col-3">
                             <a href="{{ route('product.create') }}" class="btn btn-success"><i class="fa fa-plus"></i>Thêm mới</a>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
                 <table class="table mt-3">
@@ -36,7 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{-- @foreach ($data as $model)
+                        @foreach ($data as $model)
                             <tr>
                                 <td>{{ $model->id }}</td>
                                 <td>{{ $model->product_name }}</td>
@@ -50,15 +50,14 @@
                                 <td>
                                     <form method="post" action="{{ route('product.destroy', $model->id) }}">
                                         @csrf @method('DELETE')
-                                        <a href="{{ route('product.edit', $model->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit pe-2"></i>Sửa</a>
-                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Bạn có chắc muốn xóa không?')">
-                                            <i class="fa fa-trash pe-2"></i>
-                                            Xóa
+                                        <button type="button" class="btn btn-sm btn-secondary"><i class="fa fa-pen"></i>
+                                            Xem chi tiết
                                         </button>
+                                        <a href="{{ route('product.edit', $model->id) }}" class="btn btn-sm btn-primary"><i class="fa fa-edit pe-2"></i>Sửa</a>
                                     </form>
                                 </td>
                             </tr>
-                        @endforeach --}}
+                        @endforeach
                     </tbody>
                 </table>
             </div>

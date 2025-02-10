@@ -1,6 +1,6 @@
 @can('warehouse workers')
     @extends('admin.master')
-    @section('title', 'Thêm Phiếu nhập')
+    @section('title', 'Nhập thêm')
 
     @section('content')
         <form id="formCreateInventory" method="POST" action="{{ route('inventory.post_add_extra') }}" enctype="multipart/form-data">
@@ -10,7 +10,7 @@
             <div class="row form-group">
                 <div class="col-6 ">
                     <label for="">Tên sản phẩm:</label>
-                    <input type="text" name="product_name" id="product_name" class="form-control" placeholder="">
+                    <input type="text" name="product_name" id="product_name" class="form-control" placeholder="" disabled>
                     @error('product_name')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -65,6 +65,7 @@
                 <div class="col-6">
                     <label for="">Màu:</label>
                     <input type="text" name="color" id="priceInput" class="form-control" placeholder="VD: Vàng, Đỏ, Xanh, Tím,...">
+                    <small class="colors-available"></small>
                     @error('color')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -74,7 +75,7 @@
             <div class="row form-group">
 
                 <div class="col-6">
-                    <label>Chọn kích cỡ:</label>
+                    <label>Chọn kích cỡ và số lượng:</label>
                     <select class="form-control" name="sizes[]" id="sizes" multiple="multiple">
                         <option value="XS">XS</option>
                         <option value="S">S</option>
@@ -83,6 +84,8 @@
                         <option value="XL">XL</option>
                         <option value="XXL">XXL</option>
                     </select>
+                    <small class="sizes-available"></small>
+
                     @error('sizes')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -90,7 +93,6 @@
                 <input type="hidden" name="formatted_sizes" id="formatted_sizes"> <!-- Ẩn để lưu giá trị -->
             </div>
             <input class="btn btn-primary m-3" name="" type="submit" value="Lưu thông tin">
-            <button class="showModal" type="button">Show</button>
         </form>
 
         <div class="modal fade" id="modal-quantity" tabindex="-1" aria-labelledby="modal-quantity-label" aria-hidden="true">
@@ -137,16 +139,6 @@
                         }
                     }
                 });
-
-
-                //Xử lý input nhập kích cỡ
-                // $("#sizes").select2({
-                //     tags: true,
-                //     tokenSeparators: [','],
-                //     placeholder: "  Chọn hoặc nhập kích cỡ sản phẩm..."
-                // });
-                //
-
             });
         </script>
 
@@ -211,8 +203,52 @@
         @endphp
 
         <script>
-            console.log(<?= json_encode($inventory_id) ?>);
+            document.addEventListener("DOMContentLoaded", function() {
+                fetch(`http://127.0.0.1:8000/api/inventory/${@json($inventory_id)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status_code === 200) {
+                            const productData = data.data.detail[0].product;
+                            const providerData = data.data.provider;
+                            const detailData = data.data.detail[0];
+
+                            // Điền dữ liệu vào form
+                            document.getElementById("product_name").value = productData.name || "";
+                            document.querySelector("select[name='category_id']").value = productData.category.id || "";
+                            document.querySelector("select[name='provider_id']").value = providerData.id || "";
+                            document.getElementById("priceInput").value = detailData.price || "";
+
+                            // Điền danh sách màu sắc
+                            const colorInput = document.querySelector(".colors-available");
+                            colorInput.textContent = "(Các màu đã nhập về: "
+                            + [...new Set(detailData.product["product-variant"]
+                                    .map(variant => variant.color))]
+                                    .join(", ") + ")";
+
+                            // Điền danh sách kích cỡ
+                            const sizesSelect = document.getElementById("sizes");
+                            const sizes = detailData.sizes.split(", ");
+                            sizesSelect.querySelectorAll("option").forEach(option => {
+                                if (sizes.includes(option.value)) {
+                                    option.selected = true;
+                                }
+                            });
+                            const sizesInput = document.querySelector(".sizes-available");
+                            sizesInput.textContent = "(Các kích cỡ đã nhập về: "
+                            + detailData.product["product-variant"]
+                                .map(variant => `${variant.size} (${variant.stock !== null ? variant.stock : 0} cái)`)
+                                .join(", ");
+
+                            // Hiển thị hình ảnh sản phẩm
+                            const previewImg = document.getElementById("previewImg");
+                            previewImg.src = `uploads/${productData.image}`;
+                            previewImg.classList.remove("d-none");
+                        }
+                    })
+                    .catch(error => console.error("Lỗi khi lấy API:", error));
+            });
         </script>
+
     @endsection
 @else
     {{ abort(403, 'Bạn không có quyền truy cập trang này!') }}
