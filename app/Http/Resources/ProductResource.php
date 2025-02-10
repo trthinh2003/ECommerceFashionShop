@@ -21,7 +21,9 @@ class ProductResource extends JsonResource
             'image' => $this->image,
             'description' => $this->description,
             'category' => new CategoryResource($this->Category),
-            'product-variant' => ProductVariantResource::collection($this->ProductVariants)
+            'product-variant' => ProductVariantResource::collection($this->ProductVariants),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

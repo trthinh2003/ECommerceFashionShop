@@ -30,7 +30,7 @@ class InventoryController extends Controller
     {
         $cats = Category::all();
         $providers = Provider::all();
-        return view('admin.inventory.create', compact('cats', 'providers', 'staff'));
+        return view('admin.inventory.create', compact('cats', 'providers'));
     }
 
     /**
