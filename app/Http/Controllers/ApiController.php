@@ -23,6 +23,8 @@ class ApiController extends Controller
         ]);
     }
 
+ 
+
     public function staff($id){
         $staff = Staff::find($id);
         if ($staff) {

@@ -172,4 +172,8 @@ class StaffController extends Controller
                         ->paginate();
         return view('admin.staff.index', compact('data', 'keyword'));
     }
+
+    public function profile() {
+        return view('admin.staff.profile');
+    }
 }
