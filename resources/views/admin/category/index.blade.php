@@ -48,7 +48,7 @@
                                 <td class="text-center">
                                     <form method="post" action="{{ route('category.destroy', $model->id) }}">
                                         @csrf @method('DELETE')
-                                        <a class="btn btn-sm btn-primary" href=""><i class="fa fa-edit pe-2"></i>Sửa</a>
+                                        <a class="btn btn-sm btn-primary" href="{{ route('category.edit', $model->id)}}"><i class="fa fa-edit pe-2"></i>Sửa</a>
                                         <button class="btn btn-sm btn-danger"
                                             onclick="return confirm('Bạn có chắc muốn xóa không?')">
                                             <i class="fa fa-trash pe-2"></i>

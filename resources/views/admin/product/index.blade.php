@@ -177,7 +177,7 @@
                                 color.push(variant.color);
                                 size_and_stock.push(`${variant.size} (${variant.stock} cái)`);
                             });
-                            console.log(color, size_and_stock)
+                            // console.log(color, size_and_stock)
                             $("#colors").text([...new Set(color)].join(', '));
                             $("#sizes").text(size_and_stock.join(', '));
                             $("#product-created").text(new Date(productInfo.created_at)

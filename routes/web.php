@@ -54,4 +54,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/search_provider', [ProviderController::class, 'search'])->name('provider.search');
     Route::get('/search_staff', [StaffController::class, 'search'])->name('staff.search');
     Route::get('/search_inventory', [InventoryController::class, 'search'])->name('inventory.search');
+
+    Route::get('/profile', [StaffController::class, 'profile'])->name('staff.profile');
 });
