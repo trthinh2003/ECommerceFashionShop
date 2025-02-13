@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DiscountController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -25,6 +26,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/login', [AdminController::class, 'post_login'])->name('admin.post_login');
 
+//Trang client
+Route::group(['prefix' => '/'], function () {
+    Route::get('/', [HomeController::class, 'home'])->name('sites.home');
+});
+
+//Trang admin
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');

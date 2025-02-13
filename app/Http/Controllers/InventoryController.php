@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
@@ -105,7 +106,7 @@ class InventoryController extends Controller
                 'color' => $data['color'],
                 'size' => $size,
                 'stock' => $size_assoc[$size],
-                'product_id' => $product->id
+                'product_id' => $product->id,
             ]);
         };
 
@@ -116,7 +117,7 @@ class InventoryController extends Controller
         $inventoryDetail->price = $data['price'];
         $inventoryDetail->quantity = $totalQuantity;
         //Xử lý chuỗi sizes
-        $inventoryDetail->size = $sizes;
+        $inventoryDetail->size = join(',', $size_and_quantitys);
         $inventoryDetail->save();
 
         return redirect()->route('inventory.index')->with('success', "Thêm phiếu nhập mới thành công!");
@@ -163,19 +164,16 @@ class InventoryController extends Controller
     public function post_add_extra(Request $request) {
         $data = $request->validate([
             'id' => 'required',
-            'product_name' => 'required|min:3|max:150',
-            'image' => 'required|mimes:jpg,jpeg,gif,png,webp',
-            'category_id' => 'required|exists:categories,id',
+            'product_name' => 'min:3|max:150',
+            'image' => 'mimes:jpg,jpeg,gif,png,webp',
+            'category_id' => 'string',
             'provider_id' => 'required|exists:providers,id',
             'price' => 'required|numeric|min:1',
             'color' => 'required',
             'sizes' => 'required',
         ], [
-            'product_name.required' => 'Tên sản phẩm không được để trống.',
             'product_name.min' => 'Tên sản phẩm phải có ít nhất 3 ký tự.',
             'product_name.max' => 'Tên sản phẩm đã vượt quá 150 ký tự.',
-            'image.required' => 'Vui lòng chọn hình ảnh.',
-            'category_id.required' => 'Vui lòng chọn danh mục.',
             'category_id.exists' => 'Tên danh mục không hợp lệ.',
             'provider_id.required' => 'Vui lòng chọn tên nhà cung cấp.',
             'provider_id.exists' => 'Tên nhà cung cấp không hợp lệ.',
@@ -184,9 +182,64 @@ class InventoryController extends Controller
             'color.required' => 'Vui lòng nhập màu sắc cho sản phẩm.',
             'sizes.required' => 'Vui lòng chọn kích cỡ cho sản phẩm.',
         ]);
+        // $olđValue = implode(',', array_map(fn($key, $value) => "$key-$value", array_keys($request->variant), $request->variant));
+        $previous_stock = 0;
+        foreach ($request->variant as $size => $stock) {
+            $previous_stock += $stock;
+        };
         $size_and_quantitys = explode(',', $request->formatted_sizes);
         $totalQuantity = 0;
-        dd($size_and_quantitys);
+        $inventory = new Inventory();
+        $inventory->provider_id = $data['provider_id'];
+        $inventory->staff_id = $data['id'];
+        //Xử lý chuỗi {size}-{số lượng}
+        $size_and_quantitys = explode(',', $request->formatted_sizes);
+        // dd($size_and_quantitys);
+        $totalQuantity = 0;
+        $sizes = "";
+        $size_assoc = [];
+        foreach ($size_and_quantitys as $size_and_quantity) {
+            $item = explode('-', $size_and_quantity);
+            list($key, $value) = $item;
+            $size_assoc[$key] = (int)$value;
+            $sizes .= $item[0] . ",";
+            $totalQuantity += $item[1];
+        }
+        // dd($size_assoc, $size_assoc["S"] - $request->variant["S"]);
+        $sizes = rtrim($sizes, ',');
+        // dd([$data['color'], $size, $size_assoc["XS"], $request->product_id]);
+
+        $totalNew = 0;
+        foreach (array_reverse(explode(',', $sizes)) as $size) { //S, M, XL
+            $color = $data['color'];
+            $totalNew += ($size_assoc[$size] - $request->variant[$size] ?? 0);
+            $old_stock = $request->variant[$size];
+            $new_stock = $size_assoc[$size];
+            $id_product = $request->product_id;
+            // ProductVariant::insertOrIgnore([
+            //     'color' => $data['color'],
+            //     'size' => $size,
+            //     'stock' => $size_assoc[$size],
+            //     'product_id' => $request->product_id
+            // ]);
+            DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
+                           VALUES (?, ?, ?, ?)
+                           ON DUPLICATE KEY UPDATE stock = ?', [$color, $size, $old_stock, $id_product, $new_stock]);
+        };
+        $inventory->total = $totalNew * $data['price'];
+        $inventory->save();
+
+        //Thêm vào Chi tiết Phiếu nhập
+        $inventoryDetail = new InventoryDetail();
+        $inventoryDetail->product_id = $request->product_id;
+        $inventoryDetail->inventory_id = $inventory->id;
+        $inventoryDetail->price = $data['price'];
+        $inventoryDetail->quantity = $totalNew;
+        //Xử lý chuỗi sizes
+        $inventoryDetail->size = join(',', $size_and_quantitys);
+        $inventoryDetail->save();
+
+        return redirect()->route('inventory.index')->with('success', "Thêm phiếu nhập mới thành công!");
     }
 
     public function search(Request $request) {

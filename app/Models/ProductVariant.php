@@ -18,6 +18,8 @@ class ProductVariant extends Model
         'product_id'
     ];
 
+    public $timestamps = false;
+
     //1 MoTaSP cho 1 SP
     public function Product() {
         return $this->belongsTo(Product::class);

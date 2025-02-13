@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('stock')->nullable();
             $table->unsignedInteger('product_id');
             $table->foreign('product_id')->references('id')->on('products');
+            $table->unique(['color', 'size', 'product_id']);
             $table->timestamps();
         });
     }
