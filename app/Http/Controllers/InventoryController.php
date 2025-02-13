@@ -116,7 +116,8 @@ class InventoryController extends Controller
         $inventoryDetail->price = $data['price'];
         $inventoryDetail->quantity = $totalQuantity;
         //Xử lý chuỗi sizes
-        $inventoryDetail->size = $sizes;
+        // $inventoryDetail->size = $sizes;
+        $inventoryDetail->size= join(',', $size_and_quantitys);
         $inventoryDetail->save();
 
         return redirect()->route('inventory.index')->with('success', "Thêm phiếu nhập mới thành công!");
