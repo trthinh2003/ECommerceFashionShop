@@ -22,7 +22,7 @@
     <div class="offcanvas__nav__option">
         <a href="#" class="search-switch"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a>
         <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
-        <a href="{{ route('site.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt=""><span>0</span></a>
+        <a href="{{ route('site.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt=""> <span>0</span></a>
         <div class="price">$0.00</div>
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -89,10 +89,11 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a href="#" class="search-switch"><img src="{{ asset('client/img/icon/search.png') }}"
-                            alt=""></a>
+                    <a class="nav-icon d-none d-lg-inline search-btn" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                        <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                    </a>
                     <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
-                    <a href="#"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
+                    <a href="{{ route('site.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
                         <span>0</span></a>
                     <div class="price">$0.00</div>
                 </div>

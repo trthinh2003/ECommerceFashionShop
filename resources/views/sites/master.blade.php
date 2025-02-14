@@ -44,6 +44,13 @@
     <script src="{{asset('client/js/mixitup.min.js')}}"></script>
     <script src="{{asset('client/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('client/js/main.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            $(".search-btn").click(function() {
+                $("#templatemo_search").modal("show");
+            });
+        })
+    </script>
 </body>
 
 </html>
