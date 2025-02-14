@@ -60,8 +60,7 @@
             <div class="row form-group">
                 <div class="col-6">
                     <label for="">Giá nhập:</label>
-                    <input type="number" name="price_disabled" id="priceInput_disabled" class="form-control" disabled>
-                    <input type="hidden" name="price" id="priceInput">
+                    <input type="number" name="price" id="priceInput" class="form-control">
                     @error('price')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -169,7 +168,6 @@
                                 "";
                             document.getElementById('category_id').value = productData.category.id || "";
                             document.querySelector("select[name='provider_id']").value = providerData.id || "";
-                            document.getElementById("priceInput_disabled").value = detailData.price || "";
                             document.getElementById("priceInput").value = detailData.price || "";
 
                             // Điền danh sách màu sắc

@@ -182,8 +182,6 @@ class InventoryController extends Controller
             'color.required' => 'Vui lòng nhập màu sắc cho sản phẩm.',
             'sizes.required' => 'Vui lòng chọn kích cỡ cho sản phẩm.',
         ]);
-        $olđValue = implode(',', array_map(fn($key, $value)
-        => "$key-$value", array_keys($request->variant), $request->variant));
         $previous_stock = 0;
         foreach ($request->variant as $size => $stock) {
             $previous_stock += $stock;
@@ -220,7 +218,7 @@ class InventoryController extends Controller
         $new_sizesAndStocks = [];
         foreach ($size_assoc as $size => $stock) {
             if (array_key_exists($size, $request->variant)) {
-                $increaseStock = $size_assoc[$size] - $request->variant[$size];
+                $increaseStock = abs($size_assoc[$size] - $request->variant[$size]);
                 $temp = $size . "-" . $increaseStock;
                 array_push($new_sizesAndStocks, $temp);
             }

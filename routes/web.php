@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'home'])->name('sites.home');
     Route::get('/shop', [HomeController::class, 'shop'])->name('site.shop');
+    Route::get('/cart', [HomeController::class, 'cart'])->name('site.cart');
 });
 
 /* TRANG ADMIN */
