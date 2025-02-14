@@ -42,7 +42,7 @@ class CategoryController extends Controller
         $categories->category_name = $data['name']; //$_POST['']
         $categories->status = $data['status'];
         $categories->save();
-        return redirect()->route('category.index');
+        return redirect()->route('category.index')->with('success', 'Thêm danh mục mới thành công!');
     }
 
     /**
@@ -78,7 +78,7 @@ class CategoryController extends Controller
         $category->status = $data['status'];
         $category->save();
 
-        return redirect()->route('category.index');
+        return redirect()->route('category.index')->with('success', 'Sửa thông tin danh mục thành công!');
     }
 
     /**

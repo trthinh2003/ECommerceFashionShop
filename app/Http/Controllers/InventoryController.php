@@ -117,7 +117,7 @@ class InventoryController extends Controller
         $inventoryDetail->price = $data['price'];
         $inventoryDetail->quantity = $totalQuantity;
         //Xử lý chuỗi sizes
-        $inventoryDetail->size = $sizes;
+        $inventoryDetail->size = join(',', $size_and_quantitys);
         $inventoryDetail->save();
 
         return redirect()->route('inventory.index')->with('success', "Thêm phiếu nhập mới thành công!");
@@ -182,7 +182,8 @@ class InventoryController extends Controller
             'color.required' => 'Vui lòng nhập màu sắc cho sản phẩm.',
             'sizes.required' => 'Vui lòng chọn kích cỡ cho sản phẩm.',
         ]);
-        // $olđValue = implode(',', array_map(fn($key, $value) => "$key-$value", array_keys($request->variant), $request->variant));
+        $olđValue = implode(',', array_map(fn($key, $value)
+        => "$key-$value", array_keys($request->variant), $request->variant));
         $previous_stock = 0;
         foreach ($request->variant as $size => $stock) {
             $previous_stock += $stock;
@@ -205,6 +206,30 @@ class InventoryController extends Controller
             $sizes .= $item[0] . ",";
             $totalQuantity += $item[1];
         }
+        // dd($request->variant["XXL"] ?? 0, $size_assoc["XXL"]);
+        $current_sizesAndStocks = [];
+        // foreach ($current_sizesAndStocks as $size => $value) {
+        //     $current_sizesAndStocks[$size] += $stock;
+        // };
+        $allKeys = array_unique(array_merge(array_keys($request->variant), array_keys($size_assoc)));
+        foreach ($allKeys as $size) {
+            $value1 = $request->variant[$size] ?? 0;
+            $value2 = $size_assoc[$size] ?? 0;
+            $current_sizesAndStocks[$size] = abs($value1 - $value2);
+        }
+        $new_sizesAndStocks = [];
+        foreach ($size_assoc as $size => $stock) {
+            if (array_key_exists($size, $request->variant)) {
+                $increaseStock = $size_assoc[$size] - $request->variant[$size];
+                $temp = $size . "-" . $increaseStock;
+                array_push($new_sizesAndStocks, $temp);
+            }
+            else if (!array_key_exists($size, $request->variant)) {
+                $temp = $size . "-" . $size_assoc[$size] ;
+                array_push($new_sizesAndStocks, $temp);
+            }
+        };
+        // dd($request->variant, $size_assoc, $current_sizesAndStocks, $new_sizesAndStocks);
         // dd($size_assoc, $size_assoc["S"] - $request->variant["S"]);
         $sizes = rtrim($sizes, ',');
         // dd([$data['color'], $size, $size_assoc["XS"], $request->product_id]);
@@ -212,19 +237,19 @@ class InventoryController extends Controller
         $totalNew = 0;
         foreach (array_reverse(explode(',', $sizes)) as $size) { //S, M, XL
             $color = $data['color'];
-            $totalNew += ($size_assoc[$size] - $request->variant[$size] ?? 0);
-            $old_stock = $request->variant[$size];
-            $new_stock = $size_assoc[$size];
+            $totalNew += ($size_assoc[$size] - ($request->variant[$size] ?? 0));
+            $old_stock = ($request->variant[$size] ?? 0);
+            $new_stock = ($size_assoc[$size] ?? 0);
             $id_product = $request->product_id;
-            // ProductVariant::insertOrIgnore([
-            //     'color' => $data['color'],
-            //     'size' => $size,
-            //     'stock' => $size_assoc[$size],
-            //     'product_id' => $request->product_id
-            // ]);
-            DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
-                           VALUES (?, ?, ?, ?)
-                           ON DUPLICATE KEY UPDATE stock = ?', [$color, $size, $old_stock, $id_product, $new_stock]);
+            if ($old_stock == 0) {
+                DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
+                               VALUES (?, ?, ?, ?)', [$color, $size, $new_stock, $id_product]);
+            }
+            else {
+                DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
+                               VALUES (?, ?, ?, ?)
+                               ON DUPLICATE KEY UPDATE stock = ?', [$color, $size, $old_stock, $id_product, $new_stock]);
+            }
         };
         $inventory->total = $totalNew * $data['price'];
         $inventory->save();
@@ -236,7 +261,7 @@ class InventoryController extends Controller
         $inventoryDetail->price = $data['price'];
         $inventoryDetail->quantity = $totalNew;
         //Xử lý chuỗi sizes
-        $inventoryDetail->size = join(',', $size_and_quantitys);
+        $inventoryDetail->size = join(',', $new_sizesAndStocks);
         $inventoryDetail->save();
 
         return redirect()->route('inventory.index')->with('success', "Thêm phiếu nhập mới thành công!");

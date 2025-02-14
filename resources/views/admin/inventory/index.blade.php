@@ -68,12 +68,12 @@
                             <div class="col-md-6">
                                 <p><strong>Mã phiếu nhập:</strong> <span id="inventory-id"></span></p>
                                 <p><strong>Nhân viên lập phiếu:</strong> <span id="staff-name"></span></p>
-                                <p><strong>Danh mục sản phẩm:</strong><span id="category-name"></span></p>
+                                <p><strong>Danh mục sản phẩm:</strong> <span id="category-name"></span></p>
                                 <p><strong>Nhà cung cấp:</strong> <span id="provider-name"></span></p>
                             </div>
                             <div class="col-md-6">
                                 <p><strong>Tên sản phẩm:</strong> <span id="product-name"></span></p>
-                                <p><strong>Hình ảnh:</strong><img id="product-image" src="" width="100"></p>
+                                <p><strong>Hình ảnh:</strong> <img id="product-image" src="" width="80"></p>
                                 <p><strong>Đơn giá:</strong> <span id="product-price"></span></p>
 
                             </div>
@@ -106,7 +106,9 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/js/message.js') }}"></script>
+    @if (Session::has('success'))
+        <script src="{{ asset('assets/js/message.js') }}"></script>
+    @endif
     <script>
         $(document).ready(function() {
             fetchInventories();
@@ -215,7 +217,7 @@
                                 // Xử lý hiển thị màu sắc
                                 let colors = [];
                                 // Nếu sản phẩm có biến thể
-                                if (productDetail.product["product-variant"]) { 
+                                if (productDetail.product["product-variant"]) {
                                     $.each(productDetail.product["product-variant"], function(i,
                                         variant) {
                                         colors.push(variant.color);

@@ -27,7 +27,7 @@ class InventoryResource extends JsonResource
                 'id' => $this->provider->id,
                 'name' => $this->provider->name,
             ],
-            'detail' => $this->inventoryDetails->map(function($detail) {
+            'detail' => $this->inventoryDetails->map(function ($detail) {
                 return [
                     'sizes' => $detail->size,
                     'price' => $detail->price,
@@ -54,5 +54,3 @@ class InventoryResource extends JsonResource
         ];
     }
 }
-
-

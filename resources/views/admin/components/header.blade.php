@@ -260,7 +260,7 @@
                                     <div class="u-text">
                                         <h4>{{ auth()->user()->name }}</h4>
                                         <p class="text-muted">{{ auth()->user()->email }}</p>
-                                        <a href="#"
+                                        <a href="{{ route('staff.profile') }}"
                                             class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                     </div>
                                 </div>

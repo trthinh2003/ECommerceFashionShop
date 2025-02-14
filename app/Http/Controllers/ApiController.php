@@ -7,14 +7,17 @@ use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Discount;
 use App\Models\Inventory;
+use App\Models\InventoryDetail;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
-    public function apiStatus($data, $status_code, $total = 0, $message = null) {
+    public function apiStatus($data, $status_code, $total = 0, $message = null)
+    {
         return response()->json([
             'data' => $data,
             'status_code' => $status_code,
@@ -23,9 +26,10 @@ class ApiController extends Controller
         ]);
     }
 
- 
 
-    public function staff($id){
+
+    public function staff($id)
+    {
         $staff = Staff::find($id);
         if ($staff) {
             return $this->apiStatus($staff, 200, 1, 'ok');
@@ -61,7 +65,7 @@ class ApiController extends Controller
             'Provider',
             'InventoryDetails.Product.Category',
             'InventoryDetails.Product.ProductVariants'
-        ])->paginate(2);
+        ])->paginate();
         $inventoriesResource = InventoryResource::collection($inventories);
         return $this->apiStatus($inventoriesResource, 200, $inventoriesResource->count(), 'ok');
     }
@@ -77,8 +81,7 @@ class ApiController extends Controller
         $inventoriesResource = new InventoryResource($inventories);
         if ($inventories) {
             return $this->apiStatus($inventoriesResource, 200, 1, 'ok');
-        }
-        else {
+        } else {
             return $this->apiStatus(null, 404, 0, 'Data not found.');
         }
     }
@@ -94,8 +97,7 @@ class ApiController extends Controller
         $inventoriesResource = new InventoryResource($inventories);
         if ($inventories) {
             return $this->apiStatus($inventoriesResource, 200, 1, 'ok');
-        }
-        else {
+        } else {
             return $this->apiStatus(null, 404, 0, 'Data not found.');
         }
     }
@@ -112,8 +114,7 @@ class ApiController extends Controller
         $productResource = new ProductResource($products);
         if ($productResource) {
             return $this->apiStatus($productResource, 200, 1, 'ok');
-        }
-        else {
+        } else {
             return $this->apiStatus(null, 404, 0, 'Data not found.');
         }
     }

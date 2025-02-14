@@ -15,6 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('product_name', 150);//
             $table->text('description')->nullable();
+            $table->text('tags')->nullable();
             $table->string('material')->nullable();
             $table->decimal('price', 10,3)->nullable();//
             $table->text('short_description')->nullable();

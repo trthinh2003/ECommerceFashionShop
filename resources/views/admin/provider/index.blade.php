@@ -2,9 +2,9 @@
     @extends('admin.master')
     @section('title', 'Thông tin Nhà cung cấp')
     @section('content')
-        @if (Session::has('createSuccess'))
+        @if (Session::has('success'))
             <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 26rem; display:flex; text-align:center">
-                <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('createSuccess') }}
+                <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('success') }}
             </div>
         @endif
         <div class="card">
@@ -76,7 +76,9 @@
     @endsection
 
     @section('js')
-        <script src="{{ asset('assets/js/message.js') }}"></script>
+        @if (Session::has('success'))
+            <script src="{{ asset('assets/js/message.js') }}"></script>
+        @endif
     @endsection
 @else
     {{ abort(403, 'Bạn không có quyền truy cập trang này!') }}
