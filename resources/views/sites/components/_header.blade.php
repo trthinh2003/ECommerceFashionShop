@@ -124,10 +124,10 @@
                         </li>
                     </ul>
                 </nav>
-            </div>            
+            </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a class="nav-icon d-none d-lg-inline search-btn" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                    <a class="nav-icon d-none d-lg-inline search-btn" data-bs-toggle="modal">
                         <i class="fa fa-fw fa-search text-dark mr-2"></i>
                     </a>
                     <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>

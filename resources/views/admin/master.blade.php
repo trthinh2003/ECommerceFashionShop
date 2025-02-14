@@ -13,7 +13,7 @@
 
 
     <!-- Fonts and icons -->
-    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
+    <script src="{{asset('assets/js/plugin/webfont/webfont.min.js')}}"></script>
     <script>
         WebFont.load({
             google: {
@@ -39,15 +39,16 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/profile.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-tagsinput.css') }}" />
     @yield('css')
 </head>
 
 <body>
     <div class="wrapper">
-        @include('admin.components.sidebar')
+        @include('admin.components._sidebar')
 
         <div class="main-panel">
-            @include('admin.components.header')
+            @include('admin.components._header')
 
             <div class="container">
                 <div class="page-inner">
@@ -60,7 +61,7 @@
                 </div>
             </div>
 
-            @include('admin.components.footer');
+            @include('admin.components._footer');
         </div>
     </div>
 

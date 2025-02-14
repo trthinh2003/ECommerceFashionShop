@@ -26,12 +26,12 @@
 </head>
 
 <body>
-    @include('sites.components.header')
+    @include('sites.components._header')
 
     @yield('content')
 
-    @include('sites.components.footer')
-    @include('sites.components.search')
+    @include('sites.components._footer')
+    @include('sites.components._search')
 
     <!-- Js Plugins -->
     <script src="{{asset('client/js/jquery-3.3.1.min.js')}}"></script>
@@ -44,14 +44,6 @@
     <script src="{{asset('client/js/mixitup.min.js')}}"></script>
     <script src="{{asset('client/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('client/js/main.js')}}"></script>
-    <script>
-        $(document).ready(function() {
-            $(".search-btn").click(function(e) {
-                e.preventDefault();
-                $("#templatemo_search").modal("show");
-            });
-        })
-    </script>
 </body>
 
 </html>

@@ -158,7 +158,7 @@ class InventoryController extends Controller
     public function add_extra() {
         $cats = Category::all();
         $providers = Provider::all();
-        return view('admin.inventory.add_extra', compact('cats', 'providers'));
+        return view('admin.inventory.add-extra', compact('cats', 'providers'));
     }
 
     public function post_add_extra(Request $request) {
