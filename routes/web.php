@@ -23,15 +23,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
-Route::post('/login', [AdminController::class, 'post_login'])->name('admin.post_login');
-
-//Trang client
+/* TRANG CLIENT */
 Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'home'])->name('sites.home');
+    Route::get('/shop', [HomeController::class, 'shop'])->name('site.shop');
 });
 
-//Trang admin
+/* TRANG ADMIN */
+Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
+Route::post('/login', [AdminController::class, 'post_login'])->name('admin.post_login');
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
@@ -54,6 +54,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/search_provider', [ProviderController::class, 'search'])->name('provider.search');
     Route::get('/search_staff', [StaffController::class, 'search'])->name('staff.search');
     Route::get('/search_inventory', [InventoryController::class, 'search'])->name('inventory.search');
-
     Route::get('/profile', [StaffController::class, 'profile'])->name('staff.profile');
 });

@@ -10,4 +10,9 @@ class HomeController extends Controller
     {
         return view('sites.home');
     }
+
+    public function shop()
+    {
+        return view('sites.shop');
+    }
 }
