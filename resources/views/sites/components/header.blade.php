@@ -1,13 +1,13 @@
 <!-- Page Preloder -->
-<div id="preloder">
+{{-- <div id="preloder">
     <div class="loader"></div>
-</div>
+</div> --}}
 <!-- Offcanvas Menu Begin -->
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="#">Sign in</a>
+            <a href="{{route('admin.login')}}">Sign in</a>
             <a href="#">FAQs</a>
         </div>
         <div class="offcanvas__top__hover">
@@ -22,7 +22,7 @@
     <div class="offcanvas__nav__option">
         <a href="#" class="search-switch"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a>
         <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
-        <a href="{{ route('site.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt=""> <span>0</span></a>
+        <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt=""> <span>0</span></a>
         <div class="price">$0.00</div>
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -39,21 +39,20 @@
             <div class="row">
                 <div class="col-lg-6 col-md-7">
                     <div class="header__top__left">
-                        <p>Free shipping, 30-day return or refund guarantee.</p>
+                        <p>Miễn phí vận chuyển, hỗ trợ đổi trả trong vòng 30 ngày</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="#">Sign in</a>
-                            <a href="#">FAQs</a>
+                            <a href="{{route('admin.login')}}">Đăng nhập</a>
+                            <a href="#">Hỗ Trợ</a>
                         </div>
                         <div class="header__top__hover">
-                            <span>Usd <i class="arrow_carrot-down"></i></span>
+                            <span>Ngôn ngữ<i class="arrow_carrot-down"></i></span>
                             <ul>
-                                <li>USD</li>
-                                <li>EUR</li>
-                                <li>USD</li>
+                                <li>Tiếng Việt</li>
+                                <li>English</li>
                             </ul>
                         </div>
                     </div>
@@ -65,35 +64,74 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="./index.html"><img src="{{ asset('client/img/logo.png') }}" alt=""></a>
+                    <a href="{{route('sites.home')}}"><img src="{{ asset('client/img/logo.png') }}" alt=""></a>
                 </div>
             </div>
+            {{-- <div class="col-lg-6 col-md-6">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li class="active"><a href="{{route('sites.home')}}">Home</a></li>
+                        <li><a href="{{route('sites.shop')}}">Shop</a></li>
+                        <li><a href="#">Pages</a>
+                            <ul class="dropdown">
+                                <li><a href="{{route('sites.aboutUs')}}">About Us</a></li>
+                                <li><a href="{{route('sites.shopDetail')}}">Shop Details</a></li>
+                                <li><a href="{{route('sites.shoppingCart')}}">Shopping Cart</a></li>
+                                <li><a href="{{route('sites.checkout')}}">Check Out</a></li>
+                                <li><a href="{{route('sites.blogDetail')}}">Blog Details</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{{route('sites.blog')}}">Blog</a></li>
+                        <li><a href="{{route('sites.contact')}}">Contacts</a></li>
+                    </ul>
+                </nav>
+            </div> --}}
+
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="./index.html">Home</a></li>
-                        <li><a href="./shop.html">Shop</a></li>
-                        <li><a href="#">Pages</a>
+                        <li class="{{ request()->routeIs('sites.home') ? 'active' : '' }}">
+                            <a href="{{ route('sites.home') }}">Home</a>
+                        </li>
+                        <li class="{{ request()->routeIs('sites.shop') ? 'active' : '' }}">
+                            <a href="{{ route('sites.shop') }}">Shop</a>
+                        </li>
+                        <li class="{{ request()->routeIs('sites.aboutUs', 'sites.shopDetail', 'sites.shoppingCart', 'sites.checkout', 'sites.blogDetail') ? 'active' : '' }}">
+                            <a href="#">Pages</a>
                             <ul class="dropdown">
-                                <li><a href="./about.html">About Us</a></li>
-                                <li><a href="./shop-details.html">Shop Details</a></li>
-                                <li><a href="./shopping-cart.html">Shopping Cart</a></li>
-                                <li><a href="./checkout.html">Check Out</a></li>
-                                <li><a href="./blog-details.html">Blog Details</a></li>
+                                <li class="{{ request()->routeIs('sites.aboutUs') ? 'active' : '' }}">
+                                    <a href="{{ route('sites.aboutUs') }}">About Us</a>
+                                </li>
+                                <li class="{{ request()->routeIs('sites.shopDetail') ? 'active' : '' }}">
+                                    <a href="{{ route('sites.shopDetail') }}">Shop Details</a>
+                                </li>
+                                <li class="{{ request()->routeIs('sites.shoppingCart') ? 'active' : '' }}">
+                                    <a href="{{ route('sites.shoppingCart') }}">Shopping Cart</a>
+                                </li>
+                                <li class="{{ request()->routeIs('sites.checkout') ? 'active' : '' }}">
+                                    <a href="{{ route('sites.checkout') }}">Check Out</a>
+                                </li>
+                                <li class="{{ request()->routeIs('sites.blogDetail') ? 'active' : '' }}">
+                                    <a href="{{ route('sites.blogDetail') }}">Blog Details</a>
+                                </li>
                             </ul>
                         </li>
-                        <li><a href="./blog.html">Blog</a></li>
-                        <li><a href="./contact.html">Contacts</a></li>
+                        <li class="{{ request()->routeIs('sites.blog') ? 'active' : '' }}">
+                            <a href="{{ route('sites.blog') }}">Blog</a>
+                        </li>
+                        <li class="{{ request()->routeIs('sites.contact') ? 'active' : '' }}">
+                            <a href="{{ route('sites.contact') }}">Contacts</a>
+                        </li>
                     </ul>
                 </nav>
-            </div>
+            </div>            
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
                     <a class="nav-icon d-none d-lg-inline search-btn" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
                         <i class="fa fa-fw fa-search text-dark mr-2"></i>
                     </a>
                     <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
-                    <a href="{{ route('site.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
+                    <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
                         <span>0</span></a>
                     <div class="price">$0.00</div>
                 </div>

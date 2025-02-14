@@ -26,8 +26,15 @@ use Illuminate\Support\Facades\Route;
 /* TRANG CLIENT */
 Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'home'])->name('sites.home');
-    Route::get('/shop', [HomeController::class, 'shop'])->name('site.shop');
-    Route::get('/cart', [HomeController::class, 'cart'])->name('site.cart');
+    Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
+    Route::get('/cart', [HomeController::class, 'cart'])->name('sites.cart');
+    Route::get('/aboutUs', [HomeController::class, 'aboutUs'])->name('sites.aboutUs');
+    Route::get('/blogDetail', [HomeController::class, 'blogDetail'])->name('sites.blogDetail');
+    Route::get('/shopDetail', [HomeController::class, 'shopDetail'])->name('sites.shopDetail');
+    Route::get('/shoppingCart', [HomeController::class, 'shoppingCart'])->name('sites.shoppingCart');
+    Route::get('/contact', [HomeController::class, 'contact'])->name('sites.contact');
+    Route::get('/blog', [HomeController::class, 'blog'])->name('sites.blog');
+    Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
 });
 
 /* TRANG ADMIN */

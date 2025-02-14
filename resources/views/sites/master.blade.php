@@ -46,7 +46,8 @@
     <script src="{{asset('client/js/main.js')}}"></script>
     <script>
         $(document).ready(function() {
-            $(".search-btn").click(function() {
+            $(".search-btn").click(function(e) {
+                e.preventDefault();
                 $("#templatemo_search").modal("show");
             });
         })
