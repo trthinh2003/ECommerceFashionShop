@@ -13,19 +13,57 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
         rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="{{asset('client/css/bootstrap.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('client/css/font-awesome.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('client/css/elegant-icons.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('client/css/magnific-popup.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('client/css/nice-select.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('client/css/owl.carousel.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('client/css/slicknav.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{asset('client/css/style.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/magnific-popup.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/nice-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/style.css') }}" type="text/css">
 </head>
 
 <body>
+    {{-- Icon chatbox --}}
+    <style>
+        #chatbox-modal {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            max-height: 80vh;
+            z-index: 9999;
+        }
+
+        #chatbox-icon {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .modal-dialog {
+            position: fixed;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            height: 100%;
+            margin: 0;
+            max-width: 400px;
+            /* Độ rộng modal */
+        }
+
+        .modal-content {
+            height: 100%;
+            border-radius: 0;
+            /* Bỏ bo góc để nhìn tự nhiên hơn */
+        }
+    </style>
+    @include('sites.components._chatbox')
+
     @include('sites.components._header')
 
     @yield('content')
@@ -34,16 +72,16 @@
     @include('sites.components._search')
 
     <!-- Js Plugins -->
-    <script src="{{asset('client/js/jquery-3.3.1.min.js')}}"></script>
-    <script src="{{asset('client/js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('client/js/jquery.nice-select.min.js')}}"></script>
-    <script src="{{asset('client/js/jquery.nicescroll.min.js')}}"></script>
-    <script src="{{asset('client/js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{asset('client/js/jquery.countdown.min.js')}}"></script>
-    <script src="{{asset('client/js/jquery.slicknav.js')}}"></script>
-    <script src="{{asset('client/js/mixitup.min.js')}}"></script>
-    <script src="{{asset('client/js/owl.carousel.min.js')}}"></script>
-    <script src="{{asset('client/js/main.js')}}"></script>
+    <script src="{{ asset('client/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('client/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('client/js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ asset('client/js/jquery.nicescroll.min.js') }}"></script>
+    <script src="{{ asset('client/js/jquery.magnific-popup.min.js') }}"></script>
+    <script src="{{ asset('client/js/jquery.countdown.min.js') }}"></script>
+    <script src="{{ asset('client/js/jquery.slicknav.js') }}"></script>
+    <script src="{{ asset('client/js/mixitup.min.js') }}"></script>
+    <script src="{{ asset('client/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('client/js/main.js') }}"></script>
     @yield('js')
 </body>
 
