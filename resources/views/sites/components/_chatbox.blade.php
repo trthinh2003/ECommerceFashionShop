@@ -16,6 +16,7 @@
                       </h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
+
                   <div class="modal-body">
                       <div class="d-flex flex-column gap-3">
                           <div class="d-flex align-items-start gap-2 mb-3">
