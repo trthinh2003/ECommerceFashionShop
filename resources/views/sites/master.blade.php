@@ -24,44 +24,10 @@
     <link rel="stylesheet" href="{{ asset('client/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('client/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('client/css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/chatbox.css') }}" type="text/css">
 </head>
 
 <body>
-    {{-- Icon chatbox --}}
-    <style>
-        #chatbox-modal {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            max-height: 80vh;
-            z-index: 9999;
-        }
-
-        #chatbox-icon {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-        }
-
-        .modal-dialog {
-            position: fixed;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            height: 100%;
-            margin: 0;
-            max-width: 400px;
-            /* Độ rộng modal */
-        }
-
-        .modal-content {
-            height: 100%;
-            border-radius: 0;
-            /* Bỏ bo góc để nhìn tự nhiên hơn */
-        }
-    </style>
     @include('sites.components._chatbox')
 
     @include('sites.components._header')
