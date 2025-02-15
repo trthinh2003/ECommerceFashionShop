@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\DialogflowController;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/contact', [HomeController::class, 'contact'])->name('sites.contact');
     Route::get('/blog', [HomeController::class, 'blog'])->name('sites.blog');
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
+    Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
 });
 
 /* TRANG ADMIN */

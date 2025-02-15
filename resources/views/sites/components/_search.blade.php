@@ -1,4 +1,4 @@
-<!-- Modal -->
+{{-- <!-- Modal -->
 <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg modal-search" role="document">
@@ -15,11 +15,7 @@
                 </button>
             </div>
         </form>
-        <ul id="search-results" class="list-unstyled">
-            {{-- <li>Hello</li>
-            <li>Hi</li>
-            <li>plsaojf</li> --}}
-        </ul>
+        <ul id="search-results" class="list-unstyled"></ul>
         <h3>Lịch sử tìm kiếm</h3>
         <ul id="search-history"></ul>
         <button id="clear-history">Xóa lịch sử tìm kiếm</button>
@@ -119,4 +115,4 @@
             });
         });
     </script>
-@endsection
+@endsection --}}
