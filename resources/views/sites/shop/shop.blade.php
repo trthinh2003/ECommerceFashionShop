@@ -39,7 +39,7 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
-                                                    <li><a href="#">Men (20)</a></li>
+                                                    {{-- <li><a href="#">Men (20)</a></li>
                                                     <li><a href="#">Women (20)</a></li>
                                                     <li><a href="#">Bags (20)</a></li>
                                                     <li><a href="#">Clothing (20)</a></li>
@@ -47,7 +47,31 @@
                                                     <li><a href="#">Accessories (20)</a></li>
                                                     <li><a href="#">Kids (20)</a></li>
                                                     <li><a href="#">Kids (20)</a></li>
-                                                    <li><a href="#">Kids (20)</a></li>
+                                                    <li><a href="#">Kids (20)</a></li> --}}
+                                                    <div class="shop__sidebar__categories">
+                                                        <ul class="nice-scroll" id="category-list"></ul>
+                                                    </div>
+                                                    <script>
+                                                        async function fetchCategories() {
+                                                            try {
+                                                                let response = await fetch('http://127.0.0.1:8000/api/category');
+                                                                let data = await response.json();
+                                                                let categories = data.data;
+                                                                console.log(categories);
+
+                                                                let categoryList = document.getElementById('category-list');
+                                                                categoryList.innerHTML = "";
+                                                                categories.forEach(category => {
+                                                                    let listItem = document.createElement('li');
+                                                                    listItem.innerHTML = `<a href="#">${category.category_name} (${category.products_count})</a>`;
+                                                                    categoryList.appendChild(listItem);
+                                                                });
+                                                            } catch (error) {
+                                                                console.error("Lỗi API:", error);
+                                                            }
+                                                        }
+                                                        fetchCategories();
+                                                    </script>
                                                 </ul>
                                             </div>
                                         </div>
@@ -60,11 +84,27 @@
                                     <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__brand">
-                                                <ul>
-                                                    <li><a href="#">Louis Vuitton</a></li>
-                                                    <li><a href="#">Chanel</a></li>
-                                                    <li><a href="#">Hermes</a></li>
-                                                    <li><a href="#">Gucci</a></li>
+                                                <ul id="brand-list">
+                                                    <script>
+                                                        async function fetchBrand() {
+                                                            try {
+                                                                let response = await fetch('http://127.0.0.1:8000/api/brand');
+                                                                let data = await response.json();
+                                                                let brands = data.data;
+
+                                                                let brandList = document.getElementById('brand-list');
+                                                                brandList.innerHTML = "";
+                                                                brands.forEach(brand => {
+                                                                    let listItem = document.createElement('li');
+                                                                    listItem.innerHTML = `<a href="#">${brand.brand}</a>`;
+                                                                    brandList.appendChild(listItem);
+                                                                });
+                                                            } catch (error) {
+                                                                console.error("Lỗi API:", error);
+                                                            }
+                                                        }
+                                                        fetchBrand();
+                                                    </script>
                                                 </ul>
                                             </div>
                                         </div>
