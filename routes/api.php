@@ -30,6 +30,8 @@ Route::get('category', [ApiController::class, 'categories'])->name('api.categori
 Route::get('product', [ApiController::class, 'products'])->name('api.products');
 Route::get('product/{id}', [ApiController::class, 'product'])->name('api.product');
 
+Route::get('brand', [ApiController::class, 'brands'])->name('api.brands');
+
 Route::get('product-variant', [ApiController::class, 'productVariants'])->name('api.productVariants');
 
 Route::get('inventory', [ApiController::class, 'inventories'])->name('api.inventories');

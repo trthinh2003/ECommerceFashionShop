@@ -5,16 +5,23 @@
         <form method="POST" action="{{ route('product.update', $product->id) }}" enctype="multipart/form-data">
             @csrf @method('PUT')
             <div class="row form-group">
-                <div class="col-6">
+                <div class="col-5">
                     <label for="">Tên sản phẩm:</label>
                     <input type="text" name="name" id="" class="form-control" placeholder="" value="{{ $product->product_name }}">
                     @error('name')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-                <div class="col-6">
+                <div class="col-4">
                     <label for="">Giá niêm yết:</label>
-                    <input type="number" name="price" id="" class="form-control" placeholder="" value="{{ $product->price }}">
+                    <input type="number" name="price" id="" class="form-control" placeholder="">
+                    @error('price')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="col-3">
+                    <label for="">Cập nhật thông tin cho từng kích cỡ:</label><br />
+                    <input type="button" name="price_sizes" id="" class="btn btn-success" placeholder="" value="Cập nhật">
                     @error('price')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -37,7 +44,7 @@
                 <div class="col-6">
                     <label for="">Hình ảnh:</label>
                     <input type="file" name="image" id="" class="form-control" placeholder="">
-                    <img src="uploads/{{ $product->image }}" alt="{{ $product->image }}" width="200">
+                    <img src="uploads/{{ $product->image }}" alt="{{ $product->image }}" width="150">
                     <br />
                     @error('image')
                         <small class="text-danger">{{ $message }}</small>

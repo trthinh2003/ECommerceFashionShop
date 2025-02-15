@@ -36,6 +36,7 @@ class InventoryResource extends JsonResource
                         'id' => $detail->product->id,
                         'name' => $detail->product->product_name,
                         'image' => $detail->product->image,
+                        'brand' => $detail->product->brand,
                         'category' => [
                             'id' => $detail->product->category->id,
                             'name' => $detail->product->category->category_name,

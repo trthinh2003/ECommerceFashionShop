@@ -42,6 +42,7 @@ class InventoryController extends Controller
         $data = $request->validate([
             'id' => 'required',
             'product_name' => 'required|min:3|max:150|unique:products,product_name',
+            'brand_name' => 'required|max:100',
             'image' => 'required|mimes:jpg,jpeg,gif,png,webp',
             'category_id' => 'required|exists:categories,id',
             'provider_id' => 'required|exists:providers,id',
@@ -90,6 +91,8 @@ class InventoryController extends Controller
         //Thêm vào Sản phẩm
         $product = new Product();
         $product->product_name = $data['product_name'];
+        $product->brand = $data['brand_name'];
+        $product->sku = strtoupper(Str::random(6));
         $product->category_id = $data['category_id'];
         //Xu ly anh
         $file_name = $request->image->hashName();

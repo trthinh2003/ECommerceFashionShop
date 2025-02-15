@@ -73,7 +73,6 @@
             </div>
 
             <div class="row form-group">
-
                 <div class="col-6">
                     <label>Chọn kích cỡ:</label>
                     <select class="form-control" name="sizes[]" id="sizes" multiple="multiple">
@@ -89,6 +88,13 @@
                     @enderror
                 </div>
                 <input type="hidden" name="formatted_sizes" id="formatted_sizes"> <!-- Ẩn để lưu giá trị -->
+                <div class="col-6">
+                    <label for="">Thương hiệu:</label>
+                    <input type="text" name="brand_name" id="brand_name" class="form-control">
+                    @error('brand_name')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
             </div>
             <input class="btn btn-primary m-3" name="" type="submit" value="Lưu thông tin">
         </form>
