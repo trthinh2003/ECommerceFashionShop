@@ -43,7 +43,7 @@ class InventoryController extends Controller
             'id' => 'required',
             'product_name' => 'required|min:3|max:150|unique:products,product_name',
             'brand_name' => 'required|max:100',
-            'image' => 'required|mimes:jpg,jpeg,gif,png,webp',
+            'image' => 'required',
             'category_id' => 'required|exists:categories,id',
             'provider_id' => 'required|exists:providers,id',
             'price' => 'required|numeric|min:1',
