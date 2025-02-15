@@ -92,6 +92,10 @@
                                     <td style="width: 70%;"><span id="product-name"></span></td>
                                 </tr>
                                 <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Thương hiệu</td>
+                                    <td style="width: 70%;"><span id="product-brand"></span></td>
+                                </tr>
+                                <tr>
                                     <td class="fw-bold text-start" style="width: 30%;">Giá sản phẩm:</td>
                                     <td style="width: 70%;"><span id="product-price"></span></td>
                                 </tr>
@@ -168,6 +172,7 @@
                             // console.log(productInfo);
                             $("#product-id").text(productInfo.id);
                             $("#product-name").text(productInfo.name);
+                            $("#product-brand").text(productInfo.brand);
                             $("#product-price").text(productInfo.price);
                             $("#product-image").attr("src", `uploads/${productInfo.image}`);
                             $("#product-description").text(productInfo.description);

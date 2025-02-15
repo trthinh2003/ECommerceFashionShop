@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\SearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,8 @@ Route::get('category', [ApiController::class, 'categories'])->name('api.categori
 Route::get('product', [ApiController::class, 'products'])->name('api.products');
 Route::get('product/{id}', [ApiController::class, 'product'])->name('api.product');
 
+Route::get('brand', [ApiController::class, 'brands'])->name('api.brands');
+
 Route::get('product-variant', [ApiController::class, 'productVariants'])->name('api.productVariants');
 
 Route::get('inventory', [ApiController::class, 'inventories'])->name('api.inventories');
@@ -37,3 +40,15 @@ Route::get('inventory/{id}', [ApiController::class, 'inventory'])->name('api.inv
 Route::get('inventoryDetail/{id}', [ApiController::class, 'inventoryDetail'])->name('api.inventoryDetail');
 
 Route::get('staff/{id}', [ApiController::class, 'staff'])->name('api.staff');
+
+// Route tìm kiếm sản phẩm
+Route::get('/search', [SearchController::class, 'search'])->name('api.search');
+
+// Route lấy lịch sử tìm kiếm
+Route::get('/search-history', [SearchController::class, 'getSearchHistory']);
+
+// Route gợi ý sản phẩm dựa trên lịch sử tìm kiếm
+Route::get('/suggest-content-based', [SearchController::class, 'suggestContentBased']);
+
+// Route xóa lịch sử tìm kiếm
+Route::delete('/clear-search-history', [SearchController::class, 'clearSearchHistory']);

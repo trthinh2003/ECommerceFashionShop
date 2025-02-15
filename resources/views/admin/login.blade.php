@@ -34,6 +34,9 @@
                 <div class="d-grid">
                     <input class="btn btn-primary" type="submit" value="Đăng nhập">
                 </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <a href="{{route('sites.home')}}" class="text-center">Về trang chủ</a>
+                </div>
             </form>
         </div>
     </div>

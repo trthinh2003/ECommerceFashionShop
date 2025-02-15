@@ -54,7 +54,8 @@ class ApiController extends Controller
 
     public function categories()
     {
-        $categories = Category::orderBy('id', 'ASC')->get();
+        // $categories = Category::orderBy('id', 'ASC')->get();
+        $categories = Category::withCount('products')->get();
         return $this->apiStatus($categories, 200, $categories->count(), 'ok');
     }
 
@@ -117,6 +118,12 @@ class ApiController extends Controller
         } else {
             return $this->apiStatus(null, 404, 0, 'Data not found.');
         }
+    }
+
+    public function brands()
+    {
+        $brands = DB::select('SELECT DISTINCT brand FROM products');
+        return $this->apiStatus($brands, 200, 0, 'ok');
     }
 
     public function productVariants()
