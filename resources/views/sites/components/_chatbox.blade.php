@@ -14,7 +14,7 @@
                       <h5 class="modal-title" id="chatboxModalLabel">
                           Chat with Us
                       </h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      <button type="button" class="btn-close border-0" data-bs-dismiss="modal" aria-label="Close" style="background: none;">X</button>
                   </div>
                   <div class="modal-body">
                       <div class="d-flex flex-column gap-3">
