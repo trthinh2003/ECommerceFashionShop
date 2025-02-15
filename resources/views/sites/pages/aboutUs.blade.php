@@ -24,7 +24,7 @@
                <div class="row">
                    <div class="col-lg-12">
                        <div class="about__pic">
-                           <img src="img/about/about-us.jpg" alt="">
+                           <img src="{{ ('client/img/about/about-us.jpg') }}" alt="">
                        </div>
                    </div>
                </div>
@@ -67,7 +67,7 @@
                            </p>
                            <div class="testimonial__author">
                                <div class="testimonial__author__pic">
-                                   <img src="img/about/testimonial-author.jpg" alt="">
+                                   <img src="{{ ('client/img/about/testimonial-author.jpg') }}" alt="">
                                </div>
                                <div class="testimonial__author__text">
                                    <h5>Augusta Schultz</h5>
@@ -77,7 +77,7 @@
                        </div>
                    </div>
                    <div class="col-lg-6 p-0">
-                       <div class="testimonial__pic set-bg" data-setbg="img/about/testimonial-pic.jpg"></div>
+                       <div class="testimonial__pic set-bg" data-setbg="{{ ('client/img/about/testimonial-pic.jpg') }}"></div>
                    </div>
                </div>
            </div>
@@ -140,28 +140,28 @@
                <div class="row">
                    <div class="col-lg-3 col-md-6 col-sm-6">
                        <div class="team__item">
-                           <img src="img/about/team-1.jpg" alt="">
+                           <img src="{{ ('client/img/about/team-1.jpg') }}" alt="">
                            <h4>John Smith</h4>
                            <span>Fashion Design</span>
                        </div>
                    </div>
                    <div class="col-lg-3 col-md-6 col-sm-6">
                        <div class="team__item">
-                           <img src="img/about/team-2.jpg" alt="">
+                           <img src="{{ ('client/img/about/team-2.jpg') }}" alt="">
                            <h4>Christine Wise</h4>
                            <span>C.E.O</span>
                        </div>
                    </div>
                    <div class="col-lg-3 col-md-6 col-sm-6">
                        <div class="team__item">
-                           <img src="img/about/team-3.jpg" alt="">
+                           <img src="{{ ('client/img/about/team-3.jpg') }}" alt="">
                            <h4>Sean Robbins</h4>
                            <span>Manager</span>
                        </div>
                    </div>
                    <div class="col-lg-3 col-md-6 col-sm-6">
                        <div class="team__item">
-                           <img src="img/about/team-4.jpg" alt="">
+                           <img src="{{ ('client/img/about/team-4.jpg') }}" alt="">
                            <h4>Lucy Myers</h4>
                            <span>Delivery</span>
                        </div>
@@ -184,28 +184,28 @@
                </div>
                <div class="row">
                    <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                       <a href="#" class="client__item"><img src="img/clients/client-1.png" alt=""></a>
+                       <a href="#" class="client__item"><img src="{{ ('client/img/clients/client-1.png') }}" alt=""></a>
                    </div>
                    <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                       <a href="#" class="client__item"><img src="img/clients/client-2.png" alt=""></a>
+                       <a href="#" class="client__item"><img src="{{ ('client/img/clients/client-2.png') }}" alt=""></a>
                    </div>
                    <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                       <a href="#" class="client__item"><img src="img/clients/client-3.png" alt=""></a>
+                       <a href="#" class="client__item"><img src="{{ ('client/img/clients/client-3.png') }}" alt=""></a>
                    </div>
                    <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                       <a href="#" class="client__item"><img src="img/clients/client-4.png" alt=""></a>
+                       <a href="#" class="client__item"><img src="{{ ('client/img/clients/client-4.png') }}" alt=""></a>
                    </div>
                    <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                       <a href="#" class="client__item"><img src="img/clients/client-5.png" alt=""></a>
+                       <a href="#" class="client__item"><img src="{{ ('client/img/clients/client-5.png') }}" alt=""></a>
                    </div>
                    <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                       <a href="#" class="client__item"><img src="img/clients/client-6.png" alt=""></a>
+                       <a href="#" class="client__item"><img src="{{ ('client/img/clients/client-6.png') }}" alt=""></a>
                    </div>
                    <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                       <a href="#" class="client__item"><img src="img/clients/client-7.png" alt=""></a>
+                       <a href="#" class="client__item"><img src="{{ ('client/img/clients/client-7.png') }}" alt=""></a>
                    </div>
                    <div class="col-lg-3 col-md-4 col-sm-4 col-6">
-                       <a href="#" class="client__item"><img src="img/clients/client-8.png" alt=""></a>
+                       <a href="#" class="client__item"><img src="{{ ('client/img/clients/client-8.png') }}" alt=""></a>
                    </div>
                </div>
            </div>
