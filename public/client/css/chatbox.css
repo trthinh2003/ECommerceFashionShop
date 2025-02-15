@@ -28,3 +28,7 @@
     border-radius: 0;
     /* Bỏ bo góc để nhìn tự nhiên hơn */
 }
+
+.chatbox-icon-fixed {
+    bottom: 2%;
+}

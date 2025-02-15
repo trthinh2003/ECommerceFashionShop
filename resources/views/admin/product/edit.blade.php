@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-3">
                     <label for="">Cập nhật thông tin cho từng kích cỡ:</label><br />
-                    <input type="button" name="price_sizes" id="" class="btn btn-success" placeholder="" value="Cập nhật">
+                    <button type="button" name="sizes_modal_open" id="" class="btn btn-success">Cập nhật</button>
                     @error('price')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -29,7 +29,24 @@
             </div>
 
             <div class="row form-group">
-                <div class="col-6">
+                <div class="col-5">
+                    <label for="">Thương hiệu:</label>
+                    <input type="text" name="brand" id="" class="form-control" placeholder="">
+                    @error('brand')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+                <div class="col-7">
+                    <label for="">Thêm chương trình khuyến mãi:</label>
+                    <input type="text" name="discount" id="" class="form-control" placeholder="">
+                    @error('discount')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-5">
                     <label for="">Danh mục:</label>
                     <select class="form-control" name="category_id">
                         <option>Chọn danh mục</option>
@@ -41,7 +58,7 @@
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-                <div class="col-6">
+                <div class="col-7">
                     <label for="">Hình ảnh:</label>
                     <input type="file" name="image" id="" class="form-control" placeholder="">
                     <img src="uploads/{{ $product->image }}" alt="{{ $product->image }}" width="150">
@@ -77,13 +94,22 @@
                 @enderror
             </div>
 
-            <div class="form-group">
-                <label for="">Mô tả:</label>
-                <textarea class="form-control" name="description" placeholder="Mô tả sản phẩm..."></textarea>
+            <div class="row form-group">
+                <div class="col-7">
+                    <label for="">Mô tả:</label>
+                    <textarea class="form-control" name="description" placeholder="Mô tả sản phẩm..."></textarea>
+                </div>
+                @error('description')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+                <div class="col-5">
+                    <label for="">Mô tả ngắn:</label>
+                    <textarea class="form-control" name="short_description" placeholder="Mô tả sản phẩm..."></textarea>
+                </div>
+                @error('short_description')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
-            @error('description')
-                <small class="text-danger">{{ $message }}</small>
-            @enderror
 
             <div class="form-group">
                 <div class="form-check">

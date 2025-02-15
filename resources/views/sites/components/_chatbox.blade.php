@@ -1,6 +1,6 @@
   <div class="bg-light d-flex align-items-center justify-content-center">
       <!-- Chatbox Icon -->
-      <div class="position-fixed bottom-0 end-0 m-3" id="chatbox-icon">
+      <div class="position-fixed bottom-0 end-0 m-3 chatbox-icon-fixed" id="chatbox-icon">
           <button class="btn btn-primary rounded-circle p-3">
               <i class="fas fa-comments fa-2x">
               </i>

@@ -113,6 +113,7 @@ class ProductController extends Controller
             'name.required' => 'Tên sản phẩm không được để trống.',
             'image.mimes' => 'Định dạng ảnh phải là *.jpg, *.jpeg, *.gif, *.png, *.webp.'
         ]);
+        dd($request->all());
         $product->product_name = $data['name'];
         $product->description = $data['description'];
         $product->price = $data['price'];

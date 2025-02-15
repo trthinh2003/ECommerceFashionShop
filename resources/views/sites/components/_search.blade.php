@@ -29,10 +29,6 @@
     </div>
 </div>
 
-@section('css')
-    <link rel="stylesheet" href="{{ asset('client/css/search.css') }}" type="text/css">
-@endsection
-
 
 @section('js')
     <script>
