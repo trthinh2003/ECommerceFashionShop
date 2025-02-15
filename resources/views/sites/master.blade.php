@@ -24,7 +24,8 @@
     <link rel="stylesheet" href="{{ asset('client/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('client/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('client/css/style.css') }}" type="text/css">
-    <link rel="stylesheet" href="{{ asset('client/css/chatbox.css') }}" type="text/css">
+    {{-- <link rel="stylesheet" href="{{ asset('client/css/chatbox.css') }}" type="text/css"> --}}
+    @yield('css')
 </head>
 
 <body>
