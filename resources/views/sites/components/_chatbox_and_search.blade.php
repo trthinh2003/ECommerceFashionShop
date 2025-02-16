@@ -35,18 +35,43 @@
     </div>
 </div>
 
+<!--Start Search Modal -->
+<form id="modal-search" class="modal-search js-modal" method="" action="">
+    @csrf
+    {{-- <input type="hidden" name="_method" value="POST"> --}}
+    <div class="modal-container-search js-modal-container p-3">
+        <div class="modal-close js-modal-close">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="text" name="q" id="search-box" class="form-control"
+                    placeholder="Nhập từ khóa bạn muốn tìm...">
+                <span class="btn btn-success search-modal-btn">
+                    <i class="fa fa-fw fa-search text-white"></i>
+                </span>
+            </div>
+            <ul id="search-results" class="list-unstyled"></ul>
+            <h3>Lịch sử tìm kiếm</h3>
+            <ul id="search-history"></ul>
+            <button id="clear-history">Xóa lịch sử tìm kiếm</button>
 
+            <h3>Có thể bạn sẽ thích</h3>
+            <ul id="suggestion-list"></ul>
+        </div>
+    </div>
+</form>
+<!--End Modal Search-->
 
 @section('js')
     <script>
-        $(document).ready(function(e) {
+        $(document).ready(function() {
             const chatboxIcon = $("#chatbox-icon");
             const chatboxMessages = $("#chatbox-messages");
             const chatboxInput = $("#chatbox-input");
             const chatboxSend = $("#chatbox-send");
 
             chatboxIcon.on("click", function(e) {
-                console.log(e.target);
                 $("#chatbox-modal").modal("show");
             });
 
@@ -60,15 +85,12 @@
                 }
             });
 
-
-
             function scrollToBottom() {
                 const chatboxMessages = $("#chatbox-messages");
                 setTimeout(() => {
                     chatboxMessages.scrollTop(chatboxMessages[0].scrollHeight);
                 }, 100); // Chờ 100ms để tin nhắn render xong
             }
-
 
             function sendMessage() {
                 let message = chatboxInput.val().trim();
@@ -90,6 +112,7 @@
                 }, function(response) {
                     chatboxMessages.append(`
                                             <div class="d-flex align-items-start gap-2 mb-3">
+                                                <img class="rounded-circle mt-2" src="{{ asset('client/img/chatbot/bot.avif') }}" width="30">
                                                 <div class="bg-light p-2 rounded">
                                                     <p class="mb-0">${response.message}</p>
                                                 </div>
@@ -103,6 +126,90 @@
                 $("#chatbox-modal").modal("hide");
             });
 
+        });
+
+        $('.search-btn').click(function() {
+            $('.js-modal').addClass("open");
+        });
+
+        $('.js-modal-close').click(function() {
+            $('.js-modal').removeClass("open");
+        });
+
+        // Tìm kiếm sản phẩm bằng AJAX
+        $("#search-box").on("input", function(e) {
+            let query = $("#search-box").val();
+            console.log(query);
+            if (query.length > 1) {
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/search",
+                    type: "GET",
+                    data: {
+                        q: query
+                    },
+                    success: function(data) {
+                        let results = $("#search-results");
+                        // console.log(results);
+                        results.empty();
+
+                        if (data.results.length > 0) {
+                            data.results.forEach(function(item) {
+                                console.log(item);
+                                results.append("<li>" + item.product_name + "</li>");
+                            });
+                        } else {
+                            results.append("<li>Không tìm thấy kết quả</li>");
+                        }
+
+                        // Cập nhật lịch sử tìm kiếm
+                        updateSearchHistory(data.history);
+                    }
+                });
+            }
+        });
+
+        // Lấy lịch sử tìm kiếm
+        function updateSearchHistory(history) {
+            let historyList = $("#search-history");
+            historyList.empty();
+
+            if (history.length > 0) {
+                history.forEach(function(item) {
+                    historyList.append("<li>" + item + "</li>");
+                });
+            } else {
+                historyList.append("<li>Chưa có lịch sử tìm kiếm</li>");
+            }
+        }
+
+        $.get("http://127.0.0.1:8000/api/search-history", function(data) {
+            updateSearchHistory(data);
+        });
+
+        // Lấy gợi ý sản phẩm
+        $.get("http://127.0.0.1:8000/api/suggest-content-based", function(data) {
+            let suggestions = $("#suggestion-list");
+            suggestions.empty();
+
+            if (data.length > 0) {
+                data.forEach(function(item) {
+                    suggestions.append("<li>" + item.product_name + "</li>");
+                });
+            } else {
+                suggestions.append("<li>Không có gợi ý nào</li>");
+            }
+        });
+
+        // Xóa lịch sử tìm kiếm
+        $("#clear-history").on("click", function() {
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/search-history",
+                type: "DELETE",
+                success: function(response) {
+                    alert(response.message);
+                    updateSearchHistory([]);
+                }
+            });
         });
     </script>
 @endsection

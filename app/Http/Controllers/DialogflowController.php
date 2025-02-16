@@ -48,7 +48,6 @@ class DialogflowController extends Controller
         $sessionClient->close();
         // Log::info('Request từ Dialogflow:', $request);
         return response()->json([
-            
             'message' => $replyMessage
         ]);
     }

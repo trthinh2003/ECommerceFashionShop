@@ -1,39 +1,34 @@
-.modal-add {
+.modal-search {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
-    align-items: center;
+    background: #ffffff;
     justify-content: center;
     display: none;
     z-index: 100;
 }
 
-.modal-add.open {
+.modal-search.open {
     display: flex;
 }
 
-.modal-container-add {
-    background-color: #fff;
-    width: 450px;
+.modal-container-search {
+    background-color: #ffffff;
+    width: 60%;
     border-radius: 10px;
     max-width: calc(100% - 32px);
     min-height: 200px;
     position: relative;
-    /* animation: modalFadeIn ease 0.5s; */
-}
-
-.modal-content {
-    border-radius: 12px;
+    animation: modalFadeIn ease 0.5s;
 }
 
 .modal-close {
     position: absolute;
     right: 0;
     top: 0;
-    padding: 14px;
+    padding: 5px;
     font-size: 1.15rem;
     cursor: pointer;
     opacity: 0.8;
@@ -43,20 +38,15 @@
     opacity: 1;
 }
 
-.modal-header i {
-    margin-right: 16px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
-
 .modal-body {
+    position: relative;
     padding: 16px;
 }
 
-.modal-footer {
-    text-align: right;
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+.search-modal-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
 }
 
 @keyframes modalFadeIn {

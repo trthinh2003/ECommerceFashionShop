@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <base href="/">
-    <title>Male-Fashion | Template</title>
+    <title>Trang chủ</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
@@ -25,21 +25,20 @@
     <link rel="stylesheet" href="{{ asset('client/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('client/css/style.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('client/css/chatbox.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ asset('client/css/modal.css') }}" />
     @yield('css')
 </head>
 
 <body>
-    @include('sites.components._chatbox')
-
+    @include('sites.components._chatbox_and_search')
     @include('sites.components._header')
 
     @yield('content')
 
     @include('sites.components._footer')
-    @include('sites.components._search')
 
     <!-- Js Plugins -->
-    <script src="{{ asset('client/js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('client/js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('client/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('client/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ asset('client/js/jquery.nicescroll.min.js') }}"></script>

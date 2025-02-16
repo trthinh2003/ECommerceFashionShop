@@ -1,7 +1,7 @@
 <!-- Page Preloder -->
-{{-- <div id="preloder">
+<div id="preloder">
     <div class="loader"></div>
-</div> --}}
+</div>
 <!-- Offcanvas Menu Begin -->
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
@@ -64,7 +64,10 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="{{route('sites.home')}}"><img src="{{ asset('client/img/logo.png') }}" alt=""></a>
+                    <a href="{{route('sites.home')}}" class="text-dark font-weight-bold text-uppercase">
+                        <img class="rounded-circle" src="{{ asset('assets/img/TSTShop/TST_Shop.webp') }}" alt="Logo" width="35">
+                        TST Fashion Shop
+                    </a>
                 </div>
             </div>
             {{-- <div class="col-lg-6 col-md-6">
@@ -127,8 +130,8 @@
             </div>
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
-                    <a class="nav-icon d-none d-lg-inline search-btn" data-bs-toggle="modal">
-                        <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                    <a class="search-btn" style="cursor: pointer;">
+                        <i class="fa fa-fw fa-search text-dark"></i>
                     </a>
                     <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
                     <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
@@ -141,3 +144,12 @@
     </div>
 </header>
 <!-- Header Section End -->
+
+@section('js')
+{{-- <script>
+    setTimeout(() => {
+        searchBtn = document.querySelector(".search-btn");
+        console.log(searchBtn);
+    }, 2000);
+</script> --}}
+@endsection
