@@ -92,6 +92,10 @@
     </div>
 @endsection
 
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}" />
+@endsection
+
 @section('js')
     @if (Session::has('success'))
         <script src="{{ asset('assets/js/message.js') }}"></script>

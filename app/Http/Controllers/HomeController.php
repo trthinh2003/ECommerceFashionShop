@@ -56,5 +56,8 @@ class HomeController extends Controller
         return view('sites.pages.shoppingCart');
     }
 
+    public function productDetail($slug, $id){
+        return view('sites.product.product_detail');
+    }
 
 }

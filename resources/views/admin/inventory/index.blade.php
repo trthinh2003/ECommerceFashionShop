@@ -141,7 +141,7 @@
                                             <td>${parseFloat(dl.price).toLocaleString()} VNĐ</td>
                                             <td>${totalMoney.toLocaleString()} VNĐ</td>
                                             <td class="text-center">
-                                                <button type="button" class="btn btn-secondary btn-sm btn-inventory-detail" >Chi tiết</button>
+                                                <button type="button" class="btn btn-secondary btn-sm btn-inventory-detail">Chi tiết</button>
                                                 <form method="GET" action="{{ route('inventory.add_extra') }}">
                                                     @csrf
                                                     <input type="hidden" name="inventory_id" value="${inventory.id}">
