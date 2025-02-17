@@ -109,6 +109,13 @@ class ApiController extends Controller
         return $this->apiStatus($products, 200, $products->count(), 'ok');
     }
 
+    public function getProductsClient()
+    {
+        $products = Product::orderBy('id', 'ASC')->get();
+        return $this->apiStatus($products, 200, $products->count(), 'ok');
+    }
+    
+
     public function product($id)
     {
         $products = Product::with('Category', 'ProductVariants')->find($id);

@@ -29,6 +29,7 @@ Route::get('discount/{id}', [ApiController::class, 'discount'])->name('api.disco
 Route::get('category', [ApiController::class, 'categories'])->name('api.categories');
 
 Route::get('product', [ApiController::class, 'products'])->name('api.products');
+Route::get('product-client', [ApiController::class, 'getProductsClient'])->name('api.getProductsClient');
 Route::get('product/{id}', [ApiController::class, 'product'])->name('api.product');
 
 Route::get('brand', [ApiController::class, 'brands'])->name('api.brands');

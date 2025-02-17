@@ -104,8 +104,75 @@
                 </div>
             </div>
             <div class="row product__filter">
-                <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals">
-                    <div class="client/product__item">
+                <script>
+                    async function fetchProduct() {
+                        try {
+                            let response = await fetch('http://127.0.0.1:8000/api/product-client');
+                            let data = await response.json();
+                            let products = data.data;
+
+                            let container = document.querySelector('.product__filter'); // Chọn phần tử chứa danh sách sản phẩm
+                            let uploadPath = "{{ asset('uploads') }}";
+                            container.innerHTML = "";
+                            products.forEach((product, index) => {
+                                
+                                let imageUrl = product.image ? `${uploadPath}/${product.image}` :
+                                    "{{ asset('client/img/default.jpg') }}";
+
+                                let formattedPrice = new Intl.NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                }).format(product.price ?? 0);
+
+                                let productItem = document.createElement('div');
+                                productItem.classList.add("col-lg-3", "col-md-6", "col-sm-6", "mix", index % 2 === 0 ?
+                                    "new-arrivals" : "hot-sales");
+                                productItem.innerHTML = `
+                                                    <div class="product__item">
+                                                        <div class="product__item__pic set-bg" data-setbg="${imageUrl}">
+                                                            <span class="label">New</span>
+                                                            <ul class="product__hover">
+                                                                <li><a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a></li>
+                                                                <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}" alt="">
+                                                                        <span>Compare</span></a></li>
+                                                                <li><a href="#"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a></li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="product__item__text">
+                                                            <h6>${product.product_name}</h6>
+                                                            <a href="#" class="add-cart">+ Add To Cart</a>
+                                                            <div class="rating">
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                                <i class="fa fa-star-o"></i>
+                                                            </div>
+                                                            <h5>${formattedPrice}</h5>
+                                                            <div class="product__color__select">
+                                                                <label for="pc-${index * 3 + 1}">
+                                                                    <input type="radio" id="pc-${index * 3 + 1}">
+                                                                </label>
+                                                                <label class="active black" for="pc-${index * 3 + 2}">
+                                                                    <input type="radio" id="pc-${index * 3 + 2}">
+                                                                </label>
+                                                                <label class="grey" for="pc-${index * 3 + 3}">
+                                                                    <input type="radio" id="pc-${index * 3 + 3}">
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                container.appendChild(productItem);
+                            });
+                        } catch (error) {
+                            console.error("Lỗi API:", error);
+                        }
+                    }
+                    fetchProduct();
+                </script>
+                {{-- <div class="col-lg-3 col-md-6 col-sm-6 col-md-6 col-sm-6 mix new-arrivals"> --}}
+                {{-- <div class="client/product__item">
                         <div class="product__item__pic set-bg" data-setbg="{{ asset('client/img/product/product-1.jpg') }}">
                             <span class="label">New</span>
                             <ul class="product__hover">
@@ -416,9 +483,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
+                {{-- </div> --}}
             </div>
-        </div>
     </section>
     <!-- Product Section End -->
 
