@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Discount;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
@@ -94,7 +97,9 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $cats = Category::all();
-        return view('admin.product.edit', compact('product', 'cats'));
+        $discounts = Discount::all();
+        $productVariants = ProductVariant::where('product_id', $product->id)->get();
+        return view('admin.product.edit', compact('product', 'cats', 'discounts', 'productVariants'));
     }
 
     /**

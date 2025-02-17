@@ -7,11 +7,9 @@ use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Discount;
 use App\Models\Inventory;
-use App\Models\InventoryDetail;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Staff;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
@@ -25,8 +23,6 @@ class ApiController extends Controller
             'message' => $message
         ]);
     }
-
-
 
     public function staff($id)
     {
