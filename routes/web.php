@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 /* TRANG CLIENT */
+
 Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'home'])->name('sites.home');
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
@@ -56,6 +57,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             'staff' => StaffController::class
         ]
     );
+    Route::put('/staff/{staff}/update', [StaffController::class, 'update_staff'])->name('staff.update_staff');
     Route::get('/add_extra', [InventoryController::class, 'add_extra'])->name('inventory.add_extra');
     Route::post('/post_add_extra', [InventoryController::class, 'post_add_extra'])->name('inventory.post_add_extra');
     Route::get('/search_category', [CategoryController::class, 'search'])->name('category.search');
