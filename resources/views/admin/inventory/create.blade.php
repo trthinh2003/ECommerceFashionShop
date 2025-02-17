@@ -1,7 +1,12 @@
 @can('warehouse workers')
     @extends('admin.master')
     @section('title', 'Thêm Phiếu nhập')
-
+    @section('back-page')
+        <a class="text-primary" onclick="window.history.back()">
+            <i class="fas fa-chevron-left ms-3"></i>
+            <p class="d-inline text-decoration-underline" style="cursor: pointer">Quay lại</p>
+        </a>
+    @endsection
     @section('content')
         <form id="formCreateInventory" method="POST" action="{{ route('inventory.store') }}" enctype="multipart/form-data">
             @csrf

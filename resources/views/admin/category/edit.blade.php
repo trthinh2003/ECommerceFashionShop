@@ -1,7 +1,12 @@
 @can('salers')
     @extends('admin.master')
     @section('title', 'Sửa thông tin')
-
+    @section('back-page')
+        <a class="text-primary" onclick="window.history.back()">
+            <i class="fas fa-chevron-left ms-3"></i>
+            <p class="d-inline text-decoration-underline" style="cursor: pointer">Quay lại</p>
+        </a>
+    @endsection
     @section('content')
         <form method="POST" action="{{ route('category.update', $data->id) }}">
             @csrf @method('PUT')

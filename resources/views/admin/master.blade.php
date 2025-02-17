@@ -9,7 +9,7 @@
     <base href="/">
     <title>@yield('title')</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <link rel="icon" href="assets/img/TSTShop/TST_Shop.ico" type="image/x-icon" />
+    <link rel="icon" href="{{asset('assets/img/TSTShop/TST_Shop.ico')}}" type="image/x-icon" />
 
 
     <!-- Fonts and icons -->
@@ -52,8 +52,11 @@
 
             <div class="container">
                 <div class="page-inner">
-                    <div class="d-flex align-items-left align-items-md-center flex-column justify-content-center flex-md-row pt-2 pb-4">
-                        <div>
+                    <div class="d-flex align-items-left align-items-md-center flex-column justify-content-center flex-md-row pt-2 pb-4 row">
+                        <div class="page-back-admin col-2">
+                            @yield('back-page')
+                        </div>
+                        <div class="col-7 offset-3">
                             <h3 class="fw-bold mb-3">@yield('title')</h3>
                         </div>
                     </div>

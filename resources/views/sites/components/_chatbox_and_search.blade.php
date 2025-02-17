@@ -35,7 +35,7 @@
     </div>
 </div>
 
-<!--Start Search Modal -->
+<!-- Start Search Modal -->
 <form id="modal-search" class="modal-search js-modal" method="" action="">
     @csrf
     {{-- <input type="hidden" name="_method" value="POST"> --}}
@@ -61,7 +61,7 @@
         </div>
     </div>
 </form>
-<!--End Modal Search-->
+<!-- End Modal Search -->
 
 @section('js')
     <script>
