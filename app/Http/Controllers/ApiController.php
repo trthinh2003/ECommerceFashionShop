@@ -48,6 +48,19 @@ class ApiController extends Controller
         return $this->apiStatus(null, 404, 0, 'Data not found.');
     }
 
+
+    public function getDiscountByCode($code)
+    {
+        $discount = Discount::where('code', $code)->first();
+        
+        if (!empty($discount)) {
+            return $this->apiStatus($discount, 200, 1, 'ok');
+        }
+        
+        return $this->apiStatus(null, 404, 0, 'Data not found.');
+    }
+    
+
     public function categories()
     {
         // $categories = Category::orderBy('id', 'ASC')->get();

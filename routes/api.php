@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 // });
 Route::get('discount', [ApiController::class, 'discounts'])->name('api.discounts');
 Route::get('discount/{id}', [ApiController::class, 'discount'])->name('api.discount');
+Route::get('discount-code/{code}', [ApiController::class, 'getDiscountByCode'])->name('api.getDiscountByCode');
 
 Route::get('category', [ApiController::class, 'categories'])->name('api.categories');
 

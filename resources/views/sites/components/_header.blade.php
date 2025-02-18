@@ -2,7 +2,14 @@
 <div id="preloder">
     <div class="loader"></div>
 </div>
-<!-- Offcanvas Menu Begin -->
+@php
+    if(Session::has('cart')){
+        $cartQuantity = count(Session::get('cart'));
+    }
+@endphp
+
+
+<!-- Offcanvas Menu Begin Menu ẩn nhé-->
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
@@ -22,7 +29,7 @@
     <div class="offcanvas__nav__option">
         <a href="#" class="search-switch"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a>
         <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
-        <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt=""> <span>0</span></a>
+        <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt=""> <span>{{$cartQuantity ?? 0}}</span></a>
         <div class="price">$0.00</div>
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -135,7 +142,7 @@
                     </a>
                     <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
                     <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
-                        <span>0</span></a>
+                        <span>{{$cartQuantity ?? 0}}</span></a>
                     <div class="price">$0.00</div>
                 </div>
             </div>
