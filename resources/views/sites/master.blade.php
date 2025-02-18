@@ -10,7 +10,8 @@
     <link rel="icon" href="{{asset('assets/img/TSTShop/TST_Shop.ico')}}" type="image/x-icon" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <base href="/">
-    <title>Trang chủ</title>
+    {{-- <title>Trang chủ</title> --}}
+    <title>@yield('title', 'Trang Chủ')</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"

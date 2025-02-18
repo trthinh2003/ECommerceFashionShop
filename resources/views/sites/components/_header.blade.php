@@ -14,15 +14,14 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="{{route('admin.login')}}">Sign in</a>
-            <a href="#">FAQs</a>
+            <a href="{{route('admin.login')}}">Đăng nhập</a>
+            <a href="#">Hỏi Đáp</a>
         </div>
         <div class="offcanvas__top__hover">
-            <span>Usd <i class="arrow_carrot-down"></i></span>
+            <span>Langue<i class="arrow_carrot-down"></i></span>
             <ul>
-                <li>USD</li>
-                <li>EUR</li>
-                <li>USD</li>
+                <li>VN</li>
+                <li>EN</li>
             </ul>
         </div>
     </div>
@@ -30,11 +29,11 @@
         <a href="#" class="search-switch"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a>
         <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
         <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt=""> <span>{{$cartQuantity ?? 0}}</span></a>
-        <div class="price">$0.00</div>
+        {{-- <div class="price">$0.00</div> --}}
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__text">
-        <p>Free shipping, 30-day return or refund guarantee.</p>
+        <p>Miễn phí vận chuyển, hỗ trợ đổi trả trong vòng 30 ngày</p>
     </div>
 </div>
 <!-- Offcanvas Menu End -->
@@ -58,8 +57,8 @@
                         <div class="header__top__hover">
                             <span>Ngôn ngữ<i class="arrow_carrot-down"></i></span>
                             <ul>
-                                <li>Tiếng Việt</li>
-                                <li>English</li>
+                                <li>VI</li>
+                                <li>EN</li>
                             </ul>
                         </div>
                     </div>
@@ -77,25 +76,6 @@
                     </a>
                 </div>
             </div>
-            {{-- <div class="col-lg-6 col-md-6">
-                <nav class="header__menu mobile-menu">
-                    <ul>
-                        <li class="active"><a href="{{route('sites.home')}}">Home</a></li>
-                        <li><a href="{{route('sites.shop')}}">Shop</a></li>
-                        <li><a href="#">Pages</a>
-                            <ul class="dropdown">
-                                <li><a href="{{route('sites.aboutUs')}}">About Us</a></li>
-                                <li><a href="{{route('sites.shopDetail')}}">Shop Details</a></li>
-                                <li><a href="{{route('sites.shoppingCart')}}">Shopping Cart</a></li>
-                                <li><a href="{{route('sites.checkout')}}">Check Out</a></li>
-                                <li><a href="{{route('sites.blogDetail')}}">Blog Details</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="{{route('sites.blog')}}">Blog</a></li>
-                        <li><a href="{{route('sites.contact')}}">Contacts</a></li>
-                    </ul>
-                </nav>
-            </div> --}}
 
             <div class="col-lg-6 col-md-6">
                 <nav class="header__menu mobile-menu">
@@ -107,7 +87,7 @@
                             <a href="{{ route('sites.shop') }}">Shop</a>
                         </li>
                         <li class="{{ request()->routeIs('sites.aboutUs', 'sites.shopDetail', 'sites.shoppingCart', 'sites.checkout', 'sites.blogDetail') ? 'active' : '' }}">
-                            <a href="#">Pages</a>
+                            <a href="{{ route('sites.aboutUs') }}">Pages</a>
                             <ul class="dropdown">
                                 <li class="{{ request()->routeIs('sites.aboutUs') ? 'active' : '' }}">
                                     <a href="{{ route('sites.aboutUs') }}">About Us</a>
@@ -143,7 +123,7 @@
                     <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
                     <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
                         <span>{{$cartQuantity ?? 0}}</span></a>
-                    <div class="price">$0.00</div>
+                    {{-- <div class="price">$0.00</div> --}}
                 </div>
             </div>
         </div>
