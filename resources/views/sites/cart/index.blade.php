@@ -42,43 +42,48 @@
                             <tbody>
 
                                 @if (Session::has('cart') && count(Session::get('cart')) > 0)
-                                @foreach (Session::get('cart') as $items)
-                                <tr class="cart-item" data-id="{{ $items->id }}">
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__text">
-                                            <h6>{{ $items->name }}</h6>
-                                            <h5 class="product-price">
-                                                {{ number_format($items->price, 0, ',', '.') . ' đ' }}
-                                            </h5>
-                                            <h6 class="mt-1">Màu sắc: {{ $items->color }}</h6>
-                                            <h6>Size: {{ $items->size }}</h6>
-                                        </div>
-                                    </td>
-                                    <td class="product__cart__item">
-                                        <div class="product__cart__item__pic">
-                                            <img src="{{ asset('uploads/' . $items->image) }}" width="80" alt="">
-                                        </div>
-                                    </td>
-                                    <td class="quantity__item">
-                                        <div class="quantity">
-                                            <div class="input-group mt-3">
-                                                <button class="btn btn-outline-secondary button-decrease" type="button">-</button>
-                                                <input type="text" class="text-center product-quantity"
-                                                    value="{{ $items->quantity }}" min="1" max="10" style="width: 30%">
-                                                <button class="btn btn-outline-secondary button-increase" type="button">+</button>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="cart__price">{{ number_format($items->price * $items->quantity, 0, ',', '.') . ' đ' }}</td>
-                                    <td class="cart__close">
-                                        <a href="{{ route('sites.remove', $items->id) }}"
-                                            onclick="return confirm('Bạn có chắc muốn xoá sản phẩm này khỏi giỏ hàng ?')">
-                                            <i class="fa fa-close"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                            
+                                    @foreach (Session::get('cart') as $items)
+                                        <tr class="cart-item" data-id="{{ $items->id }}">
+                                            <td class="product__cart__item">
+                                                <div class="product__cart__item__text">
+                                                    <h6>{{ $items->name }}</h6>
+                                                    <h5 class="product-price">
+                                                        {{ number_format($items->price, 0, ',', '.') . ' đ' }}
+                                                    </h5>
+                                                    <h6 class="mt-1">Màu sắc: {{ $items->color }}</h6>
+                                                    <h6>Size: {{ $items->size }}</h6>
+                                                </div>
+                                            </td>
+                                            <td class="product__cart__item">
+                                                <div class="product__cart__item__pic">
+                                                    <img src="{{ asset('uploads/' . $items->image) }}" width="80"
+                                                        alt="">
+                                                </div>
+                                            </td>
+                                            <td class="quantity__item">
+                                                <div class="quantity">
+                                                    <div class="input-group mt-3">
+                                                        <button class="btn btn-outline-secondary button-decrease"
+                                                            type="button">-</button>
+                                                        <input type="text" class="text-center product-quantity"
+                                                            value="{{ $items->quantity }}" min="1" max="10"
+                                                            style="width: 30%">
+                                                        <button class="btn btn-outline-secondary button-increase"
+                                                            type="button">+</button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="cart__price">
+                                                {{ number_format($items->price * $items->quantity, 0, ',', '.') . ' đ' }}
+                                            </td>
+                                            <td class="cart__close">
+                                                <a href="{{ route('sites.remove', $items->id) }}"
+                                                    onclick="return confirm('Bạn có chắc muốn xoá sản phẩm này khỏi giỏ hàng ?')">
+                                                    <i class="fa fa-close"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @else
                                     <tr>
                                         <td colspan="5" class="text-center text-muted" style="font-size: 1.35rem;">Giỏ
@@ -104,21 +109,35 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="cart__discount">
-                        <h6>Discount codes</h6>
+                        <h6>Mã giảm giá</h6>
                         <form action="#">
-                            <input type="text" name="code_discount" placeholder="Coupon code">
-                            <button id="apply-code-discount" type="submit">Apply</button>
+                            <input type="text" name="code_discount" placeholder="Mã code...">
+                            <button id="apply-code-discount" type="submit">Áp dụng</button>
                         </form>
                     </div>
+
+                    @php
+                        if (Session::has('cart') && count(Session::get('cart')) > 0) {
+                            $totalPriceCart = 0;
+                            $vat = 0.1;
+                            $ship = 30000;
+                            foreach (Session::get('cart') as $items) {
+                                $totalPriceCart += $items->price * $items->quantity;
+                            }
+                            $vatPrice = $totalPriceCart * $vat;
+                            $total = $totalPriceCart + $vatPrice + $ship;
+                        }
+
+                    @endphp
                     <div class="cart__total">
-                        <h6>Cart total</h6>
+                        <h6 class="text-center">Tổng giá trị giỏ hàng</h6>
                         <ul>
-                            <li>Tạm tính<span>$ 169.50</span></li>
-                            <li>Phí Ship<span>$ 3.50</span></li>
-                            <li>Thuế GTGT<span>$ 16.50</span></li>
-                            <li>Thành tiền <span>$ 190</span></li>
+                            <li>Tạm tính:<span>{{ number_format($totalPriceCart, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Thuế VAT:<span>{{ number_format($vatPrice, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Phí Ship:<span>{{ number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Thành tiền:<span>{{ number_format($total, 0, ',', '.') . ' đ' }}</span></li>
                         </ul>
-                        <a href="{{ route('sites.checkout') }}" class="primary-btn">Proceed to checkout</a>
+                        <a href="{{ route('sites.checkout') }}" class="primary-btn">Thanh Toán</a>
                     </div>
                 </div>
             </div>
@@ -130,6 +149,26 @@
 
 @section('js')
     <script>
+        // Hàm xử lý Cập nhật tổng giá trị giỏ hàng
+        function updateCartTotal() {
+            let totalPriceCart = 0;
+            let vat = 0.1;
+            let ship = 30000;
+
+            $(".cart-item").each(function() {
+                let productPrice = parseInt($(this).find(".product-price").text().replace(/\D/g, ""));
+                let quantity = parseInt($(this).find(".product-quantity").val());
+                totalPriceCart += productPrice * quantity;
+            });
+
+            let vatPrice = totalPriceCart * vat;
+            let total = totalPriceCart + vatPrice + ship;
+            $(".cart__total li:nth-child(1) span").text(totalPriceCart.toLocaleString('vi-VN') + " đ");
+            $(".cart__total li:nth-child(2) span").text(vatPrice.toLocaleString('vi-VN') + " đ");
+            $(".cart__total li:nth-child(3) span").text(ship.toLocaleString('vi-VN') + " đ");
+            $(".cart__total li:nth-child(4) span").text(total.toLocaleString('vi-VN') + " đ");
+        }
+        // Xử lý nút tăng giảm số lượng
         $(document).ready(function() {
             $(".button-increase, .button-decrease").click(function() {
                 let row = $(this).closest("tr");
@@ -154,9 +193,11 @@
 
                 // Gọi AJAX để lưu session
                 updateCartSession(productId, currentQuantity);
+                // Cập nhật tổng giá trị giỏ hàng
+                updateCartTotal();
             });
         });
-
+        // Hàm xử lý Cập nhật session cart
         function updateCartSession(productId, quantity) {
             $.ajax({
                 url: "/cart/update-cart-session",
@@ -175,6 +216,7 @@
             });
         }
     </script>
+
     <script>
         $(document).ready(function() {
             $('#apply-code-discount').click(function(e) {
@@ -200,11 +242,11 @@
         });
     </script>
 
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('.input-quantity').change(function(e) {
                 console.log('change');
             })
         });
-    </script>
+    </script> --}}
 @endsection

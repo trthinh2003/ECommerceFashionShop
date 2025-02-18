@@ -15,6 +15,10 @@ class CartController extends Controller
         return view('sites.cart.index');
     }
 
+    public function checkout(){
+        return view('sites.pages.checkout');
+    }
+
     public function add(Cart $cart, Product $product, $quantity = 1)
     {
         $productVariant = ProductVariant::find($product->id);
