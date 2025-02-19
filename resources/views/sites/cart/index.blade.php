@@ -127,7 +127,7 @@
                             }
                             $vatPrice = $totalPriceCart * $vat;
                             $total = $totalPriceCart + $vatPrice + $ship;
-                        }else{
+                        } else {
                             $totalPriceCart = 0;
                             $vatPrice = 0;
                             $ship = 0;
@@ -137,10 +137,10 @@
                     <div class="cart__total">
                         <h6 class="text-center">Tổng giá trị giỏ hàng</h6>
                         <ul>
-                            <li>Tạm tính:<span>{{number_format($totalPriceCart, 0, ',', '.')  . ' đ' }}</span></li>
-                            <li>Thuế VAT:<span>{{number_format($vatPrice, 0, ',', '.') . ' đ' }}</span></li>
-                            <li>Phí Ship(10%):<span>{{number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
-                            <li>Thành tiền:<span>{{number_format($total, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Tạm tính:<span>{{ number_format($totalPriceCart, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Thuế VAT:<span>{{ number_format($vatPrice, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Phí Ship(10%):<span>{{ number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Thành tiền:<span>{{ number_format($total, 0, ',', '.') . ' đ' }}</span></li>
                         </ul>
                         <a href="{{ route('sites.checkout') }}" class="primary-btn">Thanh Toán</a>
                     </div>
@@ -173,6 +173,7 @@
             $(".cart__total li:nth-child(3) span").text(ship.toLocaleString('vi-VN') + " đ");
             $(".cart__total li:nth-child(4) span").text(total.toLocaleString('vi-VN') + " đ");
         }
+
         // Xử lý nút tăng giảm số lượng
         $(document).ready(function() {
             $(".button-increase, .button-decrease").click(function() {
@@ -213,7 +214,7 @@
                     _token: $('meta[name="csrf-token"]').attr("content")
                 },
                 success: function(response) {
-                    console.log("Session updated:", response);
+                    // console.log("Session updated:", response);
                 },
                 error: function(xhr) {
                     console.error("Lỗi khi cập nhật session:", xhr.responseText);
@@ -234,13 +235,23 @@
                     success: function(response) {
                         if (response.status_code === 200) {
                             let discount = response.data;
-                            $('input[name="code_discount"]').attr('disabled', true);
-                            $('#apply-code-discount-result').text('Mã khuyến mãi hợp lệ.');
-                            $('#apply-code-discount-result').removeClass('text-danger');
-                            $('#apply-code-discount-result').addClass('text-success');
-                            updateCartTotal(discount.percent_discount);
+                            const now = new Date();
+                            const endDate = new Date(discount.end_date);
+                            // console.log(endDate);
+                            if (now > endDate) {
+                                $('#apply-code-discount-result').text(
+                                    'Mã khuyến mãi hết hạn sử dụng.');
+                                $('#apply-code-discount-result').addClass('text-danger');
+                            } else {
+                                $('input[name="code_discount"]').attr('disabled', true);
+                                $('#apply-code-discount-result').text('Mã khuyến mãi hợp lệ.');
+                                $('#apply-code-discount-result').removeClass('text-danger');
+                                $('#apply-code-discount-result').addClass('text-success');
+                                updateCartTotal(discount.percent_discount);
+                            }
                         } else {
-                            $('#apply-code-discount-result').text('Mã khuyến mãi không hợp lệ!');
+                            $('#apply-code-discount-result').text(
+                            'Mã khuyến mãi không hợp lệ!');
                             $('#apply-code-discount-result').addClass('text-danger');
                             // alert('Mã code không tồn tại!');
                         }
@@ -253,11 +264,32 @@
         });
     </script>
 
-    {{-- <script>
+    <script>
         $(document).ready(function() {
-            $('.input-quantity').change(function(e) {
-                console.log('change');
-            })
+            $('.product-quantity').change(function(e) {
+                let row = $(this).closest("tr");
+                let input = row.find(".product-quantity");
+                let productId = row.data("id");
+                let productPrice = parseInt(row.find(".product-price").text().replace(/\D/g, ""));
+                let currentQuantity = parseInt(input.val());
+                let minValue = parseInt(input.attr("min")) || 1;
+                let maxValue = parseInt(input.attr("max")) || 10;
+
+                if (currentQuantity > maxValue) { // maxValue => số lượng còn lại trong kho
+                    input.val(maxValue); // số phông bạt
+                    currentQuantity = maxValue;
+                    alert("Số lượng không thể vượt quá số lượng trong kho!" + maxValue);
+                } else if (currentQuantity < minValue) {
+                    input.val(1);
+                    currentQuantity = 1;
+                    alert("Số lượng không thể là số âm!");
+                }
+                // console.log(currentQuantity);
+                let totalPrice = productPrice * currentQuantity;
+                row.find(".cart__price").text(totalPrice.toLocaleString() + " đ");
+                updateCartSession(productId, currentQuantity);
+                updateCartTotal();
+            });
         });
-    </script> --}}
+    </script>
 @endsection
