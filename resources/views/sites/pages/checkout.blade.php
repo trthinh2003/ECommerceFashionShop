@@ -1,4 +1,5 @@
 @extends('sites.master')
+@section('title', 'Thanh toán')
 @section('content')
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">

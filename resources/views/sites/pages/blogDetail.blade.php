@@ -1,4 +1,5 @@
 @extends('sites.master')
+@section('title', 'Chi tiết bài viết')
 @section('content')
     <!-- Blog Details Hero Begin -->
     <section class="blog-hero spad">

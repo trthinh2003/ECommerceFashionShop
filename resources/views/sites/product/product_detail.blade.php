@@ -1,4 +1,5 @@
 @extends('sites.master')
+@section('title', 'Chi tiết sản phẩm')
 @section('content')
  <!-- Shop Details Section Begin -->
  <section class="shop-details">

@@ -1,4 +1,5 @@
 @extends('sites.master')
+@section('title', 'Trang chủ')
 @section('content')
     <!-- Hero Section Begin -->
     <section class="hero">
