@@ -114,6 +114,7 @@
                             <input type="text" name="code_discount" placeholder="Mã code...">
                             <button id="apply-code-discount" type="submit">Áp dụng</button>
                         </form>
+                        <span id="apply-code-discount-result"></span>
                     </div>
 
                     @php
@@ -154,7 +155,7 @@
 @section('js')
     <script>
         // Hàm xử lý Cập nhật tổng giá trị giỏ hàng
-        function updateCartTotal() {
+        function updateCartTotal(priceDiscount = 0) {
             let totalPriceCart = 0;
             let vat = 0.1;
             let ship = 30000;
@@ -162,7 +163,7 @@
             $(".cart-item").each(function() {
                 let productPrice = parseInt($(this).find(".product-price").text().replace(/\D/g, ""));
                 let quantity = parseInt($(this).find(".product-quantity").val());
-                totalPriceCart += productPrice * quantity;
+                totalPriceCart += (productPrice * quantity) - (productPrice * quantity * priceDiscount);
             });
 
             let vatPrice = totalPriceCart * vat;
@@ -234,8 +235,14 @@
                         if (response.status_code === 200) {
                             let discount = response.data;
                             $('input[name="code_discount"]').attr('disabled', true);
+                            $('#apply-code-discount-result').text('Mã khuyến mãi hợp lệ.');
+                            $('#apply-code-discount-result').removeClass('text-danger');
+                            $('#apply-code-discount-result').addClass('text-success');
+                            updateCartTotal(discount.percent_discount);
                         } else {
-                            alert('Mã code không tồn tại!');
+                            $('#apply-code-discount-result').text('Mã khuyến mãi không hợp lệ!');
+                            $('#apply-code-discount-result').addClass('text-danger');
+                            // alert('Mã code không tồn tại!');
                         }
                     },
                     error: function(error) {
