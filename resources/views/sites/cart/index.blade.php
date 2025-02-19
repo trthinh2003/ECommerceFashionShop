@@ -116,7 +116,7 @@
                         </form>
                     </div>
 
-                    {{-- @php
+                    @php
                         if (Session::has('cart') && count(Session::get('cart')) > 0) {
                             $totalPriceCart = 0;
                             $vat = 0.1;
@@ -126,16 +126,20 @@
                             }
                             $vatPrice = $totalPriceCart * $vat;
                             $total = $totalPriceCart + $vatPrice + $ship;
+                        }else{
+                            $totalPriceCart = 0;
+                            $vatPrice = 0;
+                            $ship = 0;
+                            $total = 0;
                         }
-
-                    @endphp --}}
+                    @endphp
                     <div class="cart__total">
                         <h6 class="text-center">Tổng giá trị giỏ hàng</h6>
                         <ul>
-                            <li>Tạm tính:<span></span></li>
-                            <li>Thuế VAT:<span></span></li>
-                            <li>Phí Ship:<span></span></li>
-                            <li>Thành tiền:<span></span></li>
+                            <li>Tạm tính:<span>{{number_format($totalPriceCart, 0, ',', '.')  . ' đ' }}</span></li>
+                            <li>Thuế VAT:<span>{{number_format($vatPrice, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Phí Ship(10%):<span>{{number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Thành tiền:<span>{{number_format($total, 0, ',', '.') . ' đ' }}</span></li>
                         </ul>
                         <a href="{{ route('sites.checkout') }}" class="primary-btn">Thanh Toán</a>
                     </div>
