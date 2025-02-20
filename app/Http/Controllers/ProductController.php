@@ -111,27 +111,38 @@ class ProductController extends Controller
         $data = $request->validate([
             'name' => 'required|min:3|max:100|unique:products,product_name,' . $product->id,
             'price' => 'required|numeric|min:0',
-            'category_id' => 'required|exists:categories,id',
-            'description' => 'required',
             'status' => 'required',
-            'image' => 'required|mimes:jpg,jpeg,gif,png,webp'
+            'image' => 'mimes:jpg,jpeg,gif,png,webp,avif'
         ], [
             'name.required' => 'Tên sản phẩm không được để trống.',
-            'image.mimes' => 'Định dạng ảnh phải là *.jpg, *.jpeg, *.gif, *.png, *.webp.'
+            'image.mimes' => 'Định dạng ảnh phải là *.jpg, *.jpeg, *.gif, *.png, *.webp, *.avif.'
         ]);
-        dd($request->all());
+        // dd($request->all());
         $product->product_name = $data['name'];
-        $product->description = $data['description'];
         $product->price = $data['price'];
-
-        //Xu ly anh
-        $file_name = $request->image->hashName();
-        $request->image->move(public_path('uploads'), $file_name);
-        $product->image = $file_name;
-
+        $product->discount_id = $request->discount_id;
+        $product->tags = $request->product_tags;
+        $product->material = $request->material;
+        $product->description = $request->description;
+        $product->short_description = $request->short_description;
         $product->status = $data['status'];
-        $product->category_id = $data['category_id'];
+        if ($request->image != null) {
+            $product->image = $request->image->getClientOriginalName();
+        }
+        else {
+            $product->image = $request->image_path;
+        }
         $product->save();
+
+        $productVariants = ProductVariant::where('product_id', $product->id)->get();
+        if ($productVariants) {
+            foreach ($productVariants as $variant) {
+                DB::statement("UPDATE product_variants
+                               SET price = ?, image = ?
+                               WHERE id = ?", [$request->price_variant[$variant->id] ?? 0,
+                               $request->image_variant[$variant->id]->getClientOriginalName() ?? null, $variant->id ?? 0]);
+            }
+        }
         return redirect()->route('product.index');
     }
 
