@@ -1,4 +1,5 @@
 @extends('sites.master')
+@section('title', 'Liên Hệ')
 @section('content')
     <!-- Map Begin -->
     <div class="map">

@@ -119,7 +119,7 @@
             </div>
             <div class="row product__filter">
                 <script>
-                    async function fetchProduct() {
+                     async function fetchProduct() {
                         try {
                             let response = await fetch('http://127.0.0.1:8000/api/product-client');
                             let data = await response.json();
@@ -179,6 +179,7 @@
                         }
                     }
                     // tìm tất cả các phần tử có class set-bg và cập nhật hình nền của chúng dựa vào giá trị data-setbg.
+<<<<<<< HEAD
                     // function updateBackgroundImages() {
                     //     document.querySelectorAll('.set-bg').forEach(el => {
                     //         let bg = el.getAttribute('data-setbg');
@@ -191,6 +192,20 @@
                     // });
                     fetchProduct();
                 </script>
+=======
+                    function updateBackgroundImages() {
+                        document.querySelectorAll('.set-bg').forEach(el => {
+                            let bg = el.getAttribute('data-setbg');
+                            el.style.backgroundImage = `url(${bg})`;
+                        });
+                    }
+                    // gọi hàm sao khi lấy dữ liệu từ fetchProduct
+                    fetchProduct().then(() => {
+                        updateBackgroundImages();
+                    });
+                </script>
+
+>>>>>>> fa0787d89cbec782788dc9473c8eebfb54707a54
             </div>
         </div>
     </section>
@@ -360,6 +375,7 @@
     </section>
     <!-- Latest Blog Section End -->
 @endsection
+<<<<<<< HEAD
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
@@ -368,3 +384,5 @@
 {{-- @section('js')
     <script src="{{ asset('client/js/cart-add.js') }}"></script>
 @endsection --}}
+=======
+>>>>>>> fa0787d89cbec782788dc9473c8eebfb54707a54
