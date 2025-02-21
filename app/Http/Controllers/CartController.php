@@ -15,7 +15,8 @@ class CartController extends Controller
         return view('sites.cart.index');
     }
 
-    public function checkout(){
+    public function checkout()
+    {
         return view('sites.pages.checkout');
     }
 
@@ -23,8 +24,22 @@ class CartController extends Controller
     {
         $productVariant = ProductVariant::find($product->id);
         $cart->add($product, $quantity, $productVariant);
+
+        $totalItems = collect(session()->get('cart', []))->sum('quantity');
+
+        // Nếu gửi đi là request từ AJAX thì trả về JSON
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'cart' => $cart,
+                'cart_count' => $totalItems,
+                'cart_product_count' => count(Session::get('cart'))
+            ]);
+        }
+
         return redirect()->route('sites.cart');
     }
+
 
     public function update($id, $quantity = 1)
     {

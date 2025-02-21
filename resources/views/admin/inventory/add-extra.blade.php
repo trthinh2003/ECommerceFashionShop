@@ -218,7 +218,7 @@
             $(document).ready(function() {
                 let selectedSize = null;
                 let sizesWithQuantities = {}; // Lưu size và số lượng
-                let previousStock = {}; // Lưu số lượng cũ của size
+                // let previousStock = {}; // Lưu số lượng cũ của size
 
                 setTimeout(function() {
                     $(".previous_sizes_and_stocks").each(function() {
@@ -255,8 +255,8 @@
                     let quantity = parseInt($("#quantity_variant").val()) || 0; // Lấy số lượng nhập vào
                     if (quantity > 0) {
                         // Nếu size đã có trong previousStock, cộng dồn số lượng
-                        let existingStock = previousStock[selectedSize] || 0;
-                        sizesWithQuantities[selectedSize] = quantity + existingStock;
+                        // let existingStock = previousStock[selectedSize] || 0;
+                        sizesWithQuantities[selectedSize] = quantity
 
                         $("#sizes").trigger("change"); // Cập nhật hiển thị Select2
                         $("#modal-quantity").modal("hide");

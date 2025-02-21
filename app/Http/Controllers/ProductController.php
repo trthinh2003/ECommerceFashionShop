@@ -117,7 +117,6 @@ class ProductController extends Controller
             'name.required' => 'Tên sản phẩm không được để trống.',
             'image.mimes' => 'Định dạng ảnh phải là *.jpg, *.jpeg, *.gif, *.png, *.webp, *.avif.'
         ]);
-        // dd($request->all());
         $product->product_name = $data['name'];
         $product->price = $data['price'];
         $product->discount_id = $request->discount_id;
@@ -135,15 +134,32 @@ class ProductController extends Controller
         $product->save();
 
         $productVariants = ProductVariant::where('product_id', $product->id)->get();
-        if ($productVariants) {
+        // dd($request->all(), $productVariants, $request->image_variant);
+
+        if ($request->image_variant != null) {
             foreach ($productVariants as $variant) {
-                DB::statement("UPDATE product_variants
-                               SET price = ?, image = ?
-                               WHERE id = ?", [$request->price_variant[$variant->id] ?? 0,
-                               $request->image_variant[$variant->id]->getClientOriginalName() ?? null, $variant->id ?? 0]);
+                $imgVariant = $request->image_variant[$variant->id] ?? null;
+                if ($imgVariant != null) {
+                    DB::statement("UPDATE product_variants
+                                   SET price = ?, image = ?
+                                   WHERE id = ?", [$request->price_variant[$variant->id],
+                                   $request->image_variant[$variant->id]->getClientOriginalName(), $variant->id]);
+                }
+                else {
+                    DB::statement("UPDATE product_variants
+                                   SET price = ?
+                                   WHERE id = ?", [$request->price_variant[$variant->id], $variant->id]);
+                }
             }
         }
-        return redirect()->route('product.index');
+        else {
+            foreach ($productVariants as $variant) {
+                DB::statement("UPDATE product_variants
+                               SET price = ?
+                               WHERE id = ?", [$request->price_variant[$variant->id], $variant->id]);
+            }
+        }
+        return redirect()->route('product.index')->with('success', 'Sửa thông tin sản phẩm thành công!');
     }
 
     /**

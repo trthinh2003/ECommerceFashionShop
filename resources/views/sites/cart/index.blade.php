@@ -1,7 +1,3 @@
-{{-- @php
-    dd(Session::get('cart'));
-@endphp --}}
-
 @extends('sites.master')
 @section('content')
     <!-- Breadcrumb Section Begin -->
@@ -137,7 +133,10 @@
                     <div class="cart__total">
                         <h6 class="text-center">Tổng giá trị giỏ hàng</h6>
                         <ul>
-                            <li>Tạm tính:<span>{{ number_format($totalPriceCart, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Tạm tính:
+                                <span>{{ number_format($totalPriceCart, 0, ',', '.') . ' đ' }}</span>
+                                <p class="percent-discount d-none text-success"></p>
+                            </li>
                             <li>Thuế VAT:<span>{{ number_format($vatPrice, 0, ',', '.') . ' đ' }}</span></li>
                             <li>Phí Ship(10%):<span>{{ number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
                             <li>Thành tiền:<span>{{ number_format($total, 0, ',', '.') . ' đ' }}</span></li>
@@ -168,7 +167,7 @@
 
             let vatPrice = totalPriceCart * vat;
             let total = totalPriceCart + vatPrice + ship;
-            $(".cart__total li:nth-child(1) span").text(totalPriceCart.toLocaleString('vi-VN') + " đ");
+            $(".cart__total li:nth-child(1) span:nth-child(1)").text(totalPriceCart.toLocaleString('vi-VN') + " đ");
             $(".cart__total li:nth-child(2) span").text(vatPrice.toLocaleString('vi-VN') + " đ");
             $(".cart__total li:nth-child(3) span").text(ship.toLocaleString('vi-VN') + " đ");
             $(".cart__total li:nth-child(4) span").text(total.toLocaleString('vi-VN') + " đ");
@@ -248,16 +247,18 @@
                                 $('#apply-code-discount-result').removeClass('text-danger');
                                 $('#apply-code-discount-result').addClass('text-success');
                                 updateCartTotal(discount.percent_discount);
+                                $('.percent-discount').removeClass('d-none');
+                                $('.percent-discount').addClass('d-inline');
+                                $('.percent-discount').text("(-" + discount.percent_discount * 100 + '%)');
                             }
                         } else {
-                            $('#apply-code-discount-result').text(
-                            'Mã khuyến mãi không hợp lệ!');
+                            $('#apply-code-discount-result').text('Mã khuyến mãi không hợp lệ!');
                             $('#apply-code-discount-result').addClass('text-danger');
                             // alert('Mã code không tồn tại!');
                         }
                     },
                     error: function(error) {
-                        alert('Lỗi API:');
+                        alert('Lỗi khi xử lý mã KM.');
                     }
                 });
             });
