@@ -14,7 +14,7 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="{{route('sites.login_user')}}">Đăng nhập</a>
+            <a href="{{url('/login-user')}}">Đăng nhập</a>
             <a href="#">Hỏi Đáp</a>
         </div>
         <div class="offcanvas__top__hover">
@@ -51,7 +51,7 @@
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="{{route('admin.login')}}">Đăng nhập</a>
+                            <a href="{{route('sites.login-user')}}">Đăng nhập</a>
                             <a href="#">Hỗ Trợ</a>
                         </div>
                         <div class="header__top__hover">

@@ -14,14 +14,14 @@ class CustomerController extends Controller
     }
 
     public function post_login(Request $request){
-        
+
     }
 
     public function logout(Request $request){
-        
+
     }
 
-    
+
     public function username()
     {
         $login = request()->input('login');
