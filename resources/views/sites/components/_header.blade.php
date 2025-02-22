@@ -14,7 +14,7 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="{{route('admin.login')}}">Đăng nhập</a>
+            <a href="{{route('sites.login_user')}}">Đăng nhập</a>
             <a href="#">Hỏi Đáp</a>
         </div>
         <div class="offcanvas__top__hover">

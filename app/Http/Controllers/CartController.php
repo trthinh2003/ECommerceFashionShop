@@ -19,12 +19,21 @@ class CartController extends Controller
         return view('sites.pages.checkout');
     }
 
+
+    // Thêm vào giỏ hàng mặc định lấy theo id sản phẩm
     public function add(Cart $cart, Product $product, $quantity = 1)
     {
-        $productVariant = ProductVariant::find($product->id);
+        $productVariant = ProductVariant::where('product_id', $product->id)->first();
+        if (!$productVariant) {
+            return back()->with('error', 'Sản phẩm này hiện không có sẵn biến thể!');
+        }
         $cart->add($product, $quantity, $productVariant);
-        return redirect()->route('sites.cart');
+    
+        return redirect()->route('sites.cart')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
+    
+
+    
 
     public function update($id, $quantity = 1)
     {

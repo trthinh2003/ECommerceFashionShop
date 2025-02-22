@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('quantity')->default(1);
             $table->decimal('price', 10,2);
+            $table->string('size_and_color', 100)->nullable();
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('order_id')->references('id')->on('orders');
             $table->primary(['product_id', 'order_id']);

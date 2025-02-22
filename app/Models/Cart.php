@@ -1,13 +1,16 @@
 <?php
+
 namespace App\Models;
 
-class Cart {
+class Cart
+{
     public $items = [];
     public $totalQty = 0;
     public $totalPrice = 0;
     public $cartQuantity = 0;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->items = session('cart') ? session('cart') : [];
         $this->totalQty = $this->getTotalQuantity();
         $this->totalPrice = $this->getTotalPrice();
@@ -35,13 +38,14 @@ class Cart {
     }
 
 
+
+
     public function remove($id)
     {
-        if(!empty($this->items[$id])) {
+        if (!empty($this->items[$id])) {
             unset($this->items[$id]);
             session(['cart' => $this->items]);
         }
-       
     }
 
     private function getTotalQuantity()

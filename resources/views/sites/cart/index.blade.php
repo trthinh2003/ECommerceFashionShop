@@ -14,7 +14,7 @@
                         <div class="breadcrumb__links">
                             <a href="{{ route('sites.home') }}">Home</a>
                             <a href="{{ route('sites.shop') }}">Shop</a>
-                            <span>Shopping Cart</span>
+                            <span>Giỏ hàng của bạn</span>
                         </div>
                     </div>
                 </div>
@@ -32,6 +32,7 @@
                         <table>
                             <thead>
                                 <tr>
+                                    {{-- <th>Chọn tất cả:<input type="checkbox" id="check-all"></th> --}}
                                     <th>Sản Phẩm</th>
                                     <th>Hình Ảnh</th>
                                     <th>Số Lượng</th>
@@ -40,10 +41,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-
                                 @if (Session::has('cart') && count(Session::get('cart')) > 0)
                                     @foreach (Session::get('cart') as $items)
                                         <tr class="cart-item" data-id="{{ $items->id }}">
+                                            {{-- <td>
+                                                <input type="checkbox" class="product-checkbox" name="selected_products[]"
+                                                    value="{{ $items->id }}">
+                                            </td> --}}
                                             <td class="product__cart__item">
                                                 <div class="product__cart__item__text">
                                                     <h6>{{ $items->name }}</h6>
@@ -86,7 +90,7 @@
                                     @endforeach
                                 @else
                                     <tr>
-                                        <td colspan="5" class="text-center text-muted" style="font-size: 1.35rem;">Giỏ
+                                        <td colspan="6" class="text-center text-muted" style="font-size: 1.35rem;">Giỏ
                                             hàng đang trống!</td>
                                     </tr>
                                 @endif
@@ -125,6 +129,10 @@
                             foreach (Session::get('cart') as $items) {
                                 $totalPriceCart += $items->price * $items->quantity;
                             }
+                            // Trên 500k free ship
+                            if ($totalPriceCart >= 500000) {
+                                $ship = 0;
+                            }
                             $vatPrice = $totalPriceCart * $vat;
                             $total = $totalPriceCart + $vatPrice + $ship;
                         } else {
@@ -138,11 +146,16 @@
                         <h6 class="text-center">Tổng giá trị giỏ hàng</h6>
                         <ul>
                             <li>Tạm tính:<span>{{ number_format($totalPriceCart, 0, ',', '.') . ' đ' }}</span></li>
-                            <li>Thuế VAT:<span>{{ number_format($vatPrice, 0, ',', '.') . ' đ' }}</span></li>
-                            <li>Phí Ship(10%):<span>{{ number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Thuế VAT(10%):<span>{{ number_format($vatPrice, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Phí Ship:<span>{{ number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
                             <li>Thành tiền:<span>{{ number_format($total, 0, ',', '.') . ' đ' }}</span></li>
                         </ul>
-                        <a href="{{ route('sites.checkout') }}" class="primary-btn">Thanh Toán</a>
+                        <a href="{{ route('sites.checkout') }}" id="checkout-form" class="primary-btn">Thanh Toán</a>
+                    </div>
+                    <div class="mt-3">
+                        <strong>Ưu đãi khi mua hàng tại TST Shop: </strong>
+                        <p>Miễn phí giao hàng áp dụng cho đơn hàng giao tận nơi từ 500K và tất cả các đơn nhận tại cửa hàng.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -165,6 +178,9 @@
                 let quantity = parseInt($(this).find(".product-quantity").val());
                 totalPriceCart += (productPrice * quantity) - (productPrice * quantity * priceDiscount);
             });
+            if (totalPriceCart >= 500000) {
+                ship = 0;
+            }
 
             let vatPrice = totalPriceCart * vat;
             let total = totalPriceCart + vatPrice + ship;
@@ -251,7 +267,7 @@
                             }
                         } else {
                             $('#apply-code-discount-result').text(
-                            'Mã khuyến mãi không hợp lệ!');
+                                'Mã khuyến mãi không hợp lệ!');
                             $('#apply-code-discount-result').addClass('text-danger');
                             // alert('Mã code không tồn tại!');
                         }
@@ -292,4 +308,36 @@
             });
         });
     </script>
+
+    {{-- <script>
+        $(document).ready(function() {
+            // Khi chọn "Chọn tất cả", tất cả checkbox sản phẩm sẽ được chọn hoặc bỏ chọn
+            $("#check-all").change(function() {
+                $(".product-checkbox").prop("checked", $(this).prop("checked"));
+            });
+
+            // Nếu bỏ chọn một sản phẩm, bỏ chọn "Chọn tất cả"
+            $(".product-checkbox").change(function() {
+                if (!$(this).prop("checked")) {
+                    $("#check-all").prop("checked", false);
+                }
+            });
+
+            // Khi bấm nút thanh toán, kiểm tra và lấy danh sách sản phẩm đã chọn
+            $("#checkout-form").click(function(event) {
+                let selectedItems = [];
+                $(".product-checkbox:checked").each(function() {
+                    selectedItems.push($(this).val());
+                });
+
+                if (selectedItems.length === 0) {
+                    alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+                    event.preventDefault();
+                    return;
+                }
+
+                $("#selected-items").val(JSON.stringify(selectedItems));
+            });
+        });
+    </script> --}}
 @endsection

@@ -21,4 +21,9 @@ class Customer extends Model
         'platform_id', //Đăng nhập bằng nền tảng gì đó (google, facebook,...)
         'platform_name'
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

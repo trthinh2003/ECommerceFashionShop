@@ -106,7 +106,7 @@
             </div>
             <div class="row product__filter">
                 <script>
-                     async function fetchProduct() {
+                    async function fetchProduct() {
                         try {
                             let response = await fetch('http://127.0.0.1:8000/api/product-client');
                             let data = await response.json();
@@ -131,7 +131,7 @@
                                                 <ul class="product__hover">
                                                     <li><a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a></li>
                                                     <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}" alt=""><span>Compare</span></a></li>
-                                                    <li><a href="{{ url('product') }}/${product.slug}-${product.id}"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a></li>
+                                                    <li><a href="{{ url('product') }}/${product.slug}"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a></li>
                                                 </ul>
                                             </div>
                                             <div class="product__item__text">

@@ -20,7 +20,8 @@ class OrderDetail extends Model
         'product_id',
         'order_id',
         'quantity',
-        'price'
+        'price',
+        'size_and_color',
     ];
 
     /** Tao QH Thuc the yeu **/

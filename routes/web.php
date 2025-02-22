@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InventoryController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DialogflowController;
+use App\Models\Customer;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +31,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'home'])->name('sites.home');
+
+    // Xử lý đăng nhập user
+    Route::get('/login_user', [CustomerController::class, 'loginUser'])->name('sites.login_user');
+    Route::post('/login', [CustomerController::class, 'post_login'])->name('sites.post_login');
+    Route::get('/register', [CustomerController::class, 'register'])->name('sites.register');
+    Route::post('/register', [CustomerController::class, 'post_register'])->name('sites.post_register');
+
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
     Route::get('/cart', [HomeController::class, 'cart'])->name('sites.cart');
     Route::get('/aboutUs', [HomeController::class, 'aboutUs'])->name('sites.aboutUs');
@@ -39,7 +48,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/blog', [HomeController::class, 'blog'])->name('sites.blog');
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
-    Route::get('/product/{slug}-{id}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
+    Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
 });
 
 // Xử lý cart
@@ -51,7 +60,11 @@ Route::group(['prefix' => '/cart'], function(){
     Route::get('/clear', [CartController::class, 'clear']) ->name('sites.clear');
     Route::get('/checkout', [CartController::class, 'checkout'])->name('sites.checkout');
     Route::post('/update-cart-session', [CartController::class, 'updateCartSession'])->name('sites.updateCartSession');
-    
+    Route::resources(
+        [
+            'order' => OrderController::class,
+        ]
+    );
 });
 
 /* TRANG ADMIN */
@@ -65,7 +78,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             'category' => CategoryController::class,
             'discount' => DiscountController::class,
             'product' => ProductController::class,
-            'order' => OrderController::class,
             'provider' => ProviderController::class,
             'inventory' => InventoryController::class,
             'staff' => StaffController::class

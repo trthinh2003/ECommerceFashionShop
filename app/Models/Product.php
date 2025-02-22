@@ -33,7 +33,7 @@ class Product extends Model
     //1 SP co n MoTaSP
     public function ProductVariants()
     {
-        return $this->hasMany(ProductVariant::class);
+        return $this->hasMany(ProductVariant::class, 'product_id');
     }
 
     //1 SP co 1 KM
