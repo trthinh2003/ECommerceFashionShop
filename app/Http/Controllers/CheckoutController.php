@@ -127,7 +127,7 @@ class CheckoutController extends Controller
             'message' => 'success',
             'data' => $vnp_Url
         );
-        if (isset($_POST['redirect'])) {
+        if ($request->input('redirect')) {
             header('Location: ' . $vnp_Url);
             die();
         } else {
