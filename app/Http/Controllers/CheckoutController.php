@@ -1,9 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Str;
 
+use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\ProductVariant;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
@@ -11,13 +15,14 @@ class CheckoutController extends Controller
     {
         switch ($request->payment) {
             case 'vnpay':
+                // dd($request->all());
                 return $this->checkoutVnpay($request);
                 break;
             case 'momo':
-                return $this->checkoutMomo();
+                return $this->checkoutMomo($request);
                 break;
             case 'zalopay':
-                return $this->checkoutZaloPay();
+                return $this->checkoutZaloPay($request);
                 break;
             default:
                 return abort('404', 'Trang không tồn tại');
@@ -25,17 +30,25 @@ class CheckoutController extends Controller
         }
     }
 
+    // thông tin test Ngân hàng: NCB
+    // Số thẻ: 9704198526191432198
+    // Tên chủ thẻ:NGUYEN VAN A
+    // Ngày phát hành:07/15
+    // Mật khẩu OTP:123456
+
+    // Chưa làm trang thông báo giao dịch thành công và xem lại đơn hàng ạ nên về sẽ về trang chủ khi giao dịch thành công
+
     public function checkoutVnpay(Request $request)
     {
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-
+        Session::put('order_data', $request->all()); // Lưu toàn bộ dữ liệu vào session trước khi chuyển hướng VNPAY
         // link trả về trang checkout
         $vnp_Returnurl = "http://127.0.0.1:8000/payment";
 
         $vnp_TmnCode = "N528S1UI"; //Mã website tại VNPAY 
         $vnp_HashSecret = "DJONF4NR7QM5BQ0RYCJNFLDOGSZGPZMN"; //Chuỗi bí mật
         // mã ảo
-        $vnp_TxnRef = Str::random(10); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này  sang VNPAY
+        $vnp_TxnRef = Str::random(10); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
         $vnp_OrderInfo = "Thanh toán đơn hàng test";
         $vnp_OrderType = "billpayment";
         $vnp_Amount = ($request->total) * 100;
@@ -136,7 +149,72 @@ class CheckoutController extends Controller
         return redirect()->away($vnp_Url);
     }
 
-    public function checkoutMomo() {}
+    public function vnpayReturn(Request $request)
+    {
+        $vnp_ResponseCode = $request->vnp_ResponseCode; // Mã phản hồi từ VNPAY
+        $vnp_TxnRef = $request->vnp_TxnRef; // Mã giao dịch đơn hàng
+        $vnp_Amount = $request->vnp_Amount / 100; // Số tiền thanh toán (chuyển về đơn vị VNĐ)
 
-    public function checkoutZaloPay() {}
+        if ($vnp_ResponseCode == "00") { // Thanh toán thành công
+            if (Session::has('order_data')) {
+                $data = Session::get('order_data');
+                // dd($data);
+
+                // Tạo đơn hàng lưu vào db
+                $order = new Order();
+                $order->address = $data['address'];
+                $order->phone = $data['phone'];
+                $order->shipping_fee = $data['shipping_fee'];
+                $order->total = $data['total'];
+                $order->note = $data['note'];
+                $order->receiver_name = $data['receiver_name'];
+                $order->email = $data['email'];
+                $order->VAT = $data['VAT'];
+                $order->payment = $data['payment'];
+                $order->customer_id = $data['customer_id'];
+                $order->status = 'Đã thanh toán'; // Đánh dấu đơn hàng đã thanh toán
+                $order->transaction_id = $vnp_TxnRef; // Lưu mã giao dịch VNPAY
+                $order->save();
+
+                // Lưu chi tiết đơn hàng vào db
+                if (Session::has('cart') && count(Session::get('cart')) > 0) {
+                    foreach (Session::get('cart') as $items) {
+                        OrderDetail::create([
+                            'order_id' => $order->id,
+                            'product_id' => $items->id,
+                            'quantity' => $items->quantity,
+                            'price' => $items->price,
+                            'size_and_color' => $items->size . '-' . $items->color
+                        ]);
+                    }
+                    Session::forget('cart');
+                }
+
+                // Cập nhật số lượng tồn kho sau khi tạo đơn hàng
+                $orderDetails = OrderDetail::where('order_id', $order->id)->get();
+                foreach ($orderDetails as $detail) {
+                    [$size, $color] = explode('-', $detail->size_and_color);
+                    $variant = ProductVariant::where('product_id', $detail->product_id)
+                        ->where('size', trim($size))
+                        ->where('color', trim($color))
+                        ->first();
+
+                    if ($variant) {
+                        $variant->stock -= $detail->quantity;
+                        $variant->save();
+                    }
+                }
+
+                Session::forget('order_data'); // Xóa session sau khi lưu vào db
+                return redirect()->route('sites.home')->with('success', 'Thanh toán thành công! Đơn hàng của bạn đã được lưu.');
+            }
+        } else {
+            return redirect()->route('sites.cart')->with('error', 'Thanh toán thất bại hoặc bị hủy!');
+        }
+    }
+
+
+    public function checkoutMomo(Request $request) {}
+
+    public function checkoutZaloPay(Request $request) {}
 }

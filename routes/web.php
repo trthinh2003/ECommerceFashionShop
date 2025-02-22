@@ -51,16 +51,19 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
+    
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
+    Route::get('/payment', [CheckoutController::class, 'vnpayReturn'])->name('payment.return');
+
 });
 
 // Xử lý cart
-Route::group(['prefix' => '/cart'], function(){
+Route::group(['prefix' => '/cart'], function () {
     Route::get('/', [CartController::class, 'cart'])->name('sites.cart');
     Route::get('/add/{product?}/{quantity?}', [CartController::class, 'add'])->name('sites.add');
     Route::get('/update/{id}/{quantity?}', [CartController::class, 'update'])->name('sites.update');
     Route::get('/remove/{id}', [CartController::class, 'remove'])->name('sites.remove');
-    Route::get('/clear', [CartController::class, 'clear']) ->name('sites.clear');
+    Route::get('/clear', [CartController::class, 'clear'])->name('sites.clear');
     Route::get('/checkout', [CartController::class, 'checkout'])->name('sites.checkout');
     Route::post('/update-cart-session', [CartController::class, 'updateCartSession'])->name('sites.updateCartSession');
     Route::post('/create-percent-discount-session', [CartController::class, 'createPercentDiscountSession'])->name('sites.createPercentDiscountSession');
@@ -99,11 +102,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/profile', [StaffController::class, 'profile'])->name('staff.profile');
 
     // Thong ke doanh thu va loi nhuan
-    Route::group(['prefix' => '/revenue'], function(){
+    Route::group(['prefix' => '/revenue'], function () {
         Route::get('/day', [RevenueController::class, 'revenueDay'])->name('admin.revenueDay');
         Route::get('/month', [RevenueController::class, 'revenueMonth'])->name('admin.revenueMonth');
         Route::get('/year', [RevenueController::class, 'revenueYear'])->name('admin.revenueYear');
         Route::get('/profit', [RevenueController::class, 'profitYear'])->name('admin.profitYear');
     });
-
 });

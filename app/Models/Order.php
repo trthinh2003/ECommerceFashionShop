@@ -20,7 +20,8 @@ class Order extends Model
         'status',
         'VAT',
         'payment',
-        'customer_id'
+        'customer_id',
+        'transaction_id'
     ];
 
     public function customer()

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('status', 50);
             $table->float('VAT', 10,2)->default(0.1);
             $table->string('payment', 200); //Phuong thuc thanh toan
+            $table->string('transaction_id', 50)->nullable();
             $table->unsignedInteger('customer_id');
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->timestamps();
