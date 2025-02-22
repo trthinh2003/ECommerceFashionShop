@@ -24,7 +24,7 @@
     <section class="checkout spad">
         <div class="container">
             <div class="checkout__form">
-                <form action="{{route('order.store')}}" method="POST">
+                <form action="{{ route('payment.checkout') }}" method="POST" id="checkout-form">
                     @csrf
                     <div class="row">
                         <div class="col-lg-7 col-md-6">
@@ -44,7 +44,8 @@
                             </div>
                             <div class="checkout__input">
                                 <p>Địa chỉ nhận hàng<span>*</span></p>
-                                <input type="text" placeholder="Street Address" class="checkout__input__add" name="address">
+                                <input type="text" placeholder="Street Address" class="checkout__input__add"
+                                    name="address">
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
@@ -62,8 +63,7 @@
                             </div>
                             <div class="checkout__input">
                                 <p>Ghi chú<span></span></p>
-                                <input type="text"
-                                    placeholder="Ghi chú cho đơn hàng (nếu có)" name="note">
+                                <input type="text" placeholder="Ghi chú cho đơn hàng (nếu có)" name="note">
                             </div>
                             <div class="checkout__input__checkbox">
                                 <a href="{{ route('admin.login') }}">Tạo tài khoản mua hàng?</a>
@@ -71,7 +71,8 @@
                             </div>
                             <div class="mt-3">
                                 <strong>Ưu đãi khi mua hàng tại TST Shop: </strong>
-                                <p>Miễn phí giao hàng áp dụng cho đơn hàng giao tận nơi từ 500K và tất cả các đơn nhận tại cửa hàng.</p>
+                                <p>Miễn phí giao hàng áp dụng cho đơn hàng giao tận nơi từ 500K và tất cả các đơn nhận tại
+                                    cửa hàng.</p>
                             </div>
                         </div>
                         <div class="col-lg-5 col-md-6">
@@ -84,12 +85,18 @@
                                         $totalPriceCart = 0;
                                         $vat = 0.1;
                                         $ship = 30000;
+                                        $percentDiscount = Session::get('percent_discount', 0); // Lấy giá trị mặc định nếu session không có
+
                                         foreach (Session::get('cart') as $items) {
-                                            $totalPriceCart += $items->price * $items->quantity;
+                                            $discountedPrice =
+                                                $items->price * $items->quantity * (1 - $percentDiscount);
+                                            $totalPriceCart += $discountedPrice;
                                         }
-                                        if($totalPriceCart >= 500000){
+
+                                        if ($totalPriceCart >= 500000) {
                                             $ship = 0;
                                         }
+
                                         $vatPrice = $totalPriceCart * $vat;
                                         $total = $totalPriceCart + $vatPrice + $ship;
                                     } else {
@@ -99,12 +106,14 @@
                                         $total = 0;
                                     }
                                 @endphp
+
                                 @if (Session::has('cart') && count(Session::get('cart')) > 0)
                                     @foreach (Session::get('cart') as $items)
                                         <ul class="checkout__total__products">
                                             <li>{{ $index++ }}.
                                                 {{ Str::words($items->name, 10) }}<span>{{ number_format($items->price, 0, ',', '.') . ' đ' }}</span>
-                                                <img src="{{ asset('uploads/' . $items->image) }}" width="50" alt="">
+                                                <img src="{{ asset('uploads/' . $items->image) }}" width="50"
+                                                    alt="">
                                                 <h6>Số lượng: {{ $items->quantity }}</h6>
                                                 <h6>Size: {{ $items->size }}</h6>
                                                 <h6>Màu: {{ $items->color }}</h6>
@@ -129,21 +138,52 @@
                                         <input type="radio" name="payment" id = "vnpay" value="vnpay">
                                         <span class="checkmark"></span>
                                     </label>
+                                    <label for="momo">
+                                        Momo: Thanh toán qua MoMo
+                                        <input type="radio" name="payment" id = "momo" value="momo">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label for="zalopay">
+                                        ZaloPay: Thanh toán qua ZaloPay
+                                        <input type="radio" name="payment" id = "zalopay" value="zalopay">
+                                        <span class="checkmark"></span>
+                                    </label>
+
                                 </div>
                                 <input type="hidden" name="total" value="{{ $total }}">
                                 <input type="hidden" name ="shipping_fee" value="{{ $ship }}">
                                 <input type="hidden" name="VAT" value="{{ $vatPrice }}">
                                 {{-- test do chưa có khách hàng --}}
                                 <input type="hidden" name="customer_id" value="1">
-                                 {{-- danh sách sản phẩm --}}
-                                <input type="hidden" name="selected_items" id="selected-items">
-                                <input type="submit" id="checkout-form" name="order-submit" class="site-btn" value="ĐẶT HÀNG">
+                                {{-- danh sách sản phẩm --}}
+                                {{-- <input type="hidden" name="selected_items" id="selected-items"> --}}
+                                <input type="submit" id="checkout-form" name="redirect" class="site-btn" value="ĐẶT HÀNG">
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+        {{-- <form action="{{route('vnpay.checkout')}}" method="post">
+            @csrf
+            <button type="submit"  class="btb btn btn-primary">Thanh Toán VNPAY</button>
+        </form> --}}
     </section>
     <!-- Checkout Section End -->
+@endsection
+
+@section('js')
+    <script>
+        document.getElementById('checkout-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Ngăn chặn form submit mặc định
+
+            // Lấy phương thức thanh toán đã chọn
+            let paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            if (paymentMethod === 'COD') {
+                this.action = "{{ route('order.store') }}"; // Gửi đến OrderController
+            }
+
+            this.submit(); // Gửi form
+        });
+    </script>
 @endsection

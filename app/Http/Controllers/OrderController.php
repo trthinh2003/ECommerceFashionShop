@@ -55,6 +55,7 @@ class OrderController extends Controller
             'receiver_name.required' => 'Vui lòng nhập tên người nhận',
             'email.required' => 'Vui lòng nhập email hợp lệ',
         ]);
+        // dd($request->all());
         // Tạo đơn hàng
         $order = new Order();
         $order->address = $data['address'];

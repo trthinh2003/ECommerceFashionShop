@@ -365,6 +365,3 @@
     <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
 @endsection
 
-@section('js')
-    <script src="{{ asset('client/js/cart-add.js') }}"></script>
-@endsection

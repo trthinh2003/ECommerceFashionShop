@@ -1,3 +1,7 @@
+{{-- @php
+    dd(Session::get('cart'), Session::get('percent_discount'));
+@endphp --}}
+
 @extends('sites.master')
 @section('content')
     <!-- Breadcrumb Section Begin -->
@@ -144,9 +148,10 @@
                             <li>Tạm tính:
                                 <span>{{ number_format($totalPriceCart, 0, ',', '.') . ' đ' }}</span>
                                 <p class="percent-discount d-none text-success"></p>
+                                <input type="hidden" class="percent-discount-hidden" name="discont" value="0">
                             </li>
-                            <li>Thuế VAT:<span>{{ number_format($vatPrice, 0, ',', '.') . ' đ' }}</span></li>
-                            <li>Phí Ship(10%):<span>{{ number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Thuế VAT(10%):<span>{{ number_format($vatPrice, 0, ',', '.') . ' đ' }}</span></li>
+                            <li>Phí Ship:<span>{{ number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
                             <li>Thành tiền:<span>{{ number_format($total, 0, ',', '.') . ' đ' }}</span></li>
                         </ul>
                         <a href="{{ route('sites.checkout') }}" id="checkout-form" class="primary-btn">Thanh Toán</a>
@@ -211,10 +216,12 @@
                 // Cập nhật tổng giá tiền
                 let totalPrice = productPrice * currentQuantity;
                 row.find(".cart__price").text(totalPrice.toLocaleString() + " đ");
-
+                let pecentDiscount = parseFloat(document.querySelector(".percent-discount-hidden").value);
+                console.log(pecentDiscount);
                 // Gọi AJAX để lưu session
                 updateCartSession(productId, currentQuantity);
                 // Cập nhật tổng giá trị giỏ hàng
+
                 updateCartTotal();
             });
         });
@@ -265,10 +272,13 @@
                                 updateCartTotal(discount.percent_discount);
                                 $('.percent-discount').removeClass('d-none');
                                 $('.percent-discount').addClass('d-inline');
-                                $('.percent-discount').text("(-" + discount.percent_discount * 100 + '%)');
+                                $('.percent-discount-hidden').val(discount.percent_discount);
+                                $('.percent-discount').text("(-" + discount.percent_discount *
+                                    100 + '%)');
                             }
                         } else {
-                            $('#apply-code-discount-result').text('Mã khuyến mãi không hợp lệ!');
+                            $('#apply-code-discount-result').text(
+                            'Mã khuyến mãi không hợp lệ!');
                             $('#apply-code-discount-result').addClass('text-danger');
                             // alert('Mã code không tồn tại!');
                         }
@@ -341,4 +351,33 @@
             });
         });
     </script> --}}
+
+    <script>
+        $(document).ready(function() {
+            $('#checkout-form').click(function(e) {
+
+                let percentDiscount = $('.percent-discount-hidden').val();
+                console.log("Giá trị discount:", percentDiscount);
+
+                updatePercentDiscountSession(percentDiscount);
+            });
+        });
+
+        function updatePercentDiscountSession(percent_discount = 0) {
+            $.ajax({
+                url: "/cart/create-percent-discount-session",
+                method: "POST",
+                data: {
+                    percent_discount: percent_discount, // Đổi key từ discount -> percent_discount
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                },
+                success: function(response) {
+                    console.log("Session updated:", response);
+                },
+                error: function(xhr) {
+                    console.error("Lỗi khi cập nhật session:", xhr.responseText);
+                }
+            });
+        }
+    </script>
 @endsection

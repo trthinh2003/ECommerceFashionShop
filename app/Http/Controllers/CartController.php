@@ -44,9 +44,9 @@ class CartController extends Controller
 
         return redirect()->route('sites.cart');
     }
-    
 
-    
+
+
 
 
     public function update($id, $quantity = 1)
@@ -82,5 +82,21 @@ class CartController extends Controller
         }
 
         return response()->json(['message' => 'Giỏ hàng đã được cập nhật!']);
+    }
+
+    public function createPercentDiscountSession(Request $request)
+    {
+        // Kiểm tra dữ liệu đầu vào
+        if (!$request->has('percent_discount')) {
+            return response()->json(['message' => 'Thiếu dữ liệu!'], 400);
+        }
+
+        // Lưu giá trị percent_discount vào session
+        Session::put('percent_discount', (floatval($request->percent_discount)));
+
+        return response()->json([
+            'message' => 'percent_discount được cập nhật!',
+            'data' => Session::get('percent_discount')
+        ]);
     }
 }

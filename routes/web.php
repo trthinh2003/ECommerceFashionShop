@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\HomeController;
@@ -49,6 +50,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
+    Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
 });
 
 // Xử lý cart
@@ -60,6 +62,7 @@ Route::group(['prefix' => '/cart'], function(){
     Route::get('/clear', [CartController::class, 'clear']) ->name('sites.clear');
     Route::get('/checkout', [CartController::class, 'checkout'])->name('sites.checkout');
     Route::post('/update-cart-session', [CartController::class, 'updateCartSession'])->name('sites.updateCartSession');
+    Route::post('/create-percent-discount-session', [CartController::class, 'createPercentDiscountSession'])->name('sites.createPercentDiscountSession');
     Route::resources(
         [
             'order' => OrderController::class,
