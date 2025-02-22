@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Str;
 
 use Illuminate\Http\Request;
 
@@ -24,20 +25,20 @@ class CheckoutController extends Controller
         }
     }
 
-    public function checkoutVnpay($request)
+    public function checkoutVnpay(Request $request)
     {
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 
         // link trả về trang checkout
-        $vnp_Returnurl = "http://127.0.0.1:8000/checkout-vnpay";
+        $vnp_Returnurl = "http://127.0.0.1:8000/payment";
 
         $vnp_TmnCode = "N528S1UI"; //Mã website tại VNPAY 
         $vnp_HashSecret = "DJONF4NR7QM5BQ0RYCJNFLDOGSZGPZMN"; //Chuỗi bí mật
         // mã ảo
-        $vnp_TxnRef = 12345; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này  sang VNPAY
+        $vnp_TxnRef = Str::random(10); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này  sang VNPAY
         $vnp_OrderInfo = "Thanh toán đơn hàng test";
         $vnp_OrderType = "billpayment";
-        $vnp_Amount = 20000 * 100;
+        $vnp_Amount = ($request->total) * 100;
         $vnp_Locale = 'vn';
         $vnp_BankCode = "NCB";
         $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
@@ -132,7 +133,7 @@ class CheckoutController extends Controller
         } else {
             echo json_encode($returnData);
         }
-        return view('sites.payment.checkout');
+        return redirect()->away($vnp_Url);
     }
 
     public function checkoutMomo() {}

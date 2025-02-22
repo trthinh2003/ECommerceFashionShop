@@ -164,7 +164,7 @@
                 </form>
             </div>
         </div>
-        {{-- <form action="{{route('vnpay.checkout')}}" method="post">
+        {{-- <form action="{{route('payment.checkout')}}" method="post">
             @csrf
             <button type="submit"  class="btb btn btn-primary">Thanh Toán VNPAY</button>
         </form> --}}
