@@ -212,7 +212,7 @@
                             <div>
                                 <img src="uploads/{{$items->image}}" alt="{{$items->name}}" class="cart-item-img" width="50">
                                 <div class="d-inline-block flex-col">
-                                    <span>{{$items->name}}</span> </br>
+                                    <span>{{Str::words($items->name, 5)}}</span></br>
                                     <span class="font-weight-bold">{{number_format($items->price, 0, ',', '.') . ' đ'}}</span>
                                 </div>
                             </div>

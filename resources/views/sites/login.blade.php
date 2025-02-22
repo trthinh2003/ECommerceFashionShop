@@ -6,76 +6,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Đăng Nhập</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
-    </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        body {
+            background-color: #aabed2;
+            backdrop-filter: blur(10px);
+        }
+
+        .login-container {
+            max-width: 420px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-container h3 {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+        }
+
+        .btn-login {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .social-login button {
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .small-text {
+            text-align: center;
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .small-text a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .small-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-    <section class="vh-100" style="background-color: #9A616D;">
-        <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col col-xl-10">
-                    <div class="card" style="border-radius: 1rem;">
-                        <div class="row g-0">
-                            <div class="col-md-6 col-lg-5 d-none d-md-block">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-                                    alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
-                            </div>
-                            <div class="col-md-6 col-lg-7 d-flex align-items-center">
-                                <div class="card-body p-4 p-lg-5 text-black">
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="login-container">
+            <h3>Đăng Nhập</h3>
 
-                                    <form>
-
-                                        <div class="d-flex align-items-center mb-3 pb-1">
-                                            <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
-                                            <span class="h1 fw-bold mb-0">Logo</span>
-                                        </div>
-
-                                        <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your
-                                            account</h5>
-
-                                        <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="email" id="form2Example17"
-                                                class="form-control form-control-lg" />
-                                            <label class="form-label" for="form2Example17">Email address</label>
-                                        </div>
-
-                                        <div data-mdb-input-init class="form-outline mb-4">
-                                            <input type="password" id="form2Example27"
-                                                class="form-control form-control-lg" />
-                                            <label class="form-label" for="form2Example27">Password</label>
-                                        </div>
-
-                                        <div class="pt-1 mb-4">
-                                            <button data-mdb-button-init data-mdb-ripple-init
-                                                class="btn btn-dark btn-lg btn-block" type="button">Login</button>
-                                        </div>
-
-                                        <a class="small text-muted" href="#!">Forgot password?</a>
-                                        <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a
-                                                href="#!" style="color: #393f81;">Register here</a></p>
-                                        <a href="#!" class="small text-muted">Terms of use.</a>
-                                        <a href="#!" class="small text-muted">Privacy policy</a>
-                                    </form>
-                                    <button data-mdb-button-init data-mdb-ripple-init
-                                        class="btn btn-lg btn-block btn-primary" style="background-color: #dd4b39;"
-                                        type="submit"><i class="fab fa-google me-2"></i> Sign in with google</button>
-                                    <button data-mdb-button-init data-mdb-ripple-init
-                                        class="btn btn-lg btn-block btn-primary mb-2" style="background-color: #3b5998;"
-                                        type="submit"><i class="fab fa-facebook-f me-2"></i>Sign in with
-                                        facebook</button>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <form>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="Nhập email của bạn">
                 </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mật khẩu</label>
+                    <input type="password" id="password" class="form-control" placeholder="Nhập mật khẩu">
+                </div>
+
+                <button type="submit" class="btn btn-dark btn-login">Đăng Nhập</button>
+
+                <span class="small-text">
+                    <a href="#">Quên mật khẩu?</a>
+                </span>
+                <span class="small-text">
+                    Chưa có tài khoản? <a href="#">Đăng ký ngay</a>
+                </span>
+            </form>
+
+            <hr>
+
+            <div class="social-login">
+                <button class="btn btn-danger"><i class="fa-brands fa-google pe-1"></i> Đăng nhập bằng Google</button>
+                <button class="btn btn-primary"><i class="fa-brands fa-facebook pe-1"></i> Đăng nhập bằng Facebook</button>
             </div>
         </div>
-    </section>
+    </div>
 </body>
-
 </html>

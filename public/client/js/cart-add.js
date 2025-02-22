@@ -42,7 +42,7 @@ function addToCart(productId, event) {
                         <div>
                             <img src="uploads/${item.image}" alt="${item.name}" class="cart-item-img" width="50">
                             <div class="d-inline-block flex-col">
-                                <span>${item.name}</span> </br>
+                                <span>${words(item.name, 5)}</span> </br>
                                 <span class="font-weight-bold">${priceProduct} đ</span>
                             </div>
                         </div>
@@ -66,6 +66,14 @@ function addToCart(productId, event) {
 
 function formatNumber(price) {
     return new Intl.NumberFormat('vi-VN').format(price);
+}
+
+function words(str, limit = 10, end = "...") {
+    let wordsArray = str.split(/\s+/); // Tách chuỗi thành mảng từ
+    if (wordsArray.length > limit) {
+        return wordsArray.slice(0, limit).join(" ") + end;
+    }
+    return str;
 }
 
 function toggleCart() {
