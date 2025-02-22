@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DialogflowController;
+use App\Http\Controllers\RevenueController;
 use App\Models\Customer;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Route;
@@ -96,4 +97,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('/search_staff', [StaffController::class, 'search'])->name('staff.search');
     Route::get('/search_inventory', [InventoryController::class, 'search'])->name('inventory.search');
     Route::get('/profile', [StaffController::class, 'profile'])->name('staff.profile');
+
+    // Thong ke doanh thu va loi nhuan
+    Route::group(['prefix' => '/revenue'], function(){
+        Route::get('/day', [RevenueController::class, 'revenueDay'])->name('admin.revenueDay');
+        Route::get('/month', [RevenueController::class, 'revenueMonth'])->name('admin.revenueMonth');
+        Route::get('/year', [RevenueController::class, 'revenueYear'])->name('admin.revenueYear');
+        Route::get('/profit', [RevenueController::class, 'profitYear'])->name('admin.profitYear');
+    });
+   
 });

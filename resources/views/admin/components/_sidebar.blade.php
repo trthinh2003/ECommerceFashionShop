@@ -181,10 +181,35 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a>
+                            <a data-bs-toggle="collapse" href="#base9">
                                 <i class="fas fa-chart-line"></i>
                                 <p>Thống kê doanh thu</p>
+                                <span class="caret"></span>
                             </a>
+                            <div class="collapse" id="base9">
+                                <ul class="nav nav-collapse">
+                                    <li>
+                                        <a href="{{ route('admin.revenueDay') }}">
+                                            <span class="sub-item">Thống kê doanh thu theo ngày</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('admin.revenueMonth') }}">
+                                            <span class="sub-item">Thống kê doanh thu theo tháng</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('admin.revenueYear') }}">
+                                            <span class="sub-item">Thống kê doanh thu theo năm</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('admin.profitYear') }}">
+                                            <span class="sub-item">Thống kê doanh thu lợi nhuận</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                         @endcan
                     </ul>
