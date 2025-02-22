@@ -15,7 +15,8 @@ class CartController extends Controller
         return view('sites.cart.index');
     }
 
-    public function checkout(){
+    public function checkout()
+    {
         return view('sites.pages.checkout');
     }
 
@@ -28,12 +29,25 @@ class CartController extends Controller
             return back()->with('error', 'Sản phẩm này hiện không có sẵn biến thể!');
         }
         $cart->add($product, $quantity, $productVariant);
-    
-        return redirect()->route('sites.cart')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+
+        $totalItems = collect(session()->get('cart', []))->sum('quantity');
+
+        // Nếu gửi đi là request từ AJAX thì trả về JSON
+        if (request()->ajax()) {
+            return response()->json([
+                'success' => true,
+                'cart' => $cart,
+                'cart_count' => $totalItems,
+                'cart_product_count' => count(Session::get('cart'))
+            ]);
+        }
+
+        return redirect()->route('sites.cart');
     }
     
 
     
+
 
     public function update($id, $quantity = 1)
     {

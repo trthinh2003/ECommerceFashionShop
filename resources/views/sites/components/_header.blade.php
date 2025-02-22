@@ -122,7 +122,7 @@
                     </a>
                     <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
                     <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
-                        <span>{{$cartQuantity ?? 0}}</span></a>
+                        <span class="cart-quantity-header">{{$cartQuantity ?? 0}}</span></a>
                     {{-- <div class="price">$0.00</div> --}}
                 </div>
             </div>

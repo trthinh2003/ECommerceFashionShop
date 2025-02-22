@@ -212,6 +212,7 @@
             });
         });
     </script>
+    <script src="{{ asset('client/js/cart-add.js') }}"></script>
 @endsection
 
 {{-- <button onclick="window.open('https://console.dialogflow.com/api-client/demo/embedded/d091fe6d-c3c9-487c-9c4b-855241a4956d', '_blank', 'width=400,height=500')">

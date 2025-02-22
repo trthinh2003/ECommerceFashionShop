@@ -1,6 +1,19 @@
+{{-- @php
+    dd(Session::get('cart'));
+@endphp --}}
+
 @extends('sites.master')
 @section('title', 'Trang chủ')
 @section('content')
+    @php
+        $totalProduct = 0;
+        if(Session::has('cart')){
+            foreach (Session::get('cart') as $item) {
+                $totalProduct += $item->quantity;
+            }
+        }
+        else $totalProduct = 0;
+    @endphp
     <!-- Hero Section Begin -->
     <section class="hero">
         <div class="hero__slider owl-carousel">
@@ -136,7 +149,7 @@
                                             </div>
                                             <div class="product__item__text">
                                                 <h6>${product.product_name}</h6>
-                                                 <a href="{{ url('cart/add') }}/${product.id}" class="add-cart">+ Add To Cart</a>
+                                                 <a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>
                                                 <div class="rating">
                                                     <i class="fa fa-star-o"></i>
                                                     <i class="fa fa-star-o"></i>
@@ -166,22 +179,55 @@
                         }
                     }
                     // tìm tất cả các phần tử có class set-bg và cập nhật hình nền của chúng dựa vào giá trị data-setbg.
-                    function updateBackgroundImages() {
-                        document.querySelectorAll('.set-bg').forEach(el => {
-                            let bg = el.getAttribute('data-setbg');
-                            el.style.backgroundImage = `url(${bg})`;
-                        });
-                    }
-                    // gọi hàm sao khi lấy dữ liệu từ fetchProduct
-                    fetchProduct().then(() => {
-                        updateBackgroundImages();
-                    });
+                    // function updateBackgroundImages() {
+                    //     document.querySelectorAll('.set-bg').forEach(el => {
+                    //         let bg = el.getAttribute('data-setbg');
+                    //         el.style.backgroundImage = `url(${bg})`;
+                    //     });
+                    // }
+                    // // gọi hàm sao khi lấy dữ liệu từ fetchProduct
+                    // fetchProduct().then(() => {
+                    //     updateBackgroundImages();
+                    // });
+                    fetchProduct();
                 </script>
-
             </div>
         </div>
     </section>
     <!-- Product Section End -->
+
+    <!-- Icon giỏ hàng -->
+    <div class="cart-icon" id="cartIcon" onclick="toggleCart()">
+        <i class="fas fa-id-card-alt"></i><span class="cart-badge" id="cartCount">{{ $totalProduct }}</span>
+    </div>
+
+    <!-- Danh sách sản phẩm trong giỏ -->
+    <div class="cart-items" id="cartItems" style="display: none;">
+        <strong>Các sản phẩm đã thêm:</strong>
+        <div id="cartList">
+            @if (Session::has('cart') && count(Session::get('cart')) > 0)
+                @foreach (Session::get('cart') as $items)
+                    <div class="cart-item p-1">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <img src="uploads/{{$items->image}}" alt="{{$items->name}}" class="cart-item-img" width="50">
+                                <div class="d-inline-block flex-col">
+                                    <span>{{$items->name}}</span> </br>
+                                    <span class="font-weight-bold">{{number_format($items->price, 0, ',', '.') . ' đ'}}</span>
+                                </div>
+                            </div>
+                            <span class="cart-item-quantity-{{$items->id}} quantity-badge">{{$items->quantity}}</span>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
+        </div>
+        <div class="cart-footer">
+            <button class="btn btn-success w-100" onclick="goToCartPage()">Đến trang Giỏ hàng</button>
+        </div>
+    </div>
+
+
 
     <!-- Categories Section Begin -->
     <section class="categories spad">
@@ -313,4 +359,12 @@
         </div>
     </section>
     <!-- Latest Blog Section End -->
+@endsection
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
+@endsection
+
+@section('js')
+    <script src="{{ asset('client/js/cart-add.js') }}"></script>
 @endsection

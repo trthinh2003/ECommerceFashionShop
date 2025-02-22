@@ -54,7 +54,7 @@ Route::group(['prefix' => '/'], function () {
 // Xử lý cart
 Route::group(['prefix' => '/cart'], function(){
     Route::get('/', [CartController::class, 'cart'])->name('sites.cart');
-    Route::get('/add/{product}/{quantity?}', [CartController::class, 'add'])->name('sites.add');
+    Route::get('/add/{product?}/{quantity?}', [CartController::class, 'add'])->name('sites.add');
     Route::get('/update/{id}/{quantity?}', [CartController::class, 'update'])->name('sites.update');
     Route::get('/remove/{id}', [CartController::class, 'remove'])->name('sites.remove');
     Route::get('/clear', [CartController::class, 'clear']) ->name('sites.clear');

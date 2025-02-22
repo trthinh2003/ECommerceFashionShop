@@ -132,7 +132,7 @@
                 //Xử lý input nhập file hình ảnh
                 $("#fileInput").change(function(e) {
                     var file = e.target.files[0];
-                    var validTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif", "image/webp"];
+                    var validTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif", "image/webp", "image/avif"];
 
                     if (file) {
                         if (validTypes.includes(file.type)) {

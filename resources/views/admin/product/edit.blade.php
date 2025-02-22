@@ -176,6 +176,8 @@
                                                             accept="images/*">
                                                         <img class="previewImg" src="{{ asset('uploads/' . $productVariant->image) }}"
                                                             alt="" width="45">
+                                                        <input class="image_path_hidden" type="hidden" name="image_path_variant[{{ $productVariant->id }}]"
+                                                            value="{{ $productVariant->image }}">
                                                     </div>
                                                     <div class="col-6">
                                                         <label class="d-inline" for="">+ Giá:</label>
@@ -202,15 +204,16 @@
 
             <input class="btn btn-primary" name="" type="submit" value="Lưu thông tin">
         </form>
-
-
     @endsection
+
     @section('css')
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-tagsinput.css') }}" />
         <link rel="stylesheet" href="{{ asset('assets/css/modal.css') }}" />
     @endsection
+
     @section('js')
         <script src="{{ asset('assets/js/plugin/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
+
         <script>
             $(document).ready(function() {
                 $(".fileInput").change(function(e) {
