@@ -7,40 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.tutorialjinni.com/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.tutorialjinni.com/bootstrap/5.2.3/js/bootstrap.bundle.min.js"></script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            height: 100vh;
-        }
-
-        .login-container {
-            width: 500px;
-            padding: 30px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        .login-container h2 {
-            font-weight: bold;
-        }
-
-        .form-control {
-            border-radius: 8px;
-        }
-
-        .btn-primary {
-            border-radius: 8px;
-        }
-
-        .small a {
-            text-decoration: none;
-        }
-
-        .small a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
 </head>
 
 <body>

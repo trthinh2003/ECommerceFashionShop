@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    public function loginUser()
+    public function login()
     {
         return view('sites.login');
     }
@@ -30,7 +30,7 @@ class CustomerController extends Controller
 
     public function register()
     {
-        return view('sites.register');
+        return redirect()->route('user.login');
     }
 
     public function post_register(Request $request){

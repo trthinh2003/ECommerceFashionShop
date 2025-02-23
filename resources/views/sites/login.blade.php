@@ -5,15 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" href="{{ asset('assets/img/TSTShop/TST_Shop.ico') }}" type="image/x-icon" />
     <link rel="stylesheet" href="style.css">
     <title>Đăng nhập</title>
-
     <link rel="stylesheet" href="{{ asset('client/css/login.css') }}">
 </head>
+
 <body>
     <div class="container" id="container">
         <div class="form-container sign-up">
-            <form>
+            <form action="{{ route('user.post_register') }}" method="POST">
+                @csrf
                 <h1>Tạo tài khoản mới</h1>
                 <div class="social-icons">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -22,10 +24,23 @@
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
                 <span>hoặc sử dụng email của bạn cho việc đăng ký</span>
-                <input type="text" placeholder="Name">
-                <input type="email" placeholder="Email">
-                <input type="password" placeholder="Password">
-                <button>Đăng Ký</button>
+                <input type="text" placeholder="Họ và tên" name="name">
+                @error('name')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+                <input type="email" placeholder="Email" name="email" required>
+                @error('email')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+                <input type="password" placeholder="Password" name="password">
+                @error('password')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+                <input type="password" placeholder="Xác nhận Password" name="password_confirmation">
+                @error('password_confirmation')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
+                <button type="submit">Đăng Ký</button>
             </form>
         </div>
         <div class="form-container sign-in">
@@ -37,8 +52,8 @@
                     <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
                     <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
                 </div>
-                <span>hoặc sử dụng email của bạn cho việc đăng nhập</span>
-                <input type="email" placeholder="Email">
+                <span>hoặc sử dụng tài khoản của bạn cho việc đăng nhập</span>
+                <input type="login" placeholder="Email hoặc Username">
                 <input type="password" placeholder="Password">
                 <a href="#">Quên mật khẩu?</a>
                 <button>Đăng Nhập</button>
@@ -67,10 +82,16 @@
 
         registerBtn.addEventListener('click', () => {
             container.classList.add("active");
+            const currentPath = window.location.pathname;
+            const newPath = currentPath.replace("/login", "/register");
+            window.history.replaceState(null, "", newPath);
         });
 
         loginBtn.addEventListener('click', () => {
             container.classList.remove("active");
+            const currentPath = window.location.pathname;
+            const newPath = currentPath.replace("/register", "/login");
+            window.history.replaceState(null, "", newPath);
         });
     </script>
 </body>
