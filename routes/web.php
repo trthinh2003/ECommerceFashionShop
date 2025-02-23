@@ -51,10 +51,13 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
-    
-    Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
-    Route::get('/payment', [CheckoutController::class, 'vnpayReturn'])->name('payment.return');
 
+
+    Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
+    // Routes xử lý callback từ các cổng thanh toán
+    Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('payment.vnpay.return');
+    Route::get('/momo-return', [CheckoutController::class, 'momoReturn'])->name('payment.momo.return');
+    Route::get('/zalopay-return', [CheckoutController::class, 'zalopayReturn'])->name('payment.zalopay.return');
 });
 
 // Xử lý cart

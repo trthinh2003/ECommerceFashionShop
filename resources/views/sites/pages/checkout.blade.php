@@ -164,10 +164,6 @@
                 </form>
             </div>
         </div>
-        {{-- <form action="{{route('payment.checkout')}}" method="post">
-            @csrf
-            <button type="submit"  class="btb btn btn-primary">Thanh Toán VNPAY</button>
-        </form> --}}
     </section>
     <!-- Checkout Section End -->
 @endsection
@@ -181,6 +177,12 @@
             let paymentMethod = document.querySelector('input[name="payment"]:checked').value;
             if (paymentMethod === 'COD') {
                 this.action = "{{ route('order.store') }}"; // Gửi đến OrderController
+            } else if (paymentMethod === 'momo') {
+                let inputName = document.querySelector('input[name="redirect"]').value;
+                this.inputName = "payUrl";
+            } else if (paymentMethod === 'zalopay') {
+                let inputName = document.querySelector('input[name="redirect"]').value;
+                this.inputName = "order_url";
             }
 
             this.submit(); // Gửi form
