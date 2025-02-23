@@ -40,7 +40,7 @@
                 <div class="footer__widget">
                     <h6>Tin Tức</h6>
                     <div class="footer__newslatter">
-                        <p>Trở thành người đầu tin nhận thông báo khuyến mãi, thông tin sản phẩm mới nhất!</p>
+                        <p>Trở thành người đầu tiên nhận thông báo khuyến mãi, thông tin sản phẩm mới nhất!</p>
                         <form action="#">
                             <input type="text" placeholder="Your email">
                             <button type="submit"><span class="icon_mail_alt"></span></button>

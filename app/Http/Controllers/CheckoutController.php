@@ -18,7 +18,6 @@ class CheckoutController extends Controller
     {
         switch ($request->payment) {
             case 'vnpay':
-                // dd($request->all());
                 return $this->checkoutVnpay($request);
                 break;
             case 'momo':
@@ -48,7 +47,7 @@ class CheckoutController extends Controller
         // link trả về trang checkout
         $vnp_Returnurl = "http://127.0.0.1:8000/vnpay-return";
 
-        $vnp_TmnCode = "N528S1UI"; //Mã website tại VNPAY 
+        $vnp_TmnCode = "N528S1UI"; //Mã website tại VNPAY
         $vnp_HashSecret = "DJONF4NR7QM5BQ0RYCJNFLDOGSZGPZMN"; //Chuỗi bí mật
         // mã ảo
         $vnp_TxnRef = Str::random(10); //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
@@ -97,7 +96,7 @@ class CheckoutController extends Controller
 
         $vnp_Url = $vnp_Url . "?" . $query;
         if (isset($vnp_HashSecret)) {
-            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //  
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret); //
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
         $returnData = array(

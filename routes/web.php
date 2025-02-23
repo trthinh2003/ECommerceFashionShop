@@ -38,8 +38,10 @@ Route::group(['prefix' => '/'], function () {
     Route::group(['prefix' => 'user'], function () {
         Route::get('/login', [CustomerController::class, 'login'])->name('user.login');
         Route::post('/login', [CustomerController::class, 'post_login'])->name('user.post_login');
+        Route::get('/logout', [CustomerController::class, 'logout'])->name('user.logout')->middleware('auth:customer');
         Route::get('/register', [CustomerController::class, 'register'])->name('user.register');
         Route::post('/register', [CustomerController::class, 'post_register'])->name('user.post_register');
+        Route::post('/profile', [CustomerController::class, 'profile'])->name('user.profile')->middleware('auth:customer');
     });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
@@ -53,12 +55,6 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
-<<<<<<< HEAD
-
-    Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
-    Route::get('/payment', [CheckoutController::class, 'vnpayReturn'])->name('payment.return');
-=======
->>>>>>> 69d6cfa54bf9b07a0932602c7090c1c596407415
 
 
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 200);
-            $table->string('phone', 15)->unique();
-            $table->string('address', 200);
+            $table->string('phone', 15)->unique()->nullable();
+            $table->string('address', 200)->nullable();
             $table->string('email', 100)->unique();
-            $table->string('username', 100)->unique();
+            $table->string('username', 100)->unique()->nullable();
             $table->string('password');
             $table->tinyInteger('sex')->default(0);
             $table->string('image')->nullable();

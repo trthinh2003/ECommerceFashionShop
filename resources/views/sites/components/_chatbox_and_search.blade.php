@@ -211,6 +211,15 @@
                 }
             });
         });
+
+        $(".dropdown-btn").click(function (event) {
+            event.stopPropagation(); // Ngăn chặn sự kiện lan ra ngoài
+            $(".dropdown-content").toggle();
+        });
+
+        $(document).click(function () {
+            $(".dropdown-content").hide();
+        });
     </script>
     <script src="{{ asset('client/js/cart-add.js') }}"></script>
 @endsection
