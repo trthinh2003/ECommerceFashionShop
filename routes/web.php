@@ -35,10 +35,12 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'home'])->name('sites.home');
 
     // Xử lý đăng nhập user
-    Route::get('/login-user', [CustomerController::class, 'loginUser'])->name('sites.login-user')->middleware('guest');
-    Route::post('/login', [CustomerController::class, 'post_login'])->name('sites.post_login');
-    Route::get('/register', [CustomerController::class, 'register'])->name('sites.register');
-    Route::post('/register', [CustomerController::class, 'post_register'])->name('sites.post_register');
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/login', [CustomerController::class, 'login'])->name('user.login');
+        Route::post('/login', [CustomerController::class, 'post_login'])->name('user.post_login');
+        Route::get('/register', [CustomerController::class, 'register'])->name('user.register');
+        Route::post('/register', [CustomerController::class, 'post_register'])->name('user.post_register');
+    });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
     Route::get('/cart', [HomeController::class, 'cart'])->name('sites.cart');
@@ -51,7 +53,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
-    
+
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
     Route::get('/payment', [CheckoutController::class, 'vnpayReturn'])->name('payment.return');
 
