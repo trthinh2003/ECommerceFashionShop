@@ -41,7 +41,8 @@ class CustomerController extends Controller
         return back()->withErrors(['login' => 'Email, Username hoặc mật khẩu không đúng.'])->withInput();
     }
 
-    public function logout(Request $request){
+    public function logout(Request $request)
+    {
         Auth::guard('customer')->logout();
         $request->session()->invalidate(); // Xóa toàn bộ session
         $request->session()->regenerateToken();
@@ -54,7 +55,8 @@ class CustomerController extends Controller
         return redirect()->route('user.login');
     }
 
-    public function post_register(Request $request) {
+    public function post_register(Request $request)
+    {
         $request->validate([
             'name' => 'required|min:3|max:200',
             'email' => 'required|email|unique:customers,email',
@@ -80,8 +82,38 @@ class CustomerController extends Controller
         return view('sites.success.register', compact('customer'));
     }
 
-    public function profile(Request $request) {
+    public function profile(Request $request)
+    {
         $customer = Auth::guard('customer')->user();
         return view('sites.profile', compact('customer'));
+    }
+
+    public function update_profile(Request $request, Customer $customer)
+    {
+        $request->validate([
+            'name' => 'required|min:3|max:200',
+            'email' => 'required|email',
+            'new_password' => 'required|min:6|max:200',
+            'phone' => 'required',
+            'address' => 'required'
+        ], [
+            'name.required' => 'Họ và tên không được để trống.',
+            'email.required' => 'Vui lòng nhập email của bạn.',
+            'email.email' => 'Vui lòng nhập email hợp lệ.',
+            'new_password.required' => 'Vui lòng nhập mật khẩu.',
+            'new_password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'phone.required' => 'Số điện thoại không được để trống',
+            'address.required' => 'Địa chỉ không được để trống'
+        ]);
+
+        $customer->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'password' => bcrypt($request->new_password)
+        ]);
+
+        return redirect()->route('user.profile')->with('updateprofile', 'Cập nhật hồ sơ thành công!');
     }
 }
