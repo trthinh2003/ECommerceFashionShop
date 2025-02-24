@@ -41,7 +41,8 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/logout', [CustomerController::class, 'logout'])->name('user.logout')->middleware('auth:customer');
         Route::get('/register', [CustomerController::class, 'register'])->name('user.register');
         Route::post('/register', [CustomerController::class, 'post_register'])->name('user.post_register');
-        Route::post('/profile', [CustomerController::class, 'profile'])->name('user.profile')->middleware('auth:customer');
+        Route::get('/profile', [CustomerController::class, 'profile'])->name('user.profile')->middleware('auth:customer');
+        Route::put('/profile/{customer}/update', [CustomerController::class, 'update_profile'])->name('user.update_profile');
     });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
