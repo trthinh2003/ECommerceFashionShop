@@ -14,7 +14,7 @@
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
         <div class="offcanvas__links">
-            <a href="{{url('/login-user')}}">Đăng nhập</a>
+            <a href="{{ route('user.login') }}">Đăng nhập</a>
             <a href="#">Hỏi Đáp</a>
         </div>
         <div class="offcanvas__top__hover">
@@ -50,11 +50,18 @@
                 </div>
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
-                        <div class="header__top__links">
-                            <a href="{{route('sites.login-user')}}">Đăng nhập</a>
-                            <a href="#">Hỗ Trợ</a>
-                        </div>
                         <div class="header__top__hover">
+                            @if(Auth::guard('customer')->check())
+                                <span>Xin chào, {{Auth::guard('customer')->user()->name}}<i class="arrow_carrot-down"></i></span>
+                                <ul>
+                                    <li><a class="text-dark" href="{{ route('user.profile') }}">Hồ sơ cá nhân</a></li>
+                                    <li><a class="text-dark" href="{{ route('user.logout') }}">Đăng Xuất</a></li>
+                                </ul>
+                            @else
+                                <span class="text-white"><a href="{{route('user.login')}}">Đăng nhập</a></span>
+                            @endif
+                        </div>
+                        <div class="ms-3 header__top__hover">
                             <span>Ngôn ngữ<i class="arrow_carrot-down"></i></span>
                             <ul>
                                 <li>VI</li>
@@ -131,6 +138,10 @@
     </div>
 </header>
 <!-- Header Section End -->
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('client/css/header.css') }}">
+@endsection
 
 @section('js')
 {{-- <script>

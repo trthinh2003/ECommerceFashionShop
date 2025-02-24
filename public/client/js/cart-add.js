@@ -28,10 +28,10 @@ function addToCart(productId, event) {
             let cartList = document.getElementById("cartList");
             document.querySelector('.cart-quantity-header').textContent = data.cart_product_count;
             let item = data.cart.items[productId];
-            console.log(data.cart.items[productId]);
+            // console.log(data.cart.items[productId]);
             if (item) {
                 let oldValue = document.querySelector(`.cart-item-quantity-${item.id}`);
-                console.log(oldValue);
+                // console.log(oldValue);
                 if (oldValue === null) {
                     let cartItem = document.createElement("div");
                     cartItem.classList.add("cart-item");

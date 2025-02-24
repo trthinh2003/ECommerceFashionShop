@@ -35,10 +35,14 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/', [HomeController::class, 'home'])->name('sites.home');
 
     // Xử lý đăng nhập user
-    Route::get('/login-user', [CustomerController::class, 'loginUser'])->name('sites.login-user')->middleware('guest');
-    Route::post('/login', [CustomerController::class, 'post_login'])->name('sites.post_login');
-    Route::get('/register', [CustomerController::class, 'register'])->name('sites.register');
-    Route::post('/register', [CustomerController::class, 'post_register'])->name('sites.post_register');
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/login', [CustomerController::class, 'login'])->name('user.login');
+        Route::post('/login', [CustomerController::class, 'post_login'])->name('user.post_login');
+        Route::get('/logout', [CustomerController::class, 'logout'])->name('user.logout')->middleware('auth:customer');
+        Route::get('/register', [CustomerController::class, 'register'])->name('user.register');
+        Route::post('/register', [CustomerController::class, 'post_register'])->name('user.post_register');
+        Route::post('/profile', [CustomerController::class, 'profile'])->name('user.profile')->middleware('auth:customer');
+    });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
     Route::get('/cart', [HomeController::class, 'cart'])->name('sites.cart');

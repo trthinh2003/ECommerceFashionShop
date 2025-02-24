@@ -4,7 +4,7 @@
   Author: Colorib
   Author URI: https://www.colorib.com/
   Version: 1.0
-  Created: Colorib 
+  Created: Colorib
 ******************************************************************/
 
 /*------------------------------------------------------------------
@@ -366,9 +366,10 @@ ol {
 	color: #ffffff;
 	font-size: 13px;
 	text-transform: uppercase;
-	letter-spacing: 2px;
+	letter-spacing: 1px;
 	display: inline-block;
 	cursor: pointer;
+    margin-right: 22px;
 }
 
 .header__top__hover span i {
