@@ -58,10 +58,11 @@
                     $vat = 0.1;
                     $ship = 30000;
                     $totalPriceCart = 0;
+                    $discount = $data[0]->code ?? 0;
                 @endphp
                 @foreach ($data as $items)
                     @php
-                        $totalPriceCart += $items->quantity * $items->price;
+                        $totalPriceCart += ($items->quantity * $items->price) * (1 - $discount);
                         if($totalPriceCart >= 500000){
                             $ship = 0;
                         }
@@ -90,7 +91,7 @@
                 <div class="border p-3 rounded shadow-sm d-flex justify-content-between align-items-center">
                     <p><strong>Tạm Tính: </strong>{{number_format($totalPriceCart, 0, ',', '.')}} đ</p>
                     <p><strong>Phí Vận Chuyển: </strong>{{number_format($ship, 0, ',', '.')}} đ</p>
-                    <p><strong>Chiết Khấu: </strong> </p>
+                    <p><strong>Chiết Khấu: </strong>{{$items->code*100}} %</p>
                     <p class="fs-5"><strong class="text-danger">Tổng Giá Trị Đơn Hàng: </strong>{{number_format($items->total, 0, ',', '.')}}đ</p>
                 </div>
             </div>

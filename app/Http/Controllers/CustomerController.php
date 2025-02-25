@@ -35,6 +35,10 @@ class CustomerController extends Controller
         ];
 
         if (Auth::guard('customer')->attempt($credentials)) {
+            if (Session::has('auth')) {
+                Session::forget('auth');
+                return redirect()->route('sites.cart');
+            }
             return redirect()->route('sites.home')->with('success', 'Đăng nhập thành công!');
         }
 
@@ -44,7 +48,7 @@ class CustomerController extends Controller
     public function logout(Request $request)
     {
         Auth::guard('customer')->logout();
-        $request->session()->invalidate(); // Xóa toàn bộ session
+        // $request->session()->invalidate(); // Xóa toàn bộ session
         $request->session()->regenerateToken();
 
         return redirect()->route('user.login');
@@ -115,5 +119,11 @@ class CustomerController extends Controller
         ]);
 
         return redirect()->route('user.profile')->with('updateprofile', 'Cập nhật hồ sơ thành công!');
+    }
+
+
+    public function checkLogin(Request $request)
+    {
+        Session::put('auth', $request->auth);
     }
 }

@@ -15,8 +15,12 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DialogflowController;
 use App\Http\Controllers\RevenueController;
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Staff;
+// use GPBMetadata\Google\Api\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +47,7 @@ Route::group(['prefix' => '/'], function () {
         Route::post('/register', [CustomerController::class, 'post_register'])->name('user.post_register');
         Route::get('/profile', [CustomerController::class, 'profile'])->name('user.profile')->middleware('auth:customer');
         Route::put('/profile/{customer}/update', [CustomerController::class, 'update_profile'])->name('user.update_profile');
+        Route::post('/check-login', [CustomerController::class, 'checkLogin'])->name('user.checkLogin');
     });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
@@ -82,6 +87,28 @@ Route::group(['prefix' => '/cart'], function () {
     );
 });
 
+// Xử lý đăng nhập gg
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
+});
+
+Route::get('/auth/google/callback', function () {
+    $googleUser = Socialite::driver('google')->user();
+
+    // Tìm user theo email hoặc tạo mới
+    $user = Customer::updateOrCreate([
+        'email' => $googleUser->getEmail(),
+    ], [
+        'name' => $googleUser->getName(),
+        'platform_id' => $googleUser->getId(),
+        'avatar' => $googleUser->getAvatar(),
+    ]);
+
+    // Đăng nhập user
+    Auth::guard('customer')->login($user);
+    return redirect()->intended('/');
+});
+
 /* TRANG ADMIN */
 Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
 Route::post('/login', [AdminController::class, 'post_login'])->name('admin.post_login');
@@ -109,6 +136,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/search_inventory', [InventoryController::class, 'search'])->name('inventory.search');
     Route::get('/search_order', [OrderController::class, 'search'])->name('order.search');
     Route::get('/profile', [StaffController::class, 'profile'])->name('staff.profile');
+    Route::get('/order-approval', [OrderController::class, 'orderApproval'])->name('order.approval');
 
     // Thong ke doanh thu va loi nhuan
     Route::group(['prefix' => '/revenue'], function () {

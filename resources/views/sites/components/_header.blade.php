@@ -52,6 +52,7 @@
                     <div class="header__top__right">
                         <div class="header__top__hover">
                             @if(Auth::guard('customer')->check())
+                            <img src="{{ asset('client/img/' . Auth::guard('customer')->user()->image) }}" width="30" alt="" class="rounded-circle">
                                 <span>Xin chào, {{Auth::guard('customer')->user()->name}}<i class="arrow_carrot-down"></i></span>
                                 <ul>
                                     <li><a class="text-dark" href="{{ route('user.profile') }}">Hồ sơ cá nhân</a></li>

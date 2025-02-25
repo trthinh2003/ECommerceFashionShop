@@ -78,12 +78,22 @@
                             <ul class="nav nav-collapse">
                                 <li>
                                     <a href="{{ route('order.index') }}">
-                                        <span class="sub-item">Thông tin Đơn hàng</span>
+                                        <span class="sub-item">Đơn hàng chưa xử lý</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('order.approval') }}">
+                                        <span class="sub-item">Đơn hàng đã xử lý</span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('order.create') }}">
-                                        <span class="sub-item">Thêm mới Đơn hàng</span>
+                                        <span class="sub-item">Đơn hàng đã hoàn thành</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('order.create') }}">
+                                        <span class="sub-item">Đơn hàng đã huỷ</span>
                                     </a>
                                 </li>
                             </ul>

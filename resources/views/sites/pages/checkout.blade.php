@@ -1,3 +1,6 @@
+{{-- @php
+    dd(Auth::guard('customer')->user()->id);
+@endphp --}}
 @extends('sites.master')
 @section('title', 'Thanh toán')
 @section('content')
@@ -154,7 +157,7 @@
                                 <input type="hidden" name ="shipping_fee" value="{{ $ship }}">
                                 <input type="hidden" name="VAT" value="{{ $vatPrice }}">
                                 {{-- test do chưa có khách hàng --}}
-                                <input type="hidden" name="customer_id" value="1">
+                                <input type="hidden" name="customer_id" value="{{ Auth::guard('customer')->user()->id }}">
                                 {{-- danh sách sản phẩm --}}
                                 {{-- <input type="hidden" name="selected_items" id="selected-items"> --}}
                                 <input type="submit" id="checkout-form" name="redirect" class="site-btn" value="ĐẶT HÀNG">

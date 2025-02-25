@@ -2,6 +2,8 @@
     dd(Session::get('cart'), Session::get('percent_discount'));
 @endphp --}}
 
+
+
 @extends('sites.master')
 @section('content')
     <!-- Breadcrumb Section Begin -->
@@ -278,7 +280,7 @@
                             }
                         } else {
                             $('#apply-code-discount-result').text(
-                            'Mã khuyến mãi không hợp lệ!');
+                                'Mã khuyến mãi không hợp lệ!');
                             $('#apply-code-discount-result').addClass('text-danger');
                             // alert('Mã code không tồn tại!');
                         }
@@ -352,16 +354,42 @@
         });
     </script> --}}
 
+
     <script>
         $(document).ready(function() {
             $('#checkout-form').click(function(e) {
-
-                let percentDiscount = $('.percent-discount-hidden').val();
-                console.log("Giá trị discount:", percentDiscount);
-
-                updatePercentDiscountSession(percentDiscount);
+                if (@json(Auth::guard('customer')->check())) {
+                    let percentDiscount = $('.percent-discount-hidden').val();
+                    // console.log("Giá trị discount:", percentDiscount);
+                    updatePercentDiscountSession(percentDiscount);
+                } else {
+                    e.preventDefault();
+                    checkLogin();
+                };
             });
         });
+
+        function checkLogin() {
+            let currentUrl = window.location.href;
+
+            $.ajax({
+                url: '/user/check-login',
+                type: "POST",
+                data: {
+                    auth: "false",
+                    redirect_url: currentUrl, 
+                    _token: $('meta[name="csrf-token"]').attr("content")
+                },
+                success: function(response) {
+                    console.log("Session lưu thành công:", response);
+                    window.location.href = '/user/login';
+                },
+                error: function(error) {
+                    console.log("Lỗi khi lưu session", error);
+                }
+            });
+        }
+
 
         function updatePercentDiscountSession(percent_discount = 0) {
             $.ajax({

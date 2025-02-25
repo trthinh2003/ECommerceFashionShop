@@ -148,10 +148,12 @@ class CheckoutController extends Controller
                             'product_id' => $items->id,
                             'quantity' => $items->quantity,
                             'price' => $items->price,
-                            'size_and_color' => $items->size . '-' . $items->color
+                            'size_and_color' => $items->size . '-' . $items->color,
+                            'code' => Session::get('percent_discount', 0)
                         ]);
                     }
                     Session::forget('cart');
+                    Session::forget('percent_discount');
                 }
 
                 // Cập nhật số lượng tồn kho sau khi tạo đơn hàng
@@ -259,12 +261,12 @@ class CheckoutController extends Controller
 
     public function momoReturn(Request $request)
     {
-        $partnerCode = $request->partnerCode;
-        $orderId = $request->orderId; // Mã đơn hàng
-        $requestId = $request->requestId;
-        $amount = $request->amount;
-        $orderInfo = $request->orderInfo;
-        $orderType = $request->orderType;
+        // $partnerCode = $request->partnerCode;
+        // $orderId = $request->orderId; // Mã đơn hàng
+        // $requestId = $request->requestId;
+        // $amount = $request->amount;
+        // $orderInfo = $request->orderInfo;
+        // $orderType = $request->orderType;
         $transId = $request->orderId; // Mã giao dịch lấy đại mã đơn hàng từ hàm time() gì của nó ai biết
         $resultCode = $request->resultCode; // Kết quả giao dịch
 
@@ -298,10 +300,12 @@ class CheckoutController extends Controller
                                 'product_id' => $item->id,
                                 'quantity' => $item->quantity,
                                 'price' => $item->price,
-                                'size_and_color' => $item->size . '-' . $item->color
+                                'size_and_color' => $item->size . '-' . $item->color,
+                                'code' => Session::get('percent_discount', 0)
                             ]);
                         }
                         Session::forget('cart'); // Xóa giỏ hàng sau khi tạo đơn thành công
+                        Session::forget('percent_discount');
                     }
 
                     // Cập nhật tồn kho

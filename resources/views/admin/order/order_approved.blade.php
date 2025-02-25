@@ -1,6 +1,6 @@
 @can('salers')
     @extends('admin.master')
-    @section('title', 'Đơn hàng chưa xử lý')
+    @section('title', 'Đơn hàng đã xử lý')
 @section('content')
     @if (Session::has('success'))
         <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 26rem; display:flex; text-align:center">
@@ -52,15 +52,6 @@
                             <td>
                                 <a href="{{ route('order.show', $model->id) }}" class="btn btn-sm btn-secondary"><i
                                         class="fa fa-edit"></i>Xem</a>
-
-                                <form action="{{ route('order.update', $model->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    {{-- <a href="{{ route('order.update', $model->id) }}" class="btn btn-sm btn-primary"><i
-                                            class="fa fa-edit"></i>Duyệt</a> --}}
-
-                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-edit"></i>Duyệt</button>
-                                </form>
                             </td>
                         </tr>
                     @endforeach
