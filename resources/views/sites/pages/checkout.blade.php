@@ -35,7 +35,7 @@
                                 <div class="col-lg-12">
                                     <div class="checkout__input">
                                         <p>Tên người nhận<span>*</span></p>
-                                        <input type="text" name="receiver_name">
+                                        <input type="text" name="receiver_name" required>
                                         @error('receiver_name')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
@@ -45,19 +45,19 @@
                             <div class="checkout__input">
                                 <p>Địa chỉ nhận hàng<span>*</span></p>
                                 <input type="text" placeholder="Street Address" class="checkout__input__add"
-                                    name="address">
+                                    name="address" required>
                             </div>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Số điện thoại<span>*</span></p>
-                                        <input type="text" name="phone">
+                                        <input type="text" name="phone" required>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>Email<span>*</span></p>
-                                        <input type="text" name="email">
+                                        <input type="text" name="email" required>
                                     </div>
                                 </div>
                             </div>

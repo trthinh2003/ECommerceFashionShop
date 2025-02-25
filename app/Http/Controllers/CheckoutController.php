@@ -359,7 +359,7 @@ class CheckoutController extends Controller
             "app_user" => "user123",
             "item" => $items,
             "embed_data" => $embeddata,
-            "amount" => 50000,
+            "amount" => $request->total,
             "description" => "Thanh toán đơn hàng #$transID",
             "bank_code" => "",
             "return_url" => route('payment.zalopay.return')
@@ -499,5 +499,6 @@ class CheckoutController extends Controller
     //         return redirect()->route('sites.cart')->with('message', 'Lỗi hệ thống: ' . $e->getMessage());
     //     }
     // }
+
 
 }
