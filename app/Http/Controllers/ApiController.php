@@ -147,4 +147,16 @@ class ApiController extends Controller
         $productVariants = ProductVariant::orderBy('id', 'ASC')->paginate(2);
         return $this->apiStatus($productVariants, 200, $productVariants->count(), 'ok');
     }
+
+    // public function test($id){
+    //     $data = DB::table('orders as o')
+    //     ->join('customers as c', 'o.customer_id', '=', 'c.id')
+    //     ->join('order_details as od', 'o.id', '=', 'od.order_id')
+    //     ->join('products as p', 'p.id', '=', 'od.product_id')
+    //     ->join('product_variants as pv', 'pv.product_id', '=', 'p.id')
+    //     ->where('o.id', $id)
+    //     ->select('o.*', 'c.name as customer_name', 'p.product_name as product_name', 'pv.size', 'pv.color', 'od.quantity', 'od.price')
+    //     ->get();
+    //     return $this->apiStatus($data, 200, 1, 'ok');
+    // }
 }
