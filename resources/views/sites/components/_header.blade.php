@@ -55,6 +55,7 @@
                                 <span>Xin chào, {{Auth::guard('customer')->user()->name}}<i class="arrow_carrot-down"></i></span>
                                 <ul>
                                     <li><a class="text-dark" href="{{ route('user.profile') }}">Hồ sơ cá nhân</a></li>
+                                    <li><a class="text-dark" href="{{ route('user.logout') }}">Lịch sử giao dịch</a></li>
                                     <li><a class="text-dark" href="{{ route('user.logout') }}">Đăng Xuất</a></li>
                                 </ul>
                             @else

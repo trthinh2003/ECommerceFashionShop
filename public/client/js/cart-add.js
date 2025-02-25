@@ -86,7 +86,7 @@ function toggleCart() {
 function animateToCart(event) {
     let cartIcon = document.getElementById("cartIcon");
     let productElement = event.target.closest(".product__item").querySelector(".set-bg");
-    let imageUrl = productElement.getAttribute("data-setbg");
+    let imageUrl = productElement.getAttribute("src");
 
     let flyingImg = document.createElement("img");
     flyingImg.src = imageUrl;

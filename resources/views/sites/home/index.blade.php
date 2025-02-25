@@ -7,12 +7,13 @@
 @section('content')
     @php
         $totalProduct = 0;
-        if(Session::has('cart')){
+        if (Session::has('cart')) {
             foreach (Session::get('cart') as $item) {
                 $totalProduct += $item->quantity;
             }
+        } else {
+            $totalProduct = 0;
         }
-        else $totalProduct = 0;
     @endphp
     <!-- Hero Section Begin -->
     <section class="hero">
@@ -139,14 +140,15 @@
                                     "new-arrivals" : "hot-sales");
                                 productItem.innerHTML = `
                                         <div class="product__item" id="product-list-home">
-                                            <div class="product__item__pic set-bg" data-setbg="{{ asset('uploads/${product.image}') }}">
-                                                <span class="label">New</span>
-                                                <ul class="product__hover">
-                                                    <li><a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a></li>
-                                                    <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}" alt=""><span>Compare</span></a></li>
-                                                    <li><a href="{{ url('product') }}/${product.slug}"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a></li>
-                                                </ul>
-                                            </div>
+                                              <div class="product__item__pic">
+                                                    <img src="{{ asset('uploads/${product.image}') }}" class="set-bg" width="280" height="280" alt="${product.product_name}">
+                                                    <span class="label">New</span>
+                                                    <ul class="product__hover">
+                                                        <li><a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a></li>
+                                                        <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}" alt=""><span>Compare</span></a></li>
+                                                        <li><a href="{{ url('product') }}/${product.slug}"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a></li>
+                                                    </ul>
+                                             </div>
                                             <div class="product__item__text">
                                                 <h6>${product.product_name}</h6>
                                                  <a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>
@@ -210,13 +212,16 @@
                     <div class="cart-item p-1">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <img src="uploads/{{$items->image}}" alt="{{$items->name}}" class="cart-item-img" width="50">
+                                <img src="uploads/{{ $items->image }}" alt="{{ $items->name }}" class="cart-item-img"
+                                    width="50">
                                 <div class="d-inline-block flex-col">
-                                    <span>{{Str::words($items->name, 5)}}</span></br>
-                                    <span class="font-weight-bold">{{number_format($items->price, 0, ',', '.') . ' đ'}}</span>
+                                    <span>{{ Str::words($items->name, 5) }}</span></br>
+                                    <span
+                                        class="font-weight-bold">{{ number_format($items->price, 0, ',', '.') . ' đ' }}</span>
                                 </div>
                             </div>
-                            <span class="cart-item-quantity-{{$items->id}} quantity-badge">{{$items->quantity}}</span>
+                            <span
+                                class="cart-item-quantity-{{ $items->id }} quantity-badge">{{ $items->quantity }}</span>
                         </div>
                     </div>
                 @endforeach
@@ -364,4 +369,3 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
 @endsection
-

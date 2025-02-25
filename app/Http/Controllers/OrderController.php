@@ -20,7 +20,21 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        // $data = DB::table('orders as o')
+        //     ->join('customers as c', 'o.customer_id', '=', 'c.id')
+        //     ->join('order_details as od', 'o.id', '=', 'od.order_id')
+        //     ->join('products as p', 'p.id', '=', 'od.product_id')
+        //     ->join('product_variants as pv', 'pv.id', '=', 'p.id')
+        //     ->where('o.status', 'Đã thanh toán')
+        //     ->orderBy('o.id', 'ASC')
+        //     ->paginate(5);
+        $data = DB::table('orders as o')
+        ->join('customers as c', 'o.customer_id', '=', 'c.id')
+        ->where('o.status', 'Đã thanh toán')
+        ->orderBy('o.id', 'ASC')
+        ->paginate(5);
+
+        return view('admin.order.order_pending', compact('data'));
     }
 
     /**
@@ -69,7 +83,7 @@ class OrderController extends Controller
         $order->payment = $data['payment'];
         $order->customer_id = $data['customer_id'];
         $order->save();
-        
+
         if (Session::has('cart') && count(Session::get('cart')) > 0) {
             foreach (Session::get('cart') as $items) {
                 OrderDetail::create([
@@ -82,21 +96,21 @@ class OrderController extends Controller
             }
             Session::forget('cart');
         }
-    
+
         // Xử lý trừ đi số lượng sản phẩm trong kho theo số lượng đã được đặt
         $orderDetails = OrderDetail::where('order_id', $order->id)->get();
-        
+
         foreach ($orderDetails as $detail) {
             // Tách size và color từ chuỗi size_and_color
             [$size, $color] = array_map('trim', explode('-', $detail->size_and_color));
-            
+
             // Tìm đúng variant của sản phẩm trong bảng variant theo product_id, size và color
             $variant = ProductVariant::where('product_id', $detail->product_id)
-                                ->where('size', trim($size))
-                                ->where('color', trim($color))
-                                ->first();
+                ->where('size', trim($size))
+                ->where('color', trim($color))
+                ->first();
 
-            
+
             if ($variant) {
                 $variant->stock -= $detail->quantity;
                 $variant->save();
@@ -105,7 +119,7 @@ class OrderController extends Controller
                 Log::warning("Không tìm thấy variant cho sản phẩm ID: {$detail->product_id}, size: {$size}, color: {$color}");
             }
         }
-        
+
         return redirect()->route('sites.home')->with('success', "Đặt hàng thành công!");
     }
 
@@ -143,4 +157,6 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function search(Request $request) {}
 }
