@@ -52,14 +52,14 @@ class ApiController extends Controller
     public function getDiscountByCode($code)
     {
         $discount = Discount::where('code', $code)->first();
-        
+
         if (!empty($discount)) {
             return $this->apiStatus($discount, 200, 1, 'ok');
         }
-        
+
         return $this->apiStatus(null, 404, 0, 'Data not found.');
     }
-    
+
 
     public function categories()
     {
@@ -75,10 +75,22 @@ class ApiController extends Controller
             'Provider',
             'InventoryDetails.Product.Category',
             'InventoryDetails.Product.ProductVariants'
-        ])->paginate();
-        $inventoriesResource = InventoryResource::collection($inventories);
-        return $this->apiStatus($inventoriesResource, 200, $inventoriesResource->count(), 'ok');
+        ])->paginate(5); // Số lượng item mỗi trang
+
+        return response()->json([
+            'status_code' => 200,
+            'data' => InventoryResource::collection($inventories),
+            'pagination' => [
+                'current_page' => $inventories->currentPage(),
+                'last_page' => $inventories->lastPage(),
+                'total' => $inventories->total(),
+                'per_page' => $inventories->perPage(),
+                'next_page_url' => $inventories->nextPageUrl(),
+                'prev_page_url' => $inventories->previousPageUrl(),
+            ],
+        ]);
     }
+
 
     public function inventory($id)
     {
@@ -123,7 +135,7 @@ class ApiController extends Controller
         $products = Product::orderBy('id', 'ASC')->get();
         return $this->apiStatus($products, 200, $products->count(), 'ok');
     }
-    
+
 
     public function product($id)
     {
