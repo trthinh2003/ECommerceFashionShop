@@ -43,7 +43,7 @@
                         @foreach ($data as $model)
                             <tr>
                                 <td>{{ $model->id }}</td>
-                                <td>{{ $model->name }}</td>
+                                <td>{{ $model->customer_name }}</td>
                                 <td>{{ $model->address }}</td>
                                 <td>{{ $model->phone }}</td>
                                 <td>{{ $model->total }}</td>
@@ -52,9 +52,8 @@
                                 <td>
                                     <form method="post" action="{{ route('order.destroy', $model->id) }}">
                                         @csrf @method('DELETE')
-                                        <button type="button" class="btn btn-sm btn-secondary btn-detail">
-                                            <i class="fa fa-pen"></i> Xem
-                                        </button>
+                                        <a href="{{ route('order.show', $model->id) }}" class="btn btn-sm btn-secondary"><i
+                                            class="fa fa-edit"></i>Xem</a>
                                         <a href="{{ route('order.edit', $model->id) }}" class="btn btn-sm btn-primary"><i
                                                 class="fa fa-edit"></i>Duyệt</a>
                                     </form>

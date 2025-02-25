@@ -54,3 +54,6 @@ Route::get('/suggest-content-based', [SearchController::class, 'suggestContentBa
 
 // Route xóa lịch sử tìm kiếm
 Route::delete('/clear-search-history', [SearchController::class, 'clearSearchHistory']);
+
+
+// Route::get('/order/{id}', [ApiController::class, 'test'])->name('api.orders');

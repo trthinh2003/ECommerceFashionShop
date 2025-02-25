@@ -20,18 +20,11 @@ class OrderController extends Controller
      */
     public function index()
     {
-        // $data = DB::table('orders as o')
-        //     ->join('customers as c', 'o.customer_id', '=', 'c.id')
-        //     ->join('order_details as od', 'o.id', '=', 'od.order_id')
-        //     ->join('products as p', 'p.id', '=', 'od.product_id')
-        //     ->join('product_variants as pv', 'pv.id', '=', 'p.id')
-        //     ->where('o.status', 'Đã thanh toán')
-        //     ->orderBy('o.id', 'ASC')
-        //     ->paginate(5);
         $data = DB::table('orders as o')
         ->join('customers as c', 'o.customer_id', '=', 'c.id')
         ->where('o.status', 'Đã thanh toán')
         ->orderBy('o.id', 'ASC')
+        ->select('o.*', 'c.name as customer_name')
         ->paginate(5);
 
         return view('admin.order.order_pending', compact('data'));
@@ -130,9 +123,21 @@ class OrderController extends Controller
      * Display the specified resource.
      */
     public function show(Order $order)
-    {
-        //
+    {  
+        $data = DB::table('orders as o')
+        ->join('customers as c', 'o.customer_id', '=', 'c.id')
+        ->join('order_details as od', 'o.id', '=', 'od.order_id')
+        ->join('products as p', 'p.id', '=', 'od.product_id')
+        ->join('product_variants as pv', 'pv.product_id', '=', 'p.id')
+        ->where('o.id', $order->id)
+        ->select('o.*', 'c.name as customer_name', 'p.product_name as product_name','p.image', 'pv.size', 'pv.color', 'od.quantity', 'od.price')
+        ->get();
+        return view('admin.order.order_detail', compact('data'));
     }
+
+
+
+
 
     /**
      * Show the form for editing the specified resource.
