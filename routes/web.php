@@ -13,11 +13,12 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProviderController;
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DialogflowController;
+use App\Http\Controllers\FacebookAuthController;
+use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RevenueController;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Staff;
-// use GPBMetadata\Google\Api\Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -61,6 +62,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
+    Route::get('/search', [HomeController::class, 'search'])->name('sites.search');
 
 
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
@@ -88,26 +90,13 @@ Route::group(['prefix' => '/cart'], function () {
 });
 
 // Xử lý đăng nhập gg
-Route::get('/auth/google', function () {
-    return Socialite::driver('google')->redirect();
-});
+Route::get('/auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
-Route::get('/auth/google/callback', function () {
-    $googleUser = Socialite::driver('google')->user();
+// Xử lý đăng nhập fb
+// Route::get('/auth/facebook', [FacebookAuthController::class, 'redirectToFacebook'])->name('auth.facebook');
+// Route::get('/auth/facebook/callback', [FacebookAuthController::class, 'handleFacebookCallback']);
 
-    // Tìm user theo email hoặc tạo mới
-    $user = Customer::updateOrCreate([
-        'email' => $googleUser->getEmail(),
-    ], [
-        'name' => $googleUser->getName(),
-        'platform_id' => $googleUser->getId(),
-        'avatar' => $googleUser->getAvatar(),
-    ]);
-
-    // Đăng nhập user
-    Auth::guard('customer')->login($user);
-    return redirect()->intended('/');
-});
 
 /* TRANG ADMIN */
 Route::get('/login', [AdminController::class, 'login'])->name('admin.login');

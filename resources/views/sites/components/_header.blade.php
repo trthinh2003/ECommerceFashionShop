@@ -3,7 +3,7 @@
     <div class="loader"></div>
 </div>
 @php
-    if(Session::has('cart')){
+    if (Session::has('cart')) {
         $cartQuantity = count(Session::get('cart'));
     }
 @endphp
@@ -28,7 +28,8 @@
     <div class="offcanvas__nav__option">
         <a href="#" class="search-switch"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a>
         <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
-        <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt=""> <span>{{$cartQuantity ?? 0}}</span></a>
+        <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
+            <span>{{ $cartQuantity ?? 0 }}</span></a>
         {{-- <div class="price">$0.00</div> --}}
     </div>
     <div id="mobile-menu-wrap"></div>
@@ -51,16 +52,19 @@
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__hover">
-                            @if(Auth::guard('customer')->check())
-                            <img src="{{ asset('client/img/' . Auth::guard('customer')->user()->image) }}" width="30" alt="" class="rounded-circle">
-                                <span>Xin chào, {{Auth::guard('customer')->user()->name}}<i class="arrow_carrot-down"></i></span>
+                            @if (Auth::guard('customer')->check())
+                                <img src="{{ asset('client/img/' . Auth::guard('customer')->user()->image) }}"
+                                    width="30" alt="" class="rounded-circle">
+                                <span>Xin chào, {{ Auth::guard('customer')->user()->name }}<i
+                                        class="arrow_carrot-down"></i></span>
                                 <ul>
                                     <li><a class="text-dark" href="{{ route('user.profile') }}">Hồ sơ cá nhân</a></li>
-                                    <li><a class="text-dark" href="{{ route('user.logout') }}">Lịch sử giao dịch</a></li>
+                                    <li><a class="text-dark" href="{{ route('user.logout') }}">Lịch sử giao dịch</a>
+                                    </li>
                                     <li><a class="text-dark" href="{{ route('user.logout') }}">Đăng Xuất</a></li>
                                 </ul>
                             @else
-                                <span class="text-white"><a href="{{route('user.login')}}">Đăng nhập</a></span>
+                                <span class="text-white"><a href="{{ route('user.login') }}">Đăng nhập</a></span>
                             @endif
                         </div>
                         <div class="ms-3 header__top__hover">
@@ -79,8 +83,9 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="{{route('sites.home')}}" class="text-dark font-weight-bold text-uppercase">
-                        <img class="rounded-circle" src="{{ asset('assets/img/TSTShop/TST_Shop.webp') }}" alt="Logo" width="35">
+                    <a href="{{ route('sites.home') }}" class="text-dark font-weight-bold text-uppercase">
+                        <img class="rounded-circle" src="{{ asset('assets/img/TSTShop/TST_Shop.webp') }}"
+                            alt="Logo" width="35">
                         TST Fashion Shop
                     </a>
                 </div>
@@ -95,7 +100,8 @@
                         <li class="{{ request()->routeIs('sites.shop') ? 'active' : '' }}">
                             <a href="{{ route('sites.shop') }}">Shop</a>
                         </li>
-                        <li class="{{ request()->routeIs('sites.aboutUs', 'sites.shopDetail', 'sites.shoppingCart', 'sites.checkout', 'sites.blogDetail') ? 'active' : '' }}">
+                        <li
+                            class="{{ request()->routeIs('sites.aboutUs', 'sites.shopDetail', 'sites.shoppingCart', 'sites.checkout', 'sites.blogDetail') ? 'active' : '' }}">
                             <a href="{{ route('sites.aboutUs') }}">Pages</a>
                             <ul class="dropdown">
                                 <li class="{{ request()->routeIs('sites.aboutUs') ? 'active' : '' }}">
@@ -130,8 +136,9 @@
                         <i class="fa fa-fw fa-search text-dark"></i>
                     </a>
                     <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
-                    <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
-                        <span class="cart-quantity-header">{{$cartQuantity ?? 0}}</span></a>
+                    <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}"
+                            alt="">
+                        <span class="cart-quantity-header">{{ $cartQuantity ?? 0 }}</span></a>
                     {{-- <div class="price">$0.00</div> --}}
                 </div>
             </div>
@@ -143,13 +150,19 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/css/header.css') }}">
+
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}" /> --}}
 @endsection
 
 @section('js')
-{{-- <script>
-    setTimeout(() => {
-        searchBtn = document.querySelector(".search-btn");
-        console.log(searchBtn);
-    }, 2000);
-</script> --}}
+    {{-- <script>
+        setTimeout(() => {
+            searchBtn = document.querySelector(".search-btn");
+            console.log(searchBtn);
+        }, 2000);
+    </script> --}}
+
+    {{-- @if (Session::has('success'))
+        <script src="{{ asset('assets/js/message.js') }}"></script>
+    @endif --}}
 @endsection

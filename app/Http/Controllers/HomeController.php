@@ -14,7 +14,8 @@ class HomeController extends Controller
 
     public function shop()
     {
-        return view('sites.shop.shop');
+        $products = Product::orderBy('id', 'ASC')->paginate(12);
+        return view("sites.shop.shop", compact('products'));
     }
 
     public function cart()
@@ -32,7 +33,7 @@ class HomeController extends Controller
         return view('sites.blog.blog');
     }
 
-  
+
 
     public function aboutUs()
     {
@@ -59,17 +60,16 @@ class HomeController extends Controller
         return view('sites.pages.checkout');
     }
 
-    public function productDetail($slug){
+    public function productDetail($slug)
+    {
         $productDetail = Product::where('slug', $slug)
-        ->with(['ProductVariants', 'Category'])
-        ->firstorfail();
+            ->with(['ProductVariants', 'Category'])
+            ->firstorfail();
         $prices = $productDetail->ProductVariants->pluck('price');
-         // Lấy danh sách size của sản phẩm
-         $sizes = $productDetail->ProductVariants->pluck('size')->unique();
-         // Lấy danh sách màu của sản phẩm
+        // Lấy danh sách size của sản phẩm
+        $sizes = $productDetail->ProductVariants->pluck('size')->unique();
+        // Lấy danh sách màu của sản phẩm
         $colors = $productDetail->ProductVariants->pluck('color')->unique();
         return view('sites.product.product_detail', compact('productDetail', 'sizes', 'colors'));
     }
-
-
 }

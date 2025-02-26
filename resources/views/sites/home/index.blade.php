@@ -112,8 +112,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <ul class="filter__controls">
-                        <li class="active" data-filter="*">Best Sellers</li>
-                        <li data-filter=".new-arrivals">New Arrivals</li>
+                        <li class="active" data-filter="*">Sản Phẩm Bán Chạy</li>
+                        <li data-filter=".new-arrivals">Mới ra mắt</li>
                         <li data-filter=".hot-sales">Hot Sales</li>
                     </ul>
                 </div>
@@ -180,17 +180,6 @@
                             console.error("Lỗi API:", error);
                         }
                     }
-                    // tìm tất cả các phần tử có class set-bg và cập nhật hình nền của chúng dựa vào giá trị data-setbg.
-                    // function updateBackgroundImages() {
-                    //     document.querySelectorAll('.set-bg').forEach(el => {
-                    //         let bg = el.getAttribute('data-setbg');
-                    //         el.style.backgroundImage = `url(${bg})`;
-                    //     });
-                    // }
-                    // // gọi hàm sao khi lấy dữ liệu từ fetchProduct
-                    // fetchProduct().then(() => {
-                    //     updateBackgroundImages();
-                    // });
                     fetchProduct();
                 </script>
             </div>
