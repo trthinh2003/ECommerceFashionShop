@@ -179,11 +179,6 @@ class CheckoutController extends Controller
         }
     }
 
-
-
-
-
-
     public function execPostRequest($url, $data)
     {
         $ch = curl_init($url);

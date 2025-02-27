@@ -104,7 +104,7 @@ class InventoryController extends Controller
         // dd($query)
         //Thêm vào Mô tả sản phẩm
 
-        foreach (explode(',', $sizes) as $size) { //S, M, XL
+        foreach (explode(',', $sizes) as $size) {
             ProductVariant::firstOrCreate([
                 'color' => $data['color'],
                 'size' => $size,
@@ -120,7 +120,7 @@ class InventoryController extends Controller
         $inventoryDetail->price = $data['price'];
         $inventoryDetail->quantity = $totalQuantity;
         //Xử lý chuỗi sizes
-        $inventoryDetail->size = join(',', $size_and_quantitys);
+        $inventoryDetail->size = preg_replace('/([^,]+)/', '$1-' . $data['color'], join(',', $size_and_quantitys));
         $inventoryDetail->save();
 
         return redirect()->route('inventory.index')->with('success', "Thêm phiếu nhập mới thành công!");
@@ -185,7 +185,6 @@ class InventoryController extends Controller
             'color.required' => 'Vui lòng nhập màu sắc cho sản phẩm.',
             'sizes.required' => 'Vui lòng chọn kích cỡ cho sản phẩm.',
         ]);
-        $totalQuantity = 0;
         $inventory = new Inventory();
         $inventory->provider_id = $data['provider_id'];
         $inventory->staff_id = $data['id'];
@@ -213,16 +212,29 @@ class InventoryController extends Controller
             $value2 = $size_assoc[$size] ?? 0;
             $current_sizesAndStocks[$size] = $value1 + $value2;
         }
-        // dd($request->all(), $size_assoc, $allKeys, $current_sizesAndStocks);
         // dd($request->variant, $size_assoc, $current_sizesAndStocks, $new_sizesAndStocks);
         // dd($size_assoc, $size_assoc["S"] - $request->variant["S"]);
         // dd([$data['color'], $size, $size_assoc["XS"], $request->product_id]);
         $color = $data['color'];
-        foreach ($current_sizesAndStocks as $size => $stock) { //S, M, XL
-            DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
-                           VALUES (?, ?, ?, ?)
-                           ON DUPLICATE KEY UPDATE stock = ?', [$color, $size, $stock, $request->product_id, $stock]);
-        };
+        $checkColor = ProductVariant::where('color', 'like', $color)
+                                    ->where('product_id', $request->product_id)
+                                    ->where('size', 'like', $size)
+                                    ->first();
+        // dd($request->all(), $size_assoc, $allKeys, $current_sizesAndStocks, $checkColor, preg_replace('/([^,]+)/', '$1-' . $color, $request->formatted_sizes));
+        if ($checkColor == null) {
+            foreach ($size_assoc as $size => $stock) {
+                DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
+                               VALUES (?, ?, ?, ?)', [$color, $size, $stock, $request->product_id]);
+            };
+        }
+        else {
+            foreach ($current_sizesAndStocks as $size => $stock) {
+                DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
+                               VALUES (?, ?, ?, ?)
+                               ON DUPLICATE KEY UPDATE stock = ?', [$color, $size, $stock, $request->product_id, $stock]);
+            };
+        }
+
         $inventory->total = $totalQuantity * $data['price'];
         $inventory->save();
 
@@ -233,7 +245,9 @@ class InventoryController extends Controller
         $inventoryDetail->price = $data['price'];
         $inventoryDetail->quantity = $totalQuantity;
         //Xử lý chuỗi sizes
-        $inventoryDetail->size = $request->formatted_sizes;
+        $inventoryDetail->size = preg_replace('/([^,]+)/', '$1-' . $color, $request->formatted_sizes);
+                                            // tìm từng phần tử trước dấu phẩy (,) và thêm chuỗi "-$color"
+                                            //VD: "XL-1, XXL-2" + "Xanh" -> "XL-1-Xanh, XXL-2-Xanh"
         $inventoryDetail->save();
 
         return redirect()->route('inventory.index')->with('success', "Thêm phiếu nhập mới thành công!");

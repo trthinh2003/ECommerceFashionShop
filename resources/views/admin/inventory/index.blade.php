@@ -73,8 +73,9 @@
                             </div>
                             <div class="col-md-6">
                                 <p><strong>Tên sản phẩm:</strong> <span id="product-name"></span></p>
+                                <p><strong>Thương hiệu:</strong> <span id="product-brand"></span></p>
                                 <p><strong>Hình ảnh:</strong> <img id="product-image" src="" width="80"></p>
-                                <p><strong>Đơn giá:</strong> <span id="product-price"></span></p>
+                                <p><strong>Giá nhập:</strong> <span id="product-price"></span></p>
 
                             </div>
                             <div class="col-md-6">
@@ -173,13 +174,13 @@
             let prevDisabled = pagination.prev_page_url ? "" : "disabled";
             let nextDisabled = pagination.next_page_url ? "" : "disabled";
 
-            let paginationHtml = `
+            let paginationHtml =
+                `
                 <button class="btn btn-primary btn-sm mx-1" ${prevDisabled} onclick="fetchInventories(${pagination.current_page - 1})" style="font-size: 20px"><</button>
                 <span class="align-self-center">Trang ${pagination.current_page} / ${pagination.last_page}</span>
                 <button class="btn btn-primary btn-sm mx-1" ${nextDisabled} onclick="fetchInventories(${pagination.current_page + 1})" style="font-size: 20px">></button>`;
             paginationDiv.append(paginationHtml);
         }
-
     </script>
 
 
@@ -210,40 +211,35 @@
                             $('#staff-name').text(inventory_detail.staff.name);
                             $('#provider-name').text(inventory_detail.provider.name);
                             $('#total_price').text(parseFloat(inventory_detail.total_price)
-                                .toLocaleString() + " VNĐ");
+                                .toLocaleString() + " đ");
                             $('#iventory-created').text(inventory_detail.createdate);
                             $('#iventory-updated').text(inventory_detail.updatedate);
                             if (inventory_detail.detail.length > 0) {
                                 let productDetail = inventory_detail.detail[0];
                                 $('#product-name').text(productDetail.product.name);
+                                $('#product-brand').text(productDetail.product.brand);
                                 $('#product-price').text(parseFloat(productDetail.price)
-                                    .toLocaleString() + " VNĐ");
+                                    .toLocaleString() + " đ");
                                 $('#total_quantity').text(productDetail.quantity);
                                 $('#category-name').text(productDetail.product.category.name);
                                 $('#product-image').attr("src",
                                     `uploads/${productDetail.product.image}`);
                                 //Xử lý hiển thị size và số lượng
-                                if (productDetail.sizes) {
-                                    let sizeQuantityList = productDetail.sizes.split(',').map(
-                                        sizeQty => {
-                                            let [size, qty] = sizeQty.split(
-                                                '-'); // Tách size và số lượng
+                                if(productDetail.sizes) {
+                                    let sizeQuantityList = productDetail.sizes.split(',')
+                                        .map(sizeQty => {
+                                            let parts = sizeQty.split(
+                                            '-'); // Tách chuỗi dựa vào dấu '-'
+                                            let size = parts[0];
+                                            let qty = parts[1];
+                                            let color = parts[2];
+                                            if (color) {
+                                                $('#colors').text(color);
+                                            }
                                             return `${size}: (${qty} cái)`;
                                         }).join(', ');
                                     $('#size_and_quantity').text(sizeQuantityList);
                                 }
-                                // Xử lý hiển thị màu sắc
-                                let colors = [];
-                                // Nếu sản phẩm có biến thể
-                                if (productDetail.product["product-variant"]) {
-                                    $.each(productDetail.product["product-variant"], function(i,
-                                        variant) {
-                                        colors.push(variant.color);
-                                    });
-                                }
-                                // Loại bỏ màu trùng lặp bằng Set rồi gán vào HTML
-                                $("#colors").text([...new Set(colors)].join(', '));
-
                             }
                             $("#inventoryDetail").modal("show");
                         } else {
