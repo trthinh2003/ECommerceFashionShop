@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-6">
                     <label for="">Màu:</label>
-                    <input type="text" name="color" id="priceInput" class="form-control" placeholder="VD: Vàng, Đỏ, Xanh, Tím,...">
+                    <input type="text" name="color" id="colorInput" class="form-control" placeholder="VD: Vàng, Đỏ, Xanh, Tím,...">
                     @error('color')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror

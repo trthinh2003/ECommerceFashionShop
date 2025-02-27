@@ -45,10 +45,6 @@ class CartController extends Controller
         return redirect()->route('sites.cart');
     }
 
-
-
-
-
     public function update($id, $quantity = 1)
     {
         return redirect()->route('sites.cart');

@@ -186,7 +186,7 @@
                                 let color = [], size_and_stock = [];
                                 $.each(productInfo["product-variant"], function(i, variant) {
                                     color.push(variant.color);
-                                    size_and_stock.push(`${variant.size} (${variant.stock} cái)`);
+                                    size_and_stock.push(`${variant.color}-${variant.size} (${variant.stock} cái)`);
                                 });
                                 // console.log(color, size_and_stock)
                                 $("#colors").text([...new Set(color)].join(', '));

@@ -72,8 +72,8 @@
                 </div>
                 <div class="col-6">
                     <label for="">Màu:</label>
-                    <input type="text" name="colorDisabled" id="colorInputDisabled" class="form-control" disabled>
-                    <input type="hidden" name="color" id="colorInput">
+                    <input type="text" name="color" id="colorInput" class="form-control" placeholder="VD: Vàng, Đỏ, Xanh, Tím,...">
+                    <small class="colors-available"></small>
                     @error('color')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
@@ -91,12 +91,15 @@
                         <option value="XXL">XXL</option>
                     </select>
                     <small class="sizes-available"></small>
-
                     @error('sizes')
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
                 <input type="hidden" name="formatted_sizes" id="formatted_sizes"> <!-- Ẩn để lưu giá trị -->
+                <div class="col-6">
+                    <label for="">Thương hiệu:</label>
+                    <input type="text" name="brand_name" id="brand_name" class="form-control" readonly>
+                </div>
             </div>
             <input class="btn btn-primary m-3" name="" type="submit" value="Lưu thông tin">
         </form>
@@ -174,13 +177,13 @@
                             document.getElementById('category_id').value = productData.category.id || "";
                             document.querySelector("select[name='provider_id']").value = providerData.id || "";
                             document.getElementById("priceInput").value = detailData.price || "";
+                            document.getElementById("brand_name").value = productData.brand || "";
 
                             // Điền danh sách màu sắc
-                            const colorInput = document.querySelector("#colorInput");
-                            colorInput.value = [...new Set(detailData.product["product-variant"]
-                                                        .map(variant => variant.color))]
-                                                        .join(", ");
-                            document.getElementById("colorInputDisabled").value = colorInput.value;
+                            document.querySelector(".colors-available").textContent = "(Các màu sắc được nhập về: " +
+                                [...new Set(detailData.product["product-variant"]
+                                    .map(variant => variant.color))]
+                                    .join(", ") + ")";
                             // Điền danh sách kích cỡ
                             const sizesSelect = document.getElementById("sizes");
                             const sizes = detailData.sizes.split(", ");
@@ -192,14 +195,14 @@
                                 input.name = `variant[${variant.size}]`;
                                 input.value = variant.stock;
                                 container.appendChild(input);
-                                console.log(input);
+                                // console.log(input);
                             });
                             const sizesInput = document.querySelector(".sizes-available");
                             sizesInput.textContent = "(Các kích cỡ đã nhập về: " +
                                 detailData.product["product-variant"]
                                 .map(variant =>
-                                    `${variant.size} (${variant.stock !== null ? variant.stock : 0} cái)`)
-                                .join(", ");
+                                    `${variant.color}-${variant.size} (${variant.stock !== null ? variant.stock : 0} cái)`)
+                                .join(", ") + ")";
 
                             // Hiển thị hình ảnh sản phẩm
                             document.getElementById("previewImg").src = `uploads/${productData.image}`;
@@ -225,7 +228,7 @@
                         let size = $(this).attr("name").split("[")[1].split("]")[0];
                         let stock = $(this).val();
                         previousStock[size] = parseInt(stock);
-                        console.log(previousStock);
+                        // console.log(previousStock);
                     });
                 }, 2000);
 
@@ -270,7 +273,7 @@
                     for (let size in sizesWithQuantities) {
                         formattedSizes.push(`${size}-${sizesWithQuantities[size]}`);
                     }
-                    $("#formatted_sizes").val(formattedSizes.join(",")); // Gán vào input hidden
+                    $("#formatted_sizes").val(formattedSizes.join(","));
 
                     if (formattedSizes.length === 0) {
                         alert("Vui lòng chọn ít nhất một size và nhập số lượng!");
