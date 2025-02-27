@@ -16,6 +16,7 @@ use App\Http\Controllers\DialogflowController;
 use App\Http\Controllers\FacebookAuthController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RevenueController;
+use App\Http\Controllers\WishListProductController;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Staff;
@@ -60,9 +61,15 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/shoppingCart', [HomeController::class, 'shoppingCart'])->name('sites.shoppingCart');
     Route::get('/contact', [HomeController::class, 'contact'])->name('sites.contact');
     Route::get('/blog', [HomeController::class, 'blog'])->name('sites.blog');
-    Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
-    Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
+    // Xử lý danh sách yêu thích
+    Route::get('/wishlist', [WishListProductController::class, 'index'])->name('sites.wishlist');
+    Route::get('/add-to-wishlist/{product}', [WishListProductController::class, 'addToWishList'])->name('sites.addToWishList');
+    
+    // Xử lý chatbot
+    Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
+
+    // Xử lý đơn hàng
     Route::get('/order-history', [CustomerController::class, 'getHistoryOrderOfCustomer'])->name('sites.getHistoryOrder');
     Route::get('/order-detail/{order}', [CustomerController::class, 'showOrderDetailOfCustomer'])->name('sites.showOrderDetailOfCustomer');
     Route::put('/cancel-order{id}', [CustomerController::class, 'cancelOrder'])->name('sites.cancelOrder');
@@ -71,6 +78,7 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/order/{id}/invoice', [OrderController::class, 'exportInvoice'])->name('order.invoice');
 
     // Xử lý thanh toán
+    Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
     // Routes xử lý callback từ các cổng thanh toán
     Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('payment.vnpay.return');

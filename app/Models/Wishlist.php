@@ -2,10 +2,43 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+class Wishlist{
+    public $items = [];
 
-class Wishlist extends Model
-{
-    use HasFactory;
+    public function __construct()
+    {
+        $this->items = session('wishlist') ? session('wishlist') : [];
+    }
+
+
+    public function addToWishlist($product, $productVariant = null)
+    {
+        if (!empty($this->items[$product->id])) {
+            // $this->items[$product->id]->quantity += $quantity;
+            return;
+        } else {
+            $items = [
+                'id' => $product->id,
+                'name' => $product->product_name,
+                'image' => $product->image,
+                'color' => $productVariant->color,
+                'size' => $productVariant->size,
+            ];
+            $this->items[$product->id] = (object)$items;
+        }
+
+        session(['wishlist' => $this->items]);
+    }
+
+
+
+
+    public function remove($id)
+    {
+        if (!empty($this->items[$id])) {
+            unset($this->items[$id]);
+            session(['wishlist' => $this->items]);
+        }
+    }
+
 }
