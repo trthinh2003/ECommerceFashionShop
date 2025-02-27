@@ -31,9 +31,20 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // Đăng ký sử dụng API Google
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
+
+    // Đăng ký sử dụng API Facebook
+    // 'facebook' => [
+    //     'client_id' => env('FACEBOOK_CLIENT_ID'),
+    //     'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+    //     'redirect' => env('FACEBOOK_REDIRECT_URI'),
+    // ],
+
+
+
 ];

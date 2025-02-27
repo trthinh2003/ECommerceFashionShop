@@ -180,4 +180,6 @@ class ProductController extends Controller
         $data = Product::where('product_name', 'like', "%$keyword%")->paginate();
         return view('admin.product.index', compact('data', 'keyword'));
     }
+
+
 }
