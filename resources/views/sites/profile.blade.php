@@ -3,15 +3,35 @@
 @section('content')
     @if (Session::has('updateprofile'))
         <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 25rem; display:flex; text-align:center">
-            <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('updateprofile') }}
+            <i
+                class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('updateprofile') }}
         </div>
     @endif
     <div class="container rounded bg-white">
         <div class="row">
             <div class="col-md-3 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-                    <img class="rounded-circle mt-5" width="150px"
-                        src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                    @php
+                    $avatarUrl = asset('client/img/user.jpg'); // Ảnh mặc định
+                
+                    if (Auth::guard('customer')->check() && Auth::guard('customer')->user() !== null) {
+                        $user = Auth::guard('customer')->user();
+                        $avatar = $user->image;
+                
+                        if (!empty($avatar)) {
+                            if (filter_var($avatar, FILTER_VALIDATE_URL)) {
+                                // Nếu ảnh là URL (Google/Facebook)
+                                $avatarUrl = $avatar;
+                            } elseif (file_exists(public_path('client/img/' . $avatar))) {
+                                // Nếu ảnh được lưu trong thư mục client/img và tồn tại
+                                $avatarUrl = asset('client/img/' . $avatar);
+                            }
+                        }
+                    }
+                    @endphp
+                
+                <img class="rounded-circle mt-5" width="150px" src="{{ $avatarUrl }}">
+                
                     <span class="font-weight-bold"></span>
                     <span class="text-black-50"></span>
                 </div>
@@ -20,8 +40,8 @@
                 <form action="{{ route('user.update_profile', Auth::guard('customer')->user()->id) }}" method="post">
                     @csrf @method('PUT')
                     <div class="p-3 py-5">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="text-right">Hồ sơ cá nhân</h4>
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <h4 class="text-center">Hồ sơ cá nhân</h4>
                         </div>
                         <div class="row mt-2">
                             <div class="col-md-6">

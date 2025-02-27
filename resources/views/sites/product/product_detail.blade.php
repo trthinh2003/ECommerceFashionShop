@@ -172,15 +172,11 @@
                         <div class="product__details__tab">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5" role="tab">Mô tả</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5" role="tab">Mô tả sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Đánh giá của
                                         khách hàng(5)</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Thông tin
-                                        thêm</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -200,67 +196,59 @@
                                 {{-- phần đánh giá nữa chỉnh giao diện sau --}}
                                 <div class="tab-pane" id="tabs-6" role="tabpanel">
                                     <div class="product__details__tab__content">
-                                        <div class="product__details__tab__content__item">
-                                            <h5>Products Infomation</h5>
-                                            <p>A Pocket PC is a handheld computer, which features many of the same
-                                                capabilities as a modern PC. These handy little devices allow
-                                                individuals to retrieve and store e-mail messages, create a contact
-                                                file, coordinate appointments, surf the internet, exchange text messages
-                                                and more. Every product that is labeled as a Pocket PC must be
-                                                accompanied with specific software to operate the unit and must feature
-                                                a touchscreen and touchpad.</p>
-                                            <p>As is the case with any new technology product, the cost of a Pocket PC
-                                                was substantial during it’s early release. For approximately $700.00,
-                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                                These days, customers are finding that prices have become much more
-                                                reasonable now that the newness is wearing off. For approximately
-                                                $350.00, a new Pocket PC can now be purchased.</p>
+                                        <!-- Đánh giá sao -->
+                                        <div class="review-section">
+                                            <h5>Đánh giá sản phẩm</h5>
+                                            <div class="rating">
+                                                <span class="star" data-value="1">&#9733;</span>
+                                                <span class="star" data-value="2">&#9733;</span>
+                                                <span class="star" data-value="3">&#9733;</span>
+                                                <span class="star" data-value="4">&#9733;</span>
+                                                <span class="star" data-value="5">&#9733;</span>
+                                                <input type="hidden" id="rating-value" value="0">
+                                            </div>
+                                            <textarea id="review-comment" placeholder="Nhập bình luận của bạn..." rows="3"></textarea>
+                                            <button id="submit-review">Gửi đánh giá</button>
                                         </div>
-                                        <div class="product__details__tab__content__item">
-                                            <h5>Material used</h5>
-                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                                from synthetic materials, not natural like wool. Polyester suits become
-                                                creased easily and are known for not being breathable. Polyester suits
-                                                tend to have a shine to them compared to wool and cotton suits, this can
-                                                make the suit look cheap. The texture of velvet is luxurious and
-                                                breathable. Velvet is a great choice for dinner party jacket and can be
-                                                worn all year round.</p>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- thông tin thêm gì gì nè viết sớ hả gì á --}}
-                                <div class="tab-pane" id="tabs-7" role="tabpanel">
-                                    <div class="product__details__tab__content">
-                                        <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
-                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
-                                            pharetras loremos.</p>
-                                        <div class="product__details__tab__content__item">
-                                            <h5>Products Infomation</h5>
-                                            <p>A Pocket PC is a handheld computer, which features many of the same
-                                                capabilities as a modern PC. These handy little devices allow
-                                                individuals to retrieve and store e-mail messages, create a contact
-                                                file, coordinate appointments, surf the internet, exchange text messages
-                                                and more. Every product that is labeled as a Pocket PC must be
-                                                accompanied with specific software to operate the unit and must feature
-                                                a touchscreen and touchpad.</p>
-                                            <p>As is the case with any new technology product, the cost of a Pocket PC
-                                                was substantial during it’s early release. For approximately $700.00,
-                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                                These days, customers are finding that prices have become much more
-                                                reasonable now that the newness is wearing off. For approximately
-                                                $350.00, a new Pocket PC can now be purchased.</p>
-                                        </div>
-                                        <div class="product__details__tab__content__item">
-                                            <h5>Material used</h5>
-                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                                from synthetic materials, not natural like wool. Polyester suits become
-                                                creased easily and are known for not being breathable. Polyester suits
-                                                tend to have a shine to them compared to wool and cotton suits, this can
-                                                make the suit look cheap. The texture of velvet is luxurious and
-                                                breathable. Velvet is a great choice for dinner party jacket and can be
-                                                worn all year round.</p>
+                                
+                                        <!-- Danh sách bình luận -->
+                                        <div class="comment-section">
+                                            <h5>Bình luận</h5>
+                                            <ul id="review-list">
+                                                <li>
+                                                    <strong>Nguyễn Văn A</strong>
+                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                                                    <p>Nội dung: Sản phẩm rất tốt, chất lượng ổn!</p>
+                                                    <p class="comment-date">Ngày đăng: 2023-08-01</p>
+                                                    <button class="edit-comment">Sửa</button>
+                                                    <button class="delete-comment">Xóa</button>
+                                                </li>
+                                                <li>
+                                                    <strong>Nguyễn Văn A</strong>
+                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                                                    <p>Sản phẩm rất tốt, chất lượng ổn!</p>
+                                                </li>
+                                                <li>
+                                                    <strong>Nguyễn Văn A</strong>
+                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                                                    <p>Sản phẩm rất tốt, chất lượng ổn!</p>
+                                                </li>
+                                                <li>
+                                                    <strong>Nguyễn Văn A</strong>
+                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                                                    <p>Sản phẩm rất tốt, chất lượng ổn!</p>
+                                                </li>
+                                                <li>
+                                                    <strong>Nguyễn Văn A</strong>
+                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
+                                                    <p>Sản phẩm rất tốt, chất lượng ổn!</p>
+                                                </li>
+                                                <li>
+                                                    <strong>Trần Thị B</strong>
+                                                    <div class="stars">⭐⭐⭐⭐</div>
+                                                    <p>Giao hàng nhanh, sản phẩm đẹp nhưng hộp hơi móp.</p>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
@@ -436,4 +424,8 @@
         </div>
     </section>
     <!-- Related Section End -->
+@endsection
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('client/css/comment.css') }}">
 @endsection

@@ -1,0 +1,82 @@
+.review-section, .comment-section {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.comment-section{
+    max-height: 450px; /* Giới hạn chiều cao */
+    overflow-y: auto; /* Thêm thanh cuộn khi quá dài */
+}
+
+.rating {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.rating .star:hover,
+.rating .star.active {
+    color: #f39c12;
+}
+
+textarea {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+#submit-review {
+    margin-top: 10px;
+    padding: 8px 15px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#submit-review:hover {
+    background-color: #218838;
+}
+
+.comment-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-section li {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.comment-section .stars {
+    color: #f39c12;
+}
+
+button.edit-comment, button.delete-comment {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-top: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+button.delete-comment {
+    background: #dc3545;
+}
+
+button.edit-comment:hover {
+    background: #0056b3;
+}
+
+button.delete-comment:hover {
+    background: #c82333;
+}

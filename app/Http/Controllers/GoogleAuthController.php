@@ -30,7 +30,7 @@ class GoogleAuthController extends Controller
             ], [
                 'name' => $googleUser->getName(),
                 'platform_id' => $googleUser->getId(),
-                'avatar' => $googleUser->getAvatar(),
+                'image' => $googleUser->getAvatar(),
             ]);
 
             // Đăng nhập user
