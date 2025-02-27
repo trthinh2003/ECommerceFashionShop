@@ -63,6 +63,7 @@ Route::group(['prefix' => '/'], function () {
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
     Route::get('/search', [HomeController::class, 'search'])->name('sites.search');
+    Route::get('/payment/success', [HomeController::class, 'successPayment'])->name('sites.success.payment');
 
 
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
@@ -135,3 +136,4 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::get('/profit', [RevenueController::class, 'profitYear'])->name('admin.profitYear');
     });
 });
+

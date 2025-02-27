@@ -161,14 +161,14 @@
                                         <ul class="nav nav-secondary" id="parentSizeList">
                                             <li class="nav-item">
                                                 <a class="text-dark" data-bs-toggle="collapse"
-                                                    href="#{{ $productVariant->size . $productVariant->product_id }}">
+                                                    href="#{{ $productVariant->id . $productVariant->size }}">
                                                     <p class="d-inline fw-bold size-text" style="font-size: 1.25rem">
                                                         {{ $productVariant->size }} - {{ $productVariant->color }}
                                                     </p>
                                                     <span class="caret"></span>
                                                 </a>
                                                 <div class="collapse row"
-                                                    id="{{ $productVariant->size . $productVariant->product_id }}" data-bs-parent="#parentSizeList">
+                                                    id="{{ $productVariant->id . $productVariant->size }}" data-bs-parent="#parentSizeList">
                                                     <div class="col-6">
                                                         <label for="">+ Hình ảnh:</label>
                                                         <input type="file" name="image_variant[{{ $productVariant->id }}]"

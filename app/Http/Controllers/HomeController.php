@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
     public function home()
     {
+        if (Session::has('success_payment')) {
+            Session::forget('success_payment');
+        }
         return view('sites.home.index');
     }
 
@@ -71,5 +75,9 @@ class HomeController extends Controller
         // Lấy danh sách màu của sản phẩm
         $colors = $productDetail->ProductVariants->pluck('color')->unique();
         return view('sites.product.product_detail', compact('productDetail', 'sizes', 'colors'));
+    }
+
+    public function successPayment() {
+        return view('sites.success.payment');
     }
 }

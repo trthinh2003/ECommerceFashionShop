@@ -170,9 +170,14 @@ class CheckoutController extends Controller
                         $variant->save();
                     }
                 }
-
+                Session::put('success_data', [
+                    'logo' => 'vnpay.png',
+                    'receiver_name' => $order->receiver_name,
+                    'order_id' => $order->id,
+                    'total' => $order->total
+                ]);
                 Session::forget('order_data'); // Xóa session sau khi lưu vào db
-                return redirect()->route('sites.home')->with('success', 'Thanh toán thành công! Đơn hàng của bạn đã được lưu.');
+                return redirect()->route('sites.success.payment');
             }
         } else {
             return redirect()->route('sites.cart')->with('error', 'Thanh toán thất bại hoặc bị hủy!');
@@ -317,12 +322,17 @@ class CheckoutController extends Controller
                             $variant->save();
                         }
                     }
-
+                    Session::put('success_data', [
+                        'logo' => 'vnpay.png',
+                        'receiver_name' => $order->receiver_name,
+                        'order_id' => $order->id,
+                        'total' => $order->total
+                    ]);
                     DB::commit();
                     Session::forget('order_data');
 
-                    return redirect()->route('sites.home')->with('success', 'Thanh toán thành công! Đơn hàng của bạn đã được lưu.');
-                } catch (\Exception $e) {
+                    return redirect()->route('sites.success.payment');
+                } catch (Exception $e) {
                     // Hiển thị lỗi ngay trên trình duyệt để dễ debug
                     dd($e->getMessage(), $e->getFile(), $e->getLine());
                 }
