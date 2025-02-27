@@ -52,14 +52,36 @@
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__hover">
+                            @php
+                                $avatarUrl = asset('client/img/user.jpg'); // Ảnh mặc định
+
+                                if (Auth::guard('customer')->check()) {
+                                    $user = Auth::guard('customer')->user();
+
+                                    if ($user && !empty($user->image)) {
+                                        if (filter_var($user->image, FILTER_VALIDATE_URL)) {
+                                            // Nếu ảnh là URL (Google/Facebook)
+                                            $avatarUrl = $user->image;
+                                        } else {
+                                            // Nếu ảnh được lưu trong thư mục client/img
+                                            $avatarUrl = asset('client/img/' . $user->image);
+                                        }
+                                    }
+                                }
+                            @endphp
+
+
                             @if (Auth::guard('customer')->check())
-                                <img src="{{ asset('client/img/' . Auth::guard('customer')->user()->image) }}"
-                                    width="30" alt="" class="rounded-circle">
+                                <img src="{{ $avatarUrl }}" alt="User Avatar" width="30" alt=""
+                                    class="rounded-circle">
+                                {{-- <img src="{{ asset('client/img/' . Auth::guard('customer')->user()->image) }}"
+                                    width="30" alt="" class="rounded-circle"> --}}
                                 <span>Xin chào, {{ Auth::guard('customer')->user()->name }}<i
                                         class="arrow_carrot-down"></i></span>
                                 <ul>
                                     <li><a class="text-dark" href="{{ route('user.profile') }}">Hồ sơ cá nhân</a></li>
-                                    <li><a class="text-dark" href="{{ route('user.logout') }}">Lịch sử giao dịch</a>
+                                    <li><a class="text-dark" href="{{ route('sites.getHistoryOrder') }}">Lịch sử giao
+                                            dịch</a>
                                     </li>
                                     <li><a class="text-dark" href="{{ route('user.logout') }}">Đăng Xuất</a></li>
                                 </ul>

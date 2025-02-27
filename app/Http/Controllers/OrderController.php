@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 use SebastianBergmann\CodeCoverage\Report\Xml\Totals;
@@ -21,23 +22,57 @@ class OrderController extends Controller
     public function index()
     {
         $data = DB::table('orders as o')
-        ->join('customers as c', 'o.customer_id', '=', 'c.id')
-        ->where('o.status', 'Chờ xử lý')
-        ->orderBy('o.id', 'ASC')
-        ->select('o.*', 'c.name as customer_name')
-        ->paginate(5);
+            ->join('customers as c', 'o.customer_id', '=', 'c.id')
+            ->where('o.status', 'Chờ xử lý')
+            ->orderBy('o.id', 'ASC')
+            ->select('o.*', 'c.name as customer_name')
+            ->paginate(5);
 
         return view('admin.order.order_pending', compact('data'));
     }
 
-    public function orderApproval(){
+    public function orderApproval()
+    {
         $data = DB::table('orders as o')
-        ->join('customers as c', 'o.customer_id', '=', 'c.id')
-        ->where('o.status', 'Đã xử lý')
-        ->orderBy('o.id', 'ASC')
-        ->select('o.*', 'c.name as customer_name')
-        ->paginate(5);
+            ->join('customers as c', 'o.customer_id', '=', 'c.id')
+            ->where('o.status', 'Đã xử lý')
+            ->orderBy('o.id', 'ASC')
+            ->select('o.*', 'c.name as customer_name')
+            ->paginate(5);
         return view('admin.order.order_approved', compact('data'));
+    }
+
+
+    public function exportInvoice($id)
+    {
+        $orderDetail = DB::table('orders as o')
+            ->join('customers as c', 'o.customer_id', '=', 'c.id')
+            ->join('order_details as od', 'o.id', '=', 'od.order_id')
+            ->join('products as p', 'p.id', '=', 'od.product_id')
+            ->join('product_variants as pv', 'pv.product_id', '=', 'p.id')
+            ->where('o.id', $id)
+            ->select(
+                'o.*',
+                'c.name as customer_name',
+                'c.phone',
+                'c.email',
+                'c.address',
+                'p.product_name',
+                'p.id as product_id',
+                'p.image',
+                'od.quantity',
+                'od.price',
+                'od.code',
+                'pv.size',
+                'pv.color'
+            )
+            ->get();
+        if ($orderDetail->isEmpty()) {
+            return redirect()->back()->with('error', 'Đơn hàng không tồn tại!');
+        }
+
+        $pdf = Pdf::loadView('sites.export.pdf.invoice', compact('orderDetail'));
+        return $pdf->download('invoice_order_' . $id . '.pdf');
     }
 
     /**
@@ -135,15 +170,15 @@ class OrderController extends Controller
      * Display the specified resource.
      */
     public function show(Order $order)
-    {  
+    {
         $data = DB::table('orders as o')
-        ->join('customers as c', 'o.customer_id', '=', 'c.id')
-        ->join('order_details as od', 'o.id', '=', 'od.order_id')
-        ->join('products as p', 'p.id', '=', 'od.product_id')
-        ->join('product_variants as pv', 'pv.product_id', '=', 'p.id')
-        ->where('o.id', $order->id)
-        ->select('o.*', 'c.name as customer_name', 'p.product_name as product_name','p.image', 'pv.size', 'pv.color', 'od.quantity', 'od.price', 'od.code')
-        ->get();
+            ->join('customers as c', 'o.customer_id', '=', 'c.id')
+            ->join('order_details as od', 'o.id', '=', 'od.order_id')
+            ->join('products as p', 'p.id', '=', 'od.product_id')
+            ->join('product_variants as pv', 'pv.product_id', '=', 'p.id')
+            ->where('o.id', $order->id)
+            ->select('o.*', 'c.name as customer_name', 'p.product_name as product_name', 'p.image', 'pv.size', 'pv.color', 'od.quantity', 'od.price', 'od.code')
+            ->get();
         return view('admin.order.order_detail', compact('data'));
     }
 

@@ -57,7 +57,7 @@
                         <script>
                             document.write(new Date().getFullYear());
                         </script>
-                            Bản quyền thuộc về nhóm TST by <a href="https://colorlib.com" target="_blank">TST</a>
+                            Bản quyền thuộc về nhóm TST by <a href=#" target="#">TST</a>
                     </p>
                     <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 </div>

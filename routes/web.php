@@ -49,6 +49,7 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/profile', [CustomerController::class, 'profile'])->name('user.profile')->middleware('auth:customer');
         Route::put('/profile/{customer}/update', [CustomerController::class, 'update_profile'])->name('user.update_profile');
         Route::post('/check-login', [CustomerController::class, 'checkLogin'])->name('user.checkLogin');
+      
     });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
@@ -62,9 +63,14 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
-    Route::get('/search', [HomeController::class, 'search'])->name('sites.search');
+    Route::get('/order-history', [CustomerController::class, 'getHistoryOrderOfCustomer'])->name('sites.getHistoryOrder');
+    Route::get('/order-detail/{order}', [CustomerController::class, 'showOrderDetailOfCustomer'])->name('sites.showOrderDetailOfCustomer');
+    Route::put('/cancel-order{id}', [CustomerController::class, 'cancelOrder'])->name('sites.cancelOrder');
 
+    // Xuất hoá đơn PDF
+    Route::get('/order/{id}/invoice', [OrderController::class, 'exportInvoice'])->name('order.invoice');
 
+    // Xử lý thanh toán
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
     // Routes xử lý callback từ các cổng thanh toán
     Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('payment.vnpay.return');
