@@ -35,8 +35,8 @@
                 <div class="col-lg-3">
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
-                            <form action="#">
-                                <input type="text" placeholder="Search...">
+                            <form action="/shop" method="GET">
+                                <input type="text" name="search" placeholder="Search..." value="{{ request('search') }}">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
                         </div>

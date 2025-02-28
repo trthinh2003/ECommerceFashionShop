@@ -20,6 +20,11 @@ class HomeController extends Controller
     {
         $query = Product::with('category');
 
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where('product_name', 'LIKE', "%$search%");
+        }
+
         if ($request->has('category')) {
             $categoryName = $request->category;
             $query->whereHas('category', function ($q) use ($categoryName) {
