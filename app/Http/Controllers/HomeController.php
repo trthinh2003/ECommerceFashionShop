@@ -16,9 +16,24 @@ class HomeController extends Controller
         return view('sites.home.index');
     }
 
-    public function shop()
+    public function shop(Request $request)
     {
-        $products = Product::orderBy('id', 'ASC')->paginate(12);
+        $query = Product::with('category');
+
+        if ($request->has('category')) {
+            $categoryName = $request->category;
+            $query->whereHas('category', function ($q) use ($categoryName) {
+                $q->where('category_name', $categoryName);
+            });
+        }
+
+        if ($request->has('brand')) {
+            $brandName = $request->brand;
+            $query->where('brand', $brandName);
+        }
+
+        $products = $query->paginate(12);
+
         return view("sites.shop.shop", compact('products'));
     }
 

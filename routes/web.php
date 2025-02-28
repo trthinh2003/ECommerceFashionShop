@@ -49,7 +49,7 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/profile', [CustomerController::class, 'profile'])->name('user.profile')->middleware('auth:customer');
         Route::put('/profile/{customer}/update', [CustomerController::class, 'update_profile'])->name('user.update_profile');
         Route::post('/check-login', [CustomerController::class, 'checkLogin'])->name('user.checkLogin');
-      
+
     });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
@@ -63,14 +63,9 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
-<<<<<<< HEAD
-    Route::get('/search', [HomeController::class, 'search'])->name('sites.search');
-    Route::get('/payment/success', [HomeController::class, 'successPayment'])->name('sites.success.payment');
-=======
     Route::get('/order-history', [CustomerController::class, 'getHistoryOrderOfCustomer'])->name('sites.getHistoryOrder');
     Route::get('/order-detail/{order}', [CustomerController::class, 'showOrderDetailOfCustomer'])->name('sites.showOrderDetailOfCustomer');
     Route::put('/cancel-order{id}', [CustomerController::class, 'cancelOrder'])->name('sites.cancelOrder');
->>>>>>> be941c463022116ca24043a61616c8b6f9ef8349
 
     // Xuất hoá đơn PDF
     Route::get('/order/{id}/invoice', [OrderController::class, 'exportInvoice'])->name('order.invoice');
@@ -146,4 +141,3 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
         Route::get('/profit', [RevenueController::class, 'profitYear'])->name('admin.profitYear');
     });
 });
-

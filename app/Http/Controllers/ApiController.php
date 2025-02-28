@@ -10,6 +10,7 @@ use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Staff;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
@@ -75,7 +76,7 @@ class ApiController extends Controller
             'Provider',
             'InventoryDetails.Product.Category',
             'InventoryDetails.Product.ProductVariants'
-        ])->paginate(5); // Số lượng item mỗi trang
+        ])->paginate(10);
 
         return response()->json([
             'status_code' => 200,
@@ -107,6 +108,43 @@ class ApiController extends Controller
             return $this->apiStatus(null, 404, 0, 'Data not found.');
         }
     }
+
+    // public function inventoriesSearch(Request $request)
+    // {
+    //     $query = Inventory::with([
+    //         'Staff',
+    //         'Provider',
+    //         'InventoryDetails.Product.Category',
+    //         'InventoryDetails.Product.ProductVariants'
+    //     ]);
+
+    //     if ($request->has('id')) {
+    //         $query->where('id', $request->id);
+    //     }
+
+    //     if ($request->has('staff_name')) {
+    //         $query->whereHas('Staff', function ($q) use ($request) {
+    //             $q->where('name', 'like', '%' . $request->staff_name . '%');
+    //         });
+    //     }
+
+    //     $inventories = $query->paginate(10);
+
+    //     return response()->json([
+    //         'status_code' => 200,
+    //         'message' => 'Thành công',
+    //         'data' => InventoryResource::collection($inventories),
+    //         'pagination' => [
+    //             'current_page' => $inventories->currentPage(),
+    //             'last_page' => $inventories->lastPage(),
+    //             'total' => $inventories->total(),
+    //             'per_page' => $inventories->perPage(),
+    //             'next_page_url' => $inventories->nextPageUrl(),
+    //             'prev_page_url' => $inventories->previousPageUrl(),
+    //         ]
+    //     ]);
+    // }
+
 
     public function inventoryDetail($id)
     {
