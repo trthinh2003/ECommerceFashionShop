@@ -31,7 +31,7 @@
 .modal-body {
     flex-grow: 1;
     overflow-y: auto;
-    max-height: 400px; /* Điều chỉnh chiều cao tùy ý */
+    max-height: 600px; /* Điều chỉnh chiều cao tùy ý */
     display: flex;
     flex-direction: column;
 }

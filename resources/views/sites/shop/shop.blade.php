@@ -35,8 +35,8 @@
                 <div class="col-lg-3">
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
-                            <form action="#">
-                                <input type="text" placeholder="Search...">
+                            <form action="/shop" method="GET">
+                                <input type="text" name="search" placeholder="Search..." value="{{ request('search') }}">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
                         </div>
@@ -59,16 +59,26 @@
                                                                 let response = await fetch('http://127.0.0.1:8000/api/category');
                                                                 let data = await response.json();
                                                                 let categories = data.data;
-                                                                console.log(categories);
 
                                                                 let categoryList = document.getElementById('category-list');
-                                                                categoryList.innerHTML = "";
+                                                                categoryList.innerHTML = ""; // Xóa danh mục cũ
+
                                                                 categories.forEach(category => {
                                                                     let listItem = document.createElement('li');
                                                                     listItem.innerHTML =
-                                                                        `<a href="#">${category.category_name} (${category.products_count})</a>`;
+                                                                        `<a class="category__item" href="#" data-category="${category.category_name}">${category.category_name} (${category.products_count})</a>`;
                                                                     categoryList.appendChild(listItem);
                                                                 });
+                                                                let categoryItems = document.querySelectorAll('.category__item');
+                                                                // console.log(categoryItems);
+                                                                categoryItems.forEach(item => {
+                                                                    item.addEventListener('click', function(e) {
+                                                                        e.preventDefault();
+                                                                        let category = this.getAttribute("data-category");
+                                                                        window.location.href = '/shop?category=' + encodeURIComponent(category);
+                                                                    });
+                                                                });
+
                                                             } catch (error) {
                                                                 console.error("Lỗi API:", error);
                                                             }
@@ -96,12 +106,24 @@
                                                                 let brands = data.data;
 
                                                                 let brandList = document.getElementById('brand-list');
-                                                                brandList.innerHTML = "";
+                                                                brandList.innerHTML = ""; // Xóa danh sách cũ
+
                                                                 brands.forEach(brand => {
                                                                     let listItem = document.createElement('li');
-                                                                    listItem.innerHTML = `<a href="#">${brand.brand}</a>`;
+                                                                    listItem.innerHTML =
+                                                                        `<a class="brand__item" href="#" data-brand="${brand.brand}">${brand.brand}</a>`;
                                                                     brandList.appendChild(listItem);
                                                                 });
+
+                                                                let brandItems = document.querySelectorAll('.brand__item');
+                                                                brandItems.forEach(item => {
+                                                                    item.addEventListener('click', function(e) {
+                                                                        e.preventDefault();
+                                                                        let brand = this.getAttribute("data-brand");
+                                                                        window.location.href = '/shop?brand=' + encodeURIComponent(brand);
+                                                                    });
+                                                                });
+
                                                             } catch (error) {
                                                                 console.error("Lỗi API:", error);
                                                             }

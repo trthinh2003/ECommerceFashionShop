@@ -50,7 +50,7 @@ Route::group(['prefix' => '/'], function () {
         Route::get('/profile', [CustomerController::class, 'profile'])->name('user.profile')->middleware('auth:customer');
         Route::put('/profile/{customer}/update', [CustomerController::class, 'update_profile'])->name('user.update_profile');
         Route::post('/check-login', [CustomerController::class, 'checkLogin'])->name('user.checkLogin');
-      
+
     });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
