@@ -145,7 +145,7 @@
                                                     <span class="label">New</span>
                                                     <ul class="product__hover">
                                                       <li>
-                                                            <a href="route('sites.addToWishList', ${product.id})">
+                                                            <a href="#" class="add-to-wishlist">
                                                                 <img src="{{ asset('client/img/icon/heart.png') }}" alt="">
                                                             </a>
                                                     </li>

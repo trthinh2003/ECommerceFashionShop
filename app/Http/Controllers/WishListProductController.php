@@ -25,11 +25,36 @@ class WishListProductController extends Controller
         return redirect()->route('sites.wishlist')->with('success', 'Đã thêm sản phẩm vào danh sách yêu thích!');
     }
 
-    public function remove($id, Wishlist $wishlist)
+    // public function addToWishList(Wishlist $wishlist, Product $product)
+    // {
+    //     $productVariant = ProductVariant::where('product_id', $product->id)->first();
+    //     if (!$productVariant) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Sản phẩm này hiện không có sẵn biến thể!'
+    //         ]);
+    //     }
+
+    //     // Kiểm tra nếu sản phẩm đã tồn tại trong wishlist
+    //     if (session()->has('wishlist') && isset(session('wishlist')[$product->id])) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Sản phẩm đã có trong danh sách yêu thích!'
+    //         ]);
+    //     }
+
+    //     $wishlist->addToWishlist($product, $productVariant);
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Đã thêm sản phẩm vào danh sách yêu thích!'
+    //     ]);
+    // }
+
+
+    public function removefromWishList($id, Wishlist $wishlist)
     {
-        $wishlist->remove($id);
-        return redirect()->route('sites.cart');
+        $wishlist->removefromWishList($id);
+        return redirect()->route('sites.wishlist');
     }
-
-
 }

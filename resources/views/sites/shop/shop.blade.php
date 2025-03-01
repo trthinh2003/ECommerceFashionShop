@@ -251,7 +251,7 @@
                                             src="{{ asset('uploads/' . $items->image) }}"
                                             alt="{{ $items->product_name }}">
                                         <ul class="product__hover">
-                                            <li><a href="#"><img src="{{ asset('client/img/icon/heart.png') }}"
+                                            <li><a href="{{route('sites.addToWishList', $items->id)}}"><img src="{{ asset('client/img/icon/heart.png') }}"
                                                         alt=""></a></li>
                                             <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}"
                                                         alt=""><span>Compare</span></a></li>

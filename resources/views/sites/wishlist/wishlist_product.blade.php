@@ -4,65 +4,61 @@
 
 @section('content')
 
-<div class="fr-bordered">
-    {{-- 0 Sản phẩm
-Không có sản phẩm nào trong danh sách mong muốn của bạn.
-Nhấn vào dấu trái tim để thêm sản phẩm vào danh sách mong muốn của bạn. --}}
-    <div>
-        <div class="fr-wrapper mb-l" style="width: auto;">
-            <div class="fr-text fr-system-text">Sản phẩm</div>
-        </div>
-        <div class="fr-list">
-            @if (Session::has('wishlist') && count(Session::get('wishlist')) > 0)
-                @foreach (Session::get('wishlist') as $item)
-                <div>
-                    <a href="{{url('product').'/'.$item->slug}}" style="">
-                        <div class="fr-product-card list list-for-wishlist">
-                            <div class="image-wrap w3-f">
-                                <div class="fr-product-image fr-product-image-ecr-phase3">
-                                    <div class="favorite large swiper-no-swiping">
-                                        <button aria-label="Favorite">
-                                            <span class="fr-icon active favorite_large" style="font-size: 24px;" role="img" aria-label="Favorite">
-                                                <span class="fr-implicit">Thêm vào danh sách mong muốn</span>
-                                            </span>
-                                        </button>
-                                    </div>
-                                    <div class="ec-renewal-image-wrapper ecr-phase3-image-wrapper" 
-                                         style="background-image: {{ asset('uploads/' . $items->image) }}; background-position: center center;">
-                                        <img src="{{ asset('uploads/' . $items->image) }}" alt="Image not found" class="thumb-img" loading="lazy">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="info">
-                                <div class="mb-s">
-                                    <h5 class="fr-head h5 h5">
-                                        <span class="title fr-no-uppercase">{{ $item->product_name }}</span>
-                                    </h5>
-                                </div>
-                                <dl class="fr-definition-list inline minor">
-                                    <dt class="fr-definition-list-term">Mã sản phẩm</dt>
-                                    <dd class="fr-definition-list-description">{{ $item->id }}</dd>
-                                </dl>
-                                <dl class="fr-definition-list inline">
-                                    <dt class="fr-definition-list-term">Màu sắc</dt>
-                                    <dd class="fr-definition-list-description">{{ $item->color }}</dd>
-                                </dl>
-                                <dl class="fr-definition-list inline">
-                                    <dt class="fr-definition-list-term">Kích cỡ</dt>
-                                    <dd class="fr-definition-list-description">{{ $item->size }}</dd>
-                                </dl>
-                                <div class="mb-m"></div>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="mt-l mb-l">
-                        <div class="fr-h-rule full"><hr></div>
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Wishlist</h4>
+                    <div class="breadcrumb__links">
+                        <a href="{{ route('sites.home') }}">Home</a>
+                        <span>Danh sách mong muốn</span>
                     </div>
                 </div>
-                @endforeach
-            @endif
-
+            </div>
         </div>
     </div>
+</section>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">YÊU THÍCH</h2>
+
+    @if (Session::has('wishlist') && count(Session::get('wishlist')) > 0)
+        <div class="list-group">
+            @foreach (Session::get('wishlist') as $item)
+            <div class="list-group-item d-flex align-items-center border rounded shadow-sm p-3 mb-3">
+                <!-- Hình ảnh sản phẩm -->
+                <div class="flex-shrink-0">
+                    <a href="{{ url('product/'.$item->slug) }}">
+                        <img src="{{ asset('uploads/' . $item->image) }}" 
+                            alt="{{ $item->name }}" 
+                            class="rounded shadow-sm" 
+                            style="width: 280px; height: 280px;">
+                    </a>
+                </div>
+
+                <!-- Thông tin sản phẩm -->
+                <div class="flex-grow-1 ms-4">
+                    <h5 class="mb-2">{{ $item->name }}</h5>
+                    <p class="mb-1"><strong>Mã sản phẩm:</strong> {{ $item->id }}</p>
+                    <p class="mb-1"><strong>Màu sắc:</strong> {{ $item->color }}</p>
+                    <p class="mb-1"><strong>Kích cỡ:</strong> {{ $item->size }}</p>
+                </div>
+
+                <!-- Nút xóa -->
+                <div class="text-end">
+                    <a href="{{route('sites.removefromWishList', $item->id)}}" class="btn btn-outline-danger remove-wishlist px-3 py-2"">❌ Xóa</a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    @else
+        <div class="text-center">
+            <p class="text-muted">Không có sản phẩm nào trong danh sách mong muốn của bạn.</p>
+            <p>Nhấn vào ❤️ để thêm sản phẩm vào wishlist!</p>
+            <a href="{{ url('/') }}#product-list-home" class="btn btn-primary">Tiếp tục mua sắm</a>
+        </div>
+    @endif
 </div>
 @endsection
+

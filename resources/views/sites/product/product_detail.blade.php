@@ -1,7 +1,20 @@
-{{-- @php
-    // dd($productDetail);
-    dd($colors);
-@endphp --}}
+@php
+    // Xử lý màu sắc (hơi mủ)
+    function getColorHex($color)
+    {
+        $colorMap = [
+            'Đen' => '#000000',
+            'Vàng' => '#FFD700',
+            'Trắng' => '#FFFFFF',
+            'Xanh' => '#007BFF',
+            'Xanh lá' => '#28a745',
+            'Đỏ' => '#FF0000',
+            'Hồng' => '#FFC0CB',
+            'Cam' => '#FFA500',
+        ];
+        return $colorMap[$color] ?? '#CCCCCC';
+    }
+@endphp
 
 @extends('sites.master')
 @section('title', $productDetail->product_name)
@@ -100,7 +113,8 @@
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Đánh Giá</span>
                             </div>
-                            <h3>{{ number_format($productDetail->price) }}đ<span>{{ number_format($productDetail->price) }}</span></h3>
+                            <h3>{{ number_format($productDetail->price) }}đ<span>{{ number_format($productDetail->price) }}</span>
+                            </h3>
                             <p>{{ $productDetail->short_description }}</p>
                             <div class="product__details__option">
                                 <div class="product__details__option__size">
@@ -108,29 +122,12 @@
                                     @foreach ($sizes as $size)
                                         <label for="size-{{ $size }}">{{ $size }}
                                             <input type="radio" name="size" id="size-{{ $size }}"
-                                                value="{{ $size }}">
+                                                value="{{ $size }}" required>
                                         </label>
                                     @endforeach
                                 </div>
 
 
-                                @php
-                                // Xử lý màu sắc (hơi mủ)
-                                    function getColorHex($color)
-                                    {
-                                        $colorMap = [
-                                            'Đen' => '#000000',
-                                            'Vàng' => '#FFD700',
-                                            'Trắng' => '#FFFFFF',
-                                            'Xanh' => '#007BFF',
-                                            'Xanh lá' => '#28a745',
-                                            'Đỏ' => '#FF0000',
-                                            'Hồng' => '#FFC0CB',
-                                            'Cam' => '#FFA500',
-                                        ];
-                                        return $colorMap[$color] ?? '#CCCCCC';
-                                    }
-                                @endphp
 
 
                                 <div class="product__details__option__color">
@@ -138,7 +135,8 @@
                                     @foreach ($colors as $index => $color)
                                         <label class="color-box" style="background-color: {{ getColorHex($color) }};"
                                             for="color-{{ $index }}" title="{{ $color }}">
-                                            <input type="radio" name="color" id="color-{{ $index }}" value="{{ $color }}">
+                                            <input type="radio" name="color" id="color-{{ $index }}"
+                                                value="{{ $color }}">
                                         </label>
                                     @endforeach
                                 </div>
@@ -152,7 +150,7 @@
                                 <a href="#" class="primary-btn">Thêm vào giỏ hàng</a>
                             </div>
                             <div class="product__details__btns__option">
-                                <a href="#"><i class="fa fa-heart"></i>Thêm vào yêu thích</a>
+                                <a href="{{route('sites.addToWishList', $productDetail->id)}}"><i class="fa fa-heart"></i>Thêm vào yêu thích</a>
                                 <a href="#"><i class="fa fa-exchange"></i>So sánh giá</a>
                             </div>
                             <div class="product__details__last__option">
@@ -172,7 +170,8 @@
                         <div class="product__details__tab">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5" role="tab">Mô tả sản phẩm</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5" role="tab">Mô tả sản
+                                        phẩm</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Đánh giá của
@@ -210,7 +209,7 @@
                                             <textarea id="review-comment" placeholder="Nhập bình luận của bạn..." rows="3"></textarea>
                                             <button id="submit-review">Gửi đánh giá</button>
                                         </div>
-                                
+
                                         <!-- Danh sách bình luận -->
                                         <div class="comment-section">
                                             <h5>Bình luận</h5>
@@ -279,8 +278,8 @@
                                 </li>
                                 <li><a href="#"><img src="{{ 'client/img/icon/compare.png' }}" alt="">
                                         <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}"
-                                            alt=""></a></li>
+                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}" alt=""></a>
+                                </li>
                             </ul>
                         </div>
                         <div class="product__item__text">
@@ -316,8 +315,8 @@
                                 </li>
                                 <li><a href="#"><img src="{{ 'client/img/icon/compare.png' }}" alt="">
                                         <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}"
-                                            alt=""></a></li>
+                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}" alt=""></a>
+                                </li>
                             </ul>
                         </div>
                         <div class="product__item__text">
@@ -354,8 +353,8 @@
                                 </li>
                                 <li><a href="#"><img src="{{ 'client/img/icon/compare.png' }}" alt="">
                                         <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}"
-                                            alt=""></a></li>
+                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}" alt=""></a>
+                                </li>
                             </ul>
                         </div>
                         <div class="product__item__text">
@@ -391,8 +390,8 @@
                                 </li>
                                 <li><a href="#"><img src="{{ 'client/img/icon/compare.png' }}" alt="">
                                         <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}"
-                                            alt=""></a></li>
+                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}" alt=""></a>
+                                </li>
                             </ul>
                         </div>
                         <div class="product__item__text">

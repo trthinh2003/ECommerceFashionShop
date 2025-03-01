@@ -45,6 +45,29 @@ class CartController extends Controller
         return redirect()->route('sites.cart');
     }
 
+
+    public function addToCartFromProduct(Request $request, Cart $cart, Product $product)
+    {
+        dd($request->all());
+        $productId = $request->input('product_id');
+        $size = $request->input('selected_size');
+        $color = $request->input('selected_color');
+        $quantity = (int) $request->input('selected_quantity', 1);
+
+        // Tìm biến thể sản phẩm
+        $productVariant = ProductVariant::where('product_id', $productId)
+            ->where('size', $size)
+            ->where('color', $color)
+            ->first();
+
+        // Thêm vào giỏ hàng
+        $cart->add($product, $quantity, $productVariant);
+
+        return redirect()->route('sites.cart')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+    }
+
+
+
     public function update($id, $quantity = 1)
     {
         return redirect()->route('sites.cart');

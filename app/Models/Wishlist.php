@@ -23,6 +23,7 @@ class Wishlist{
                 'image' => $product->image,
                 'color' => $productVariant->color,
                 'size' => $productVariant->size,
+                'slug' => $product->slug
             ];
             $this->items[$product->id] = (object)$items;
         }
@@ -33,7 +34,7 @@ class Wishlist{
 
 
 
-    public function remove($id)
+    public function removefromWishList($id)
     {
         if (!empty($this->items[$id])) {
             unset($this->items[$id]);
