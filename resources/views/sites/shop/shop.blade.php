@@ -36,7 +36,7 @@
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
                             <form action="/shop" method="GET">
-                                <input type="text" name="search" placeholder="Search..." value="{{ request('search') }}">
+                                <input type="text" name="q" placeholder="Search..." value="{{ request('search') }}">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
                         </div>
@@ -137,24 +137,33 @@
                                 </div>
                                 <div class="card">
                                     <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Lọc Giá</a>
+                                        <a data-toggle="collapse" data-target="#collapseThree">Lọc Giá (THEO VND)</a>
                                     </div>
                                     <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
                                                 <ul>
-                                                    <li><a href="#">$0.00 - $50.00</a></li>
-                                                    <li><a href="#">$50.00 - $100.00</a></li>
-                                                    <li><a href="#">$100.00 - $150.00</a></li>
-                                                    <li><a href="#">$150.00 - $200.00</a></li>
-                                                    <li><a href="#">$200.00 - $250.00</a></li>
-                                                    <li><a href="#">250.00+</a></li>
+                                                    <li><a class="price__item" href="javascript:void(0)">{{ number_format(0, 0, ',', '.') }} - {{ number_format(100000, 0, ',', '.') }}</a></li>
+                                                    <li><a class="price__item" href="javascript:void(0)">{{ number_format(100000, 0, ',', '.') }} - {{ number_format(300000, 0, ',', '.') }}</a></li>
+                                                    <li><a class="price__item" href="javascript:void(0)">{{ number_format(300000, 0, ',', '.') }} - {{ number_format(500000, 0, ',', '.') }}</a></li>
+                                                    <li><a class="price__item" href="javascript:void(0)">{{ number_format(500000, 0, ',', '.') }} - {{ number_format(1000000, 0, ',', '.') }}</a></li>
+                                                    <li><a class="price__item" href="javascript:void(0)">Trên {{ number_format(1000000, 0, ',', '.') }}</a></li>
                                                 </ul>
                                             </div>
                                         </div>
+                                        <script>
+                                            let priceItems = document.querySelectorAll('.price__item');
+                                            priceItems.forEach(item => {
+                                                item.addEventListener('click', function(e) {
+                                                    e.preventDefault();
+                                                    let price = this.textContent;
+                                                    window.location.href = '/shop?price=' + encodeURIComponent(price.replaceAll(' ', '').replace('Trên', ''));
+                                                });
+                                            });
+                                        </script>
                                     </div>
                                 </div>
-                                <div class="card">
+                                {{-- <div class="card">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseFour">Size</a>
                                     </div>
@@ -182,8 +191,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card">
+                                </div> --}}
+                                {{-- <div class="card">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseFive">Màu Sắc</a>
                                     </div>
@@ -220,7 +229,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="card">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseSix">Tags</a>
@@ -228,14 +237,27 @@
                                     <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__tags">
-                                                <a href="#">Product</a>
-                                                <a href="#">Bags</a>
-                                                <a href="#">Shoes</a>
-                                                <a href="#">Fashio</a>
-                                                <a href="#">Clothing</a>
-                                                <a href="#">Hats</a>
-                                                <a href="#">Accessories</a>
+                                                <a class="tag-item" href="javascript:void(0)">Sơ Mi</a>
+                                                <a class="tag-item" href="javascript:void(0)">Áo</a>
+                                                <a class="tag-item" href="javascript:void(0)">Kẻ Sọc</a>
+                                                <a class="tag-item" href="javascript:void(0)">Linen</a>
+                                                <a class="tag-item" href="javascript:void(0)">Cotton</a>
+                                                <a class="tag-item" href="javascript:void(0)">utme!</a>
+                                                <a class="tag-item" href="javascript:void(0)">smart</a>
+                                                <a class="tag-item" href="javascript:void(0)">thun</a>
+                                                <a class="tag-item" href="javascript:void(0)">dài</a>
+                                                <a class="tag-item" href="javascript:void(0)">dry-ex</a>
                                             </div>
+                                            <script>
+                                                let tagItems = document.querySelectorAll('.tag-item');
+                                                tagItems.forEach(item => {
+                                                    item.addEventListener('click', function(e) {
+                                                        e.preventDefault();
+                                                        let tag = this.textContent;
+                                                        window.location.href = '/shop?tag=' + encodeURIComponent(tag.replace(' ', '-'));
+                                                    });
+                                                });
+                                            </script>
                                         </div>
                                     </div>
                                 </div>

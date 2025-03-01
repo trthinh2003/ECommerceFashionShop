@@ -102,68 +102,136 @@
         <div class="product__details__content">
             <div class="container">
                 <div class="row d-flex justify-content-center">
+
                     <div class="col-lg-8">
-                        <div class="product__details__text">
-                            <h4>{{ $productDetail->product_name }}</h4>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-o"></i>
-                                <span> - 5 Đánh Giá</span>
-                            </div>
-                            <h3>{{ number_format($productDetail->price) }}đ<span>{{ number_format($productDetail->price) }}</span>
-                            </h3>
-                            <p>{{ $productDetail->short_description }}</p>
-                            <div class="product__details__option">
-                                <div class="product__details__option__size">
-                                    <span>Kích cỡ:</span>
-                                    @foreach ($sizes as $size)
-                                        <label for="size-{{ $size }}">{{ $size }}
-                                            <input type="radio" name="size" id="size-{{ $size }}"
-                                                value="{{ $size }}" required>
-                                        </label>
-                                    @endforeach
+                        <form action="{{ route('sites.addFromDetail', $productDetail->id) }}" method="post">
+                            @csrf
+                            <div class="product__details__text">
+                                <h4>{{ $productDetail->product_name }}</h4>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <span> - 5 Đánh Giá</span>
                                 </div>
-
-
-
-
-                                <div class="product__details__option__color">
-                                    <span>Màu Sắc:</span>
-                                    @foreach ($colors as $index => $color)
-                                        <label class="color-box" style="background-color: {{ getColorHex($color) }};"
-                                            for="color-{{ $index }}" title="{{ $color }}">
-                                            <input type="radio" name="color" id="color-{{ $index }}"
-                                                value="{{ $color }}">
-                                        </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                            <div class="product__details__cart__option">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1">
+                                <h3>{{ number_format($productDetail->price) }}đ<span>{{ number_format($productDetail->price) }}</span>
+                                </h3>
+                                <p>{{ $productDetail->short_description }}</p>
+                                <div class="product__details__option">
+                                    <div class="product__details__option__size">
+                                        <span>Kích cỡ:</span>
+                                        @foreach ($sizes as $size)
+                                            <label for="size-{{ $size }}">{{ $size }}
+                                                <input type="radio" name="size" id="size-{{ $size }}"
+                                                    value="{{ $size }}" required>
+                                                <input type="radio" name="size" value="" hidden checked>
+                                            </label>
+                                        @endforeach
                                     </div>
+                                    <div class="product__details__option__color">
+                                        <span>Màu Sắc:</span>
+                                        @foreach ($colors as $index => $color)
+                                            <label class="color-box" style="background-color: {{ getColorHex($color) }};"
+                                                for="color-{{ $index }}" title="{{ $color }}">
+                                                <input type="radio" name="color" id="color-{{ $index }}"
+                                                    class="color-choice-item" value="{{ $color }}" required>
+                                            </label>
+                                        @endforeach
+                                    </div>
+
+                                    <script>
+                                        document.querySelectorAll('.color-choice-item').forEach(item => {
+                                            item.addEventListener('change', async (e) => {
+                                                // Xóa viền tất cả label trước khi thêm viền mới
+                                                document.querySelectorAll('.color-box').forEach(label => label.style.border = 'none');
+
+                                                // Thêm viền xanh cho label được chọn
+                                                let selectedLabel = document.querySelector(`label[for="${e.target.id}"]`);
+                                                if (selectedLabel) {
+                                                    selectedLabel.style.border = '2px solid blue';
+                                                }
+
+                                                // Lấy ID sản phẩm từ Laravel Blade
+                                                let productId = @json($productDetail->id);
+
+                                                try {
+                                                    let response = await fetch(
+                                                        `http://127.0.0.1:8000/api/product-variant-size/${item.value}/${productId}`);
+                                                    let data = await response.json();
+
+                                                    if (data.status_code === 200) {
+                                                        let availableSizes = data.data.map(variant => variant
+                                                            .size); // Lấy danh sách size có sẵn
+
+                                                        document.querySelectorAll('.product__details__option__size label').forEach(
+                                                            label => {
+                                                                let input = label.querySelector('input[type="radio"]');
+                                                                if (availableSizes.includes(input.value)) {
+                                                                    input.disabled = false;
+                                                                    label.style.textDecoration = "none";
+                                                                    label.style.opacity = "1";
+                                                                    document.querySelector('.quantity-input').setAttribute("max", )
+
+                                                                } else {
+                                                                    input.disabled = true;
+                                                                    label.style.textDecoration = "line-through";
+                                                                    label.style.opacity = "0.5";
+                                                                }
+                                                            });
+                                                    }
+                                                } catch (error) {
+                                                    console.error("Lỗi khi fetch dữ liệu:", error);
+                                                }
+                                            });
+                                        });
+                                    </script>
                                 </div>
-                                <a href="#" class="primary-btn">Thêm vào giỏ hàng</a>
+                                <div class="product__details__cart__option">
+                                    <div class="quantity">
+                                        <div class="pro-qty">
+                                            <input class="quantity-input" type="text" name="quantity" value="1"
+                                                min="1" max="{{ $productDetail->stock }}">
+                                        </div>
+                                        @error('quantity')
+                                            {{-- <small class="text-danger">{{ $message }}</small> --}}
+                                            <script>
+                                                alert(@json($message));
+                                            </script>
+                                        @enderror
+                                        {{-- <script>
+                                            @if ($errors->any())
+                                                $(document).ready(function() {
+                                                    // $('#modal-discount').addClass("open");
+                                                    // $('.btn-edit').click(function(e) {
+                                                    //     $('.error_validate').text("");
+                                                    // })
+                                                    alert(@json($errors));
+                                                })
+                                            @endif
+                                        </script> --}}
+                                    </div>
+                                    <input type="submit" class="site-btn" name="add_to_cart" value="Thêm vào giỏ hàng">
+                                    {{-- <a href="{{route('sites.add', $productDetail->id, 1, 'true')}}" class="primary-btn">Thêm vào giỏ hàng</a> --}}
+                                </div>
+                                <div class="product__details__btns__option">
+                                    <a href="{{ route('sites.addToWishList', $productDetail->id) }}"><i
+                                            class="fa fa-heart"></i>Thêm vào yêu thích</a>
+                                    <a href="#"><i class="fa fa-exchange"></i>So sánh giá</a>
+                                </div>
+                                <div class="product__details__last__option">
+                                    <h5><span>Các phương thức thanh toán:</span></h5>
+                                    <img src="{{ 'client/img/shop-details/details-payment.png' }}" alt="">
+                                    <ul>
+                                        <li><span>SKU: </span>{{ $productDetail->sku }}</li>
+                                        <li><span>Danh mục: </span>{{ $productDetail->category->category_name }}</li>
+                                        <li><span>Tag: </span>{{ str_replace(',', ', ', $productDetail->tags) }}</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="product__details__btns__option">
-                                <a href="{{route('sites.addToWishList', $productDetail->id)}}"><i class="fa fa-heart"></i>Thêm vào yêu thích</a>
-                                <a href="#"><i class="fa fa-exchange"></i>So sánh giá</a>
-                            </div>
-                            <div class="product__details__last__option">
-                                <h5><span>Các phương thức thanh toán:</span></h5>
-                                <img src="{{ 'client/img/shop-details/details-payment.png' }}" alt="">
-                                <ul>
-                                    <li><span>SKU: </span>{{ $productDetail->sku }}</li>
-                                    <li><span>Danh mục: </span>{{ $productDetail->category->category_name }}</li>
-                                    <li><span>Tag: </span>{{ str_replace(',', ', ', $productDetail->tags) }}</li>
-                                </ul>
-                            </div>
-                        </div>
                     </div>
+                    </form>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -268,163 +336,21 @@
                     <h3 class="related-title">Sản phẩm liên quan mà có thể bạn sẽ thích</h3>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{ 'client/img/product/product-1.jpg' }}">
-                            <span class="label">New</span>
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="{{ 'client/img/icon/heart.png' }}" alt=""></a>
-                                </li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/compare.png' }}" alt="">
-                                        <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}" alt=""></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Piqué Biker Jacket</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$67.24</h5>
-                            <div class="product__color__select">
-                                <label for="pc-1">
-                                    <input type="radio" id="pc-1">
-                                </label>
-                                <label class="active black" for="pc-2">
-                                    <input type="radio" id="pc-2">
-                                </label>
-                                <label class="grey" for="pc-3">
-                                    <input type="radio" id="pc-3">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{ 'client/img/product/product-2.jpg' }}">
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="{{ 'client/img/icon/heart.png' }}" alt=""></a>
-                                </li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/compare.png' }}" alt="">
-                                        <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}" alt=""></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Piqué Biker Jacket</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$67.24</h5>
-                            <div class="product__color__select">
-                                <label for="pc-4">
-                                    <input type="radio" id="pc-4">
-                                </label>
-                                <label class="active black" for="pc-5">
-                                    <input type="radio" id="pc-5">
-                                </label>
-                                <label class="grey" for="pc-6">
-                                    <input type="radio" id="pc-6">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item sale">
-                        <div class="product__item__pic set-bg" data-setbg="{{ 'client/img/product/product-3.jpg' }}">
-                            <span class="label">Sale</span>
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="{{ 'client/img/icon/heart.png' }}" alt=""></a>
-                                </li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/compare.png' }}" alt="">
-                                        <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}" alt=""></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Multi-pocket Chest Bag</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$43.48</h5>
-                            <div class="product__color__select">
-                                <label for="pc-7">
-                                    <input type="radio" id="pc-7">
-                                </label>
-                                <label class="active black" for="pc-8">
-                                    <input type="radio" id="pc-8">
-                                </label>
-                                <label class="grey" for="pc-9">
-                                    <input type="radio" id="pc-9">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{ 'client/img/product/product-4.jpg' }}">
-                            <ul class="product__hover">
-                                <li><a href="#"><img src="{{ 'client/img/icon/heart.png' }}" alt=""></a>
-                                </li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/compare.png' }}" alt="">
-                                        <span>Compare</span></a></li>
-                                <li><a href="#"><img src="{{ 'client/img/icon/search.png' }}" alt=""></a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6>Diagonal Textured Cap</h6>
-                            <a href="#" class="add-cart">+ Add To Cart</a>
-                            <div class="rating">
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                                <i class="fa fa-star-o"></i>
-                            </div>
-                            <h5>$60.9</h5>
-                            <div class="product__color__select">
-                                <label for="pc-10">
-                                    <input type="radio" id="pc-10">
-                                </label>
-                                <label class="active black" for="pc-11">
-                                    <input type="radio" id="pc-11">
-                                </label>
-                                <label class="grey" for="pc-12">
-                                    <input type="radio" id="pc-12">
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+            <div class="row" id="suggestion-list-product">
+                {{-- ******** danh sách này nằm trong _chatbot_search.blade.php do bỏ đây mất chatbot và se **********--}}
             </div>
         </div>
     </section>
     <!-- Related Section End -->
+        <!-- Icon giỏ hàng -->
+        {{-- <div class="cart-icon" id="cartIcon" onclick="toggleCart()">
+            <i class="fas fa-id-card-alt"></i><span class="cart-badge" id="cartCount">{{ $totalProduct }}</span>
+        </div> --}}
 @endsection
+
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/css/comment.css') }}">
+    <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
 @endsection

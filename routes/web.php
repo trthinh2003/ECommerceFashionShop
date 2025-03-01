@@ -54,6 +54,7 @@ Route::group(['prefix' => '/'], function () {
     });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
+    Route::post('/shop', [HomeController::class, 'shop'])->name('sites.shopSearch');
     Route::get('/cart', [HomeController::class, 'cart'])->name('sites.cart');
     Route::get('/aboutUs', [HomeController::class, 'aboutUs'])->name('sites.aboutUs');
     Route::get('/blogDetail', [HomeController::class, 'blogDetail'])->name('sites.blogDetail');
@@ -91,6 +92,7 @@ Route::group(['prefix' => '/'], function () {
 Route::group(['prefix' => '/cart'], function () {
     Route::get('/', [CartController::class, 'cart'])->name('sites.cart');
     Route::get('/add/{product?}/{quantity?}', [CartController::class, 'add'])->name('sites.add');
+    Route::post('/add/{product?}/{quantity?}', [CartController::class, 'add'])->name('sites.addFromDetail');
     Route::post('/addToCart-from-product/{product?}/{quantity?}', [CartController::class, 'addToCartFromProduct'])->name('sites.addToCartFromProduct');
     Route::get('/update/{id}/{quantity?}', [CartController::class, 'update'])->name('sites.update');
     Route::get('/remove/{id}', [CartController::class, 'remove'])->name('sites.remove');
