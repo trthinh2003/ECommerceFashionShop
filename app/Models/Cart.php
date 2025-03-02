@@ -30,6 +30,7 @@ class Cart
                 'quantity' => $quantity,
                 'color' => $productVariant->color,
                 'size' => $productVariant->size,
+                'stock' => $productVariant->stock
             ];
             $this->items[$product->id] = (object)$items;
         }

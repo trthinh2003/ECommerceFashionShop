@@ -72,7 +72,7 @@
                                                         <button class="btn btn-outline-secondary button-decrease"
                                                             type="button">-</button>
                                                         <input type="text" class="text-center product-quantity"
-                                                            value="{{ $items->quantity }}" min="1" max="10"
+                                                            value="{{ $items->quantity }}" min="1" max="{{ $items->stock }}"
                                                             style="width: 30%">
                                                         <button class="btn btn-outline-secondary button-increase"
                                                             type="button">+</button>
@@ -205,7 +205,7 @@
                 let productPrice = parseInt(row.find(".product-price").text().replace(/\D/g, ""));
                 let currentQuantity = parseInt(input.val());
                 let minValue = parseInt(input.attr("min")) || 1;
-                let maxValue = parseInt(input.attr("max")) || 10;
+                let maxValue = parseInt(input.attr("max"));
 
                 if ($(this).hasClass("button-increase") && currentQuantity < maxValue) {
                     currentQuantity++;
@@ -302,7 +302,7 @@
                 let productPrice = parseInt(row.find(".product-price").text().replace(/\D/g, ""));
                 let currentQuantity = parseInt(input.val());
                 let minValue = parseInt(input.attr("min")) || 1;
-                let maxValue = parseInt(input.attr("max")) || 10;
+                let maxValue = parseInt(input.attr("max"));
 
                 if (currentQuantity > maxValue) { // maxValue => số lượng còn lại trong kho
                     input.val(maxValue); // số phông bạt
@@ -377,7 +377,7 @@
                 type: "POST",
                 data: {
                     auth: "false",
-                    redirect_url: currentUrl, 
+                    redirect_url: currentUrl,
                     _token: $('meta[name="csrf-token"]').attr("content")
                 },
                 success: function(response) {
