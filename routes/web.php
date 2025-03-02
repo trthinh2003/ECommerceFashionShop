@@ -16,6 +16,7 @@ use App\Http\Controllers\DialogflowController;
 use App\Http\Controllers\FacebookAuthController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\RevenueController;
+use App\Http\Controllers\WishListProductController;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Staff;
@@ -53,6 +54,7 @@ Route::group(['prefix' => '/'], function () {
     });
 
     Route::get('/shop', [HomeController::class, 'shop'])->name('sites.shop');
+    Route::post('/shop', [HomeController::class, 'shop'])->name('sites.shopSearch');
     Route::get('/cart', [HomeController::class, 'cart'])->name('sites.cart');
     Route::get('/aboutUs', [HomeController::class, 'aboutUs'])->name('sites.aboutUs');
     Route::get('/blogDetail', [HomeController::class, 'blogDetail'])->name('sites.blogDetail');
@@ -60,9 +62,15 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/shoppingCart', [HomeController::class, 'shoppingCart'])->name('sites.shoppingCart');
     Route::get('/contact', [HomeController::class, 'contact'])->name('sites.contact');
     Route::get('/blog', [HomeController::class, 'blog'])->name('sites.blog');
-    Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
-    Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
+    // Xử lý danh sách yêu thích
+    Route::get('/wishlist', [WishListProductController::class, 'index'])->name('sites.wishlist');
+    Route::get('/add-to-wishlist/{product}', [WishListProductController::class, 'addToWishList'])->name('sites.addToWishList');
+    Route::get('/remove-from-wishlist/{id}', [WishListProductController::class, 'removefromWishList'])->name('sites.removefromWishList');
+    // Xử lý chatbot
+    Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
+
+    // Xử lý đơn hàng
     Route::get('/order-history', [CustomerController::class, 'getHistoryOrderOfCustomer'])->name('sites.getHistoryOrder');
     Route::get('/order-detail/{order}', [CustomerController::class, 'showOrderDetailOfCustomer'])->name('sites.showOrderDetailOfCustomer');
     Route::put('/cancel-order{id}', [CustomerController::class, 'cancelOrder'])->name('sites.cancelOrder');
@@ -71,7 +79,9 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/order/{id}/invoice', [OrderController::class, 'exportInvoice'])->name('order.invoice');
 
     // Xử lý thanh toán
+    Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
+    Route::get('/payment/success', [HomeController::class, 'successPayment'])->name('sites.success.payment');
     // Routes xử lý callback từ các cổng thanh toán
     Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('payment.vnpay.return');
     Route::get('/momo-return', [CheckoutController::class, 'momoReturn'])->name('payment.momo.return');
@@ -82,6 +92,8 @@ Route::group(['prefix' => '/'], function () {
 Route::group(['prefix' => '/cart'], function () {
     Route::get('/', [CartController::class, 'cart'])->name('sites.cart');
     Route::get('/add/{product?}/{quantity?}', [CartController::class, 'add'])->name('sites.add');
+    Route::post('/add/{product?}/{quantity?}', [CartController::class, 'add'])->name('sites.addFromDetail');
+    Route::post('/addToCart-from-product/{product?}/{quantity?}', [CartController::class, 'addToCartFromProduct'])->name('sites.addToCartFromProduct');
     Route::get('/update/{id}/{quantity?}', [CartController::class, 'update'])->name('sites.update');
     Route::get('/remove/{id}', [CartController::class, 'remove'])->name('sites.remove');
     Route::get('/clear', [CartController::class, 'clear'])->name('sites.clear');

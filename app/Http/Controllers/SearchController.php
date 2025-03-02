@@ -21,7 +21,8 @@ class SearchController extends Controller
         $results = Product::where('product_name', 'LIKE', "%{$query}%")
             ->orWhere('description', 'LIKE', "%{$query}%")
             ->orWhere('tags', 'LIKE', "%{$query}%")
-            ->get();
+            ->get()
+            ->take(10);
 
         if ($results->isEmpty()) {
             return response()->json(['message' => 'Không tìm thấy sản phẩm phù hợp!', 'results' => []]);
@@ -31,7 +32,7 @@ class SearchController extends Controller
         $history = Session::get('search_history', []);
         if (!in_array($query, $history)) {
             array_push($history, $query); // Thêm vào cuối danh sách
-            $history = array_slice($history, 0, 50); // Giới hạn 50 mục
+            $history = array_slice($history, 0, 100); // Giới hạn 50 mục
             Session::put('search_history', $history);
         }
 
@@ -69,7 +70,7 @@ class SearchController extends Controller
                             WHEN tags LIKE ? THEN 2
                             ELSE 3
                         END", ["%{$history[0]}%", "%{$history[0]}%"])
-            ->limit(10)
+            ->limit(8)
             ->get();
 
         return response()->json($suggestedProducts);

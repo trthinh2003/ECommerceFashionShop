@@ -144,7 +144,12 @@
                                                     <img src="{{ asset('uploads/${product.image}') }}" class="set-bg" width="280" height="280" alt="${product.product_name}">
                                                     <span class="label">New</span>
                                                     <ul class="product__hover">
-                                                        <li><a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a></li>
+                                                      <li>
+                                                            <a href="{{ url('add-to-wishlist') }}/${product.id}" class="add-to-wishlist">
+                                                                <img src="{{ asset('client/img/icon/heart.png') }}" alt="">
+                                                            </a>
+                                                    </li>
+
                                                         <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}" alt=""><span>Compare</span></a></li>
                                                         <li><a href="{{ url('product') }}/${product.slug}"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a></li>
                                                     </ul>

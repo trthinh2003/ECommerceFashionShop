@@ -46,7 +46,7 @@
                 <p>📧 Email xác nhận đã được gửi đến bạn.</p>
                 <p>Nếu có bất kỳ vấn đề nào, vui lòng liên hệ <strong>1900 1234</strong>.</p>
                 <a href="{{ route('sites.home') }}" class="btn btn-primary mt-3">Quay lại trang chủ</a>
-                <a href="#" class="btn btn-secondary mt-3">Xem đơn hàng</a>
+                <a href="{{route('sites.showOrderDetailOfCustomer', Session::get('success_data')['order_id'])}}" class="btn btn-secondary mt-3">Xem đơn hàng</a>
                 <a href="{{ route('sites.home') }}#product-list-home" class="btn btn-success mt-3">Tiếp tục mua sắm</a>
             </div>
         </div>

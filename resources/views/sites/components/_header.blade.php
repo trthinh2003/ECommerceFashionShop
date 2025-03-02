@@ -27,7 +27,7 @@
     </div>
     <div class="offcanvas__nav__option">
         <a href="#" class="search-switch"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a>
-        <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
+        <a href="{{ route('sites.wishlist') }}"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
         <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
             <span>{{ $cartQuantity ?? 0 }}</span></a>
         {{-- <div class="price">$0.00</div> --}}
@@ -157,7 +157,7 @@
                     <a class="search-btn" style="cursor: pointer;">
                         <i class="fa fa-fw fa-search text-dark"></i>
                     </a>
-                    <a href="#"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
+                    <a href="{{ route('sites.wishlist') }}"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
                     <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}"
                             alt="">
                         <span class="cart-quantity-header">{{ $cartQuantity ?? 0 }}</span></a>

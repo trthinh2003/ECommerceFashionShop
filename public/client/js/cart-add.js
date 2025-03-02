@@ -51,12 +51,7 @@ function addToCart(productId, event) {
                     cartList.appendChild(cartItem);
                 }
                 else oldValue.textContent = parseInt(oldValue.textContent) + 1;
-                // else {
-                // }
             }
-            // data.cart.items.forEach(item => {
-            //     console.log(item)
-            // });
         } else {
             console.log("Thêm vào giỏ hàng thất bại!");
         }

@@ -32,6 +32,8 @@ Route::get('category', [ApiController::class, 'categories'])->name('api.categori
 Route::get('product', [ApiController::class, 'products'])->name('api.products');
 Route::get('product-client', [ApiController::class, 'getProductsClient'])->name('api.getProductsClient');
 Route::get('product/{id}', [ApiController::class, 'product'])->name('api.product');
+Route::get('product-variant-size/{color}/{product_id}', [ApiController::class, 'productVariantSizes'])->name('api.productVariantSizes');
+
 
 Route::get('brand', [ApiController::class, 'brands'])->name('api.brands');
 

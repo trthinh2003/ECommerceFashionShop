@@ -19,8 +19,10 @@ class Cart
 
     public function add($product, $quantity = 1, $productVariant = null)
     {
-        if (!empty($this->items[$product->id])) {
-            $this->items[$product->id]->quantity += $quantity;
+        $key = $product->id . '-' . $productVariant->color . '-' . $productVariant->size;
+        
+        if (!empty($this->items[$key])) {
+            $this->items[$key]->quantity += $quantity;
         } else {
             $items = [
                 'id' => $product->id,
@@ -32,7 +34,7 @@ class Cart
                 'size' => $productVariant->size,
                 'stock' => $productVariant->stock
             ];
-            $this->items[$product->id] = (object)$items;
+            $this->items[$key] = (object)$items;
         }
 
         session(['cart' => $this->items]);

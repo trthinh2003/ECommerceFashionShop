@@ -18,10 +18,11 @@ class HomeController extends Controller
 
     public function shop(Request $request)
     {
+        // dd($request->all());
         $query = Product::with('category');
 
-        if ($request->has('search')) {
-            $search = $request->search;
+        if ($request->has('q')) {
+            $search = $request->q;
             $query->where('product_name', 'LIKE', "%$search%");
         }
 
@@ -37,6 +38,26 @@ class HomeController extends Controller
             $query->where('brand', $brandName);
         }
 
+        if ($request->has('price')) {
+            $price = $request->price;
+            if (strpos($price, '-') !== false) {
+                $items = explode('-', $price);
+                $minPrice = str_replace('.', '', $items[0]);
+                $maxPrice = str_replace('.', '', $items[1]);
+            }
+            else if ($price === '1.000.000') {
+                $minPrice = str_replace('.', '', $price);
+            }
+            empty($maxPrice) ? $query->where('price', '>=', $minPrice) : $query->whereBetween('price', [$minPrice, $maxPrice]);
+        }
+
+        if($request->has('tag')) {
+            $tag = str_replace('-', ' ', $request->tag);
+            $query->where('tags', 'like', "%$tag%");
+
+        }
+        //  dd($minPrice, $maxPrice ?? 0);
+        // dd($tag);
         $products = $query->paginate(12);
 
         return view("sites.shop.shop", compact('products'));

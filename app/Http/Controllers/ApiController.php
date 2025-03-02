@@ -168,6 +168,16 @@ class ApiController extends Controller
         return $this->apiStatus($products, 200, $products->count(), 'ok');
     }
 
+    //http://127.0.0.1:8000/product-variant/{color}/{product-id}
+
+    public function productVariantSizes(Request $request)
+    {
+        $productVariants = ProductVariant::where('color', $request->color)
+                                         ->where('product_id', $request->product_id)->get();
+        return $this->apiStatus($productVariants, 200, $productVariants->count(), 'ok');
+    }
+
+
     public function getProductsClient()
     {
         $products = Product::orderBy('id', 'ASC')->get();

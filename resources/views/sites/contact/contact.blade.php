@@ -1,13 +1,61 @@
 @extends('sites.master')
+
 @section('title', 'Liên Hệ')
+
 @section('content')
     <!-- Map Begin -->
-    <div class="map">
-        <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d111551.9926412813!2d-90.27317134641879!3d38.606612219170856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited%20States!5e0!3m2!1sen!2sbd!4v1597926938024!5m2!1sen!2sbd"
-            height="500" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+    <div class="container">
+        <div id="map" class="map"></div>
     </div>
+   
+
     <!-- Map End -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var mapContainer = document.getElementById('map');
+            mapContainer.style.height = "500px"; // Đặt chiều cao cho bản đồ
+
+            // Khởi tạo bản đồ Leaflet
+            var map = L.map(mapContainer).setView([10.030687, 105.769079], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Tạo icon tùy chỉnh cho marker
+            var customIcon = L.icon({
+                iconUrl: "{{ asset('assets/img/TSTShop/TST_Shop.webp') }}", // Đường dẫn icon
+                iconSize: [50, 50], // Kích thước icon
+                iconAnchor: [25, 50], // Điểm neo icon
+                popupAnchor: [0, -50] // Điểm neo popup
+            });
+
+            // Thêm marker của TST Fashion Shop
+            var marker = L.marker([10.030687, 105.769079], {
+                icon: customIcon,
+                title: "TST Fashion Shop",
+                alt: "TST Fashion Shop"
+            }).addTo(map);
+
+            // Nội dung popup
+            var popupContent = `
+                <div style="font-family: Arial, sans-serif; font-size: 14px;">
+                    <img class="rounded-circle" src="{{ asset('assets/img/TSTShop/LogoTSTFashionShop.webp') }}" 
+                        alt="TST Fashion Shop" width="75">
+                    <h3 style="color: #2584d8;">Thông tin địa điểm</h3>
+                    <p><strong>Tên địa điểm:</strong> TST Fashion Shop</p>
+                    <p><strong>Vị trí:</strong> 3/2, Xuân Khánh, Cần Thơ</p>
+                    <p><strong>Chi tiết:</strong> Cửa hàng thời trang TST Fashion</p>
+                </div>`;
+
+            // Gán popup vào marker
+            marker.bindPopup(popupContent).openPopup();
+            document.querySelector('.leaflet-interactive').classList.add('rounded-circle');
+        });
+    </script>
+
 
     <!-- Contact Section Begin -->
     <section class="contact spad">
@@ -16,19 +64,18 @@
                 <div class="col-lg-6 col-md-6">
                     <div class="contact__text">
                         <div class="section-title">
-                            <span>Information</span>
-                            <h2>Contact Us</h2>
-                            <p>As you might expect of a company that began as a high-end interiors contractor, we pay
-                                strict attention.</p>
+                            <span>Thông Tin Liên Hệ</span>
+                            <h2>Liên Hệ Với Chúng Tôi</h2>
+                            <p>Chúng tôi luôn chú trọng đến từng chi tiết để mang đến cho khách hàng trải nghiệm dịch vụ tốt nhất.</p>
                         </div>
                         <ul>
                             <li>
-                                <h4>America</h4>
-                                <p>195 E Parker Square Dr, Parker, CO 801 <br />+43 982-314-0958</p>
+                                <h4>Chi Nhánh Cần Thơ</h4>
+                                <p>3/2, Xuân Khánh, Cần Thơ<br />+43 982-314-0958</p>
                             </li>
                             <li>
-                                <h4>France</h4>
-                                <p>109 Avenue Léon, 63 Clermont-Ferrand <br />+12 345-423-9893</p>
+                                <h4>Chi Nhánh Hồ Chí Minh</h4>
+                                <p>Quận Cam, Hồ Chí Minh<br />+12 345-423-9893</p>
                             </li>
                         </ul>
                     </div>
@@ -38,14 +85,14 @@
                         <form action="#">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Name">
+                                    <input type="text" placeholder="Họ và Tên">
                                 </div>
                                 <div class="col-lg-6">
                                     <input type="text" placeholder="Email">
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea placeholder="Message"></textarea>
-                                    <button type="submit" class="site-btn">Send Message</button>
+                                    <textarea placeholder="Nội dung tin nhắn"></textarea>
+                                    <button type="submit" class="site-btn">Gửi Tin Nhắn</button>
                                 </div>
                             </div>
                         </form>
@@ -54,5 +101,10 @@
             </div>
         </div>
     </section>
+    
     <!-- Contact Section End -->
+@endsection
+
+@section('css')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 @endsection
