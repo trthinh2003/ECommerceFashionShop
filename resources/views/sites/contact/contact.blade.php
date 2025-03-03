@@ -5,7 +5,7 @@
 @section('content')
     <!-- Map Begin -->
     <div class="container">
-        <div id="map" class="map"></div>
+        <div id="map" class="map mt-3"></div>
     </div>
    
 
@@ -58,7 +58,7 @@
 
 
     <!-- Contact Section Begin -->
-    <section class="contact spad">
+    <section class="contact spad" id="contact-page">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 col-md-6">

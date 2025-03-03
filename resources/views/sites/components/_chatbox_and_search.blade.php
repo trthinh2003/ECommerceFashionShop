@@ -44,7 +44,6 @@
             <i class="fas fa-times"></i>
         </div>
         <div class="modal-body">
-
             <div class="form-group">
                 <input type="text" name="q" id="search-box" class="form-control"
                     placeholder="Nhập từ khóa bạn muốn tìm...">

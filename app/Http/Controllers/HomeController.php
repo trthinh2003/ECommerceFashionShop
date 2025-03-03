@@ -90,11 +90,6 @@ class HomeController extends Controller
         return view('sites.pages.blogDetail');
     }
 
-    public function shopDetail()
-    {
-        return view('sites.pages.shopDetail');
-    }
-
     public function shoppingCart()
     {
         return view('sites.pages.shoppingCart');

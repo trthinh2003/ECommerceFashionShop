@@ -1,7 +1,7 @@
 @extends('sites.master')
 @section('title', 'Về chúng tôi')
 @section('content')
-    <!-- Breadcrumb Section Begin -->
+    <!-- Phần Breadcrumb Bắt đầu -->
     <section class="breadcrumb-option">
         <div class="container">
             <div class="row">
@@ -9,7 +9,7 @@
                     <div class="breadcrumb__text">
                         <h4>About Us</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
+                            <a href="{{ route('sites.home') }}">Home</a>
                             <span>About Us</span>
                         </div>
                     </div>
@@ -17,9 +17,9 @@
             </div>
         </div>
     </section>
-    <!-- Breadcrumb Section End -->
+    <!-- Phần Breadcrumb Kết thúc -->
 
-    <!-- About Section Begin -->
+    <!-- Phần Giới Thiệu Bắt đầu -->
     <section class="about spad">
         <div class="container">
             <div class="row">
@@ -32,47 +32,43 @@
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="about__item">
-                        <h4>Who We Are ?</h4>
-                        <p>Contextual advertising programs sometimes have strict policies that need to be adhered too.
-                            Let’s take Google as an example.</p>
+                        <h4>Chúng tôi là ai?</h4>
+                        <p>Các chương trình quảng cáo theo ngữ cảnh đôi khi có những chính sách nghiêm ngặt cần phải tuân thủ.
+                            Hãy lấy Google làm ví dụ.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="about__item">
-                        <h4>Who We Do ?</h4>
-                        <p>In this digital generation where information can be easily obtained within seconds, business
-                            cards still have retained their importance.</p>
+                        <h4>Chúng tôi làm gì?</h4>
+                        <p>Trong thời đại số, nơi mà thông tin có thể dễ dàng truy cập trong vài giây, danh thiếp vẫn giữ được tầm quan trọng của nó.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-6">
                     <div class="about__item">
-                        <h4>Why Choose Us</h4>
-                        <p>A two or three storey house is the ideal way to maximise the piece of earth on which our home
-                            sits, but for older or infirm people.</p>
+                        <h4>Tại sao chọn chúng tôi?</h4>
+                        <p>Một ngôi nhà hai hoặc ba tầng là cách lý tưởng để tối ưu hóa diện tích đất, nhưng đối với người lớn tuổi hoặc người khuyết tật thì có thể gặp khó khăn.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- About Section End -->
+    <!-- Phần Giới Thiệu Kết thúc -->
 
-    <!-- Testimonial Section Begin -->
+    <!-- Phần Đánh Giá Khách Hàng Bắt đầu -->
     <section class="testimonial">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6 p-0">
                     <div class="testimonial__text">
                         <span class="icon_quotations"></span>
-                        <p>“Going out after work? Take your butane curling iron with you to the office, heat it up,
-                            style your hair before you leave the office and you won’t have to make a trip back home.”
-                        </p>
+                        <p>“Ra ngoài sau giờ làm? Mang theo máy uốn tóc butane đến văn phòng, làm nóng nó, tạo kiểu tóc trước khi rời đi và bạn sẽ không cần phải quay về nhà.”</p>
                         <div class="testimonial__author">
                             <div class="testimonial__author__pic">
-                                <img src="{{ ('client/img/about/testimonial-author.jpg') }}" alt="">
+                                <img src="{{ ('client/img/about/RaidenShogun.png') }}" alt="">
                             </div>
                             <div class="testimonial__author__text">
-                                <h5>Augusta Schultz</h5>
-                                <p>Fashion Design</p>
+                                <h5>Raiden Shogun</h5>
+                                <p>Thiết kế thời trang</p>
                             </div>
                         </div>
                     </div>
@@ -83,9 +79,9 @@
             </div>
         </div>
     </section>
-    <!-- Testimonial Section End -->
+    <!-- Phần Đánh Giá Khách Hàng Kết thúc -->
 
-    <!-- Counter Section Begin -->
+        <!-- Counter Section Begin -->
     <section class="counter spad">
         <div class="container">
             <div class="row">
@@ -94,7 +90,7 @@
                         <div class="counter__item__number">
                             <h2 class="cn_num">102</h2>
                         </div>
-                        <span>Our <br />Clients</span>
+                        <span>Đối tác <br />Khách hàng</span>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
@@ -102,7 +98,7 @@
                         <div class="counter__item__number">
                             <h2 class="cn_num">30</h2>
                         </div>
-                        <span>Total <br />Categories</span>
+                        <span>Hơn <br />Danh mục sản phẩm</span>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
@@ -110,16 +106,16 @@
                         <div class="counter__item__number">
                             <h2 class="cn_num">102</h2>
                         </div>
-                        <span>In <br />Country</span>
+                        <span><br />Quốc gia</span>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="counter__item">
                         <div class="counter__item__number">
-                            <h2 class="cn_num">98</h2>
+                            <h2 class="cn_num">99</h2>
                             <strong>%</strong>
                         </div>
-                        <span>Happy <br />Customer</span>
+                        <span> <br />Khách hàng hài lòng</span>
                     </div>
                 </div>
             </div>
@@ -133,37 +129,37 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Our Team</span>
-                        <h2>Meet Our Team</h2>
+                        <span>Team Members</span>
+                        <h2>Gặp gỡ các thành viên</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="team__item">
-                        <img src="{{ ('client/img/about/team-1.jpg') }}" alt="">
-                        <h4>John Smith</h4>
+                        <img src="{{ ('client/img/about/RaidenShogun.png') }}" class="img-fluid" alt="">
+                        <h4>Raiden Shogun</h4>
                         <span>Fashion Design</span>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="team__item">
-                        <img src="{{ ('client/img/about/team-2.jpg') }}" alt="">
-                        <h4>Christine Wise</h4>
+                        <img src="{{ ('client/img/about/Mavuika.png') }}" class="img-fluid" alt="">
+                        <h4>Mavuika</h4>
                         <span>C.E.O</span>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="team__item">
-                        <img src="{{ ('client/img/about/team-3.jpg') }}" alt="">
-                        <h4>Sean Robbins</h4>
+                        <img src="{{ ('client/img/about/Furina.png') }}" class="img-fluid" alt="">
+                        <h4>Furina</h4>
                         <span>Manager</span>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="team__item">
-                        <img src="{{ ('client/img/about/team-4.jpg') }}" alt="">
-                        <h4>Lucy Myers</h4>
+                        <img src="{{ ('client/img/about/Kiara.png') }}" class="img-fluid" alt="">
+                        <h4>Kiara</h4>
                         <span>Delivery</span>
                     </div>
                 </div>
@@ -178,8 +174,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Partner</span>
-                        <h2>Happy Clients</h2>
+                        <span>Đối tác</span>
+                        <h2>Đồng hành với chúng tôi</h2>
                     </div>
                 </div>
             </div>
@@ -212,4 +208,6 @@
         </div>
     </section>
     <!-- Client Section End -->
+
 @endsection
+

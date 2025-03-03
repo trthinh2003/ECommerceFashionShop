@@ -83,7 +83,7 @@
                                                 {{ number_format($items->price * $items->quantity, 0, ',', '.') . ' đ' }}
                                             </td>
                                             <td class="cart__close">
-                                                <a href="{{ route('sites.remove', $items->id) }}"
+                                                <a href="{{ route('sites.remove', $items->key) }}"
                                                     onclick="return confirm('Bạn có chắc muốn xoá sản phẩm này khỏi giỏ hàng ?')">
                                                     <i class="fa fa-close"></i>
                                                 </a>

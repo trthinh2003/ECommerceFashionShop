@@ -1,6 +1,6 @@
 @extends('sites.master')
 
-@section('title', 'Danh sách mong muốn')
+@section('title', 'Danh sách yêu thích')
 
 @section('content')
 
@@ -12,7 +12,7 @@
                     <h4>Wishlist</h4>
                     <div class="breadcrumb__links">
                         <a href="{{ route('sites.home') }}">Home</a>
-                        <span>Danh sách mong muốn</span>
+                        <span>Danh sách yêu thích</span>
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
             @endforeach
         </div>
     @else
-        <div class="text-center">
+        <div class="text-center mb-5">
             <p class="text-muted">Không có sản phẩm nào trong danh sách mong muốn của bạn.</p>
             <p>Nhấn vào ❤️ để thêm sản phẩm vào wishlist!</p>
             <a href="{{ url('/') }}#product-list-home" class="btn btn-primary">Tiếp tục mua sắm</a>
