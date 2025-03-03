@@ -6,10 +6,14 @@
     if (Session::has('cart')) {
         $cartQuantity = count(Session::get('cart'));
     }
+
+    if (Session::has('wishlist')) {
+        $wishlistQuantity = count(Session::get('wishlist'));
+    }
 @endphp
 
 
-<!-- Offcanvas Menu Begin Menu ẩn nhé-->
+<!--************************* Offcanvas Menu Begin Menu ẩn nhé ***************-->
 <div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
     <div class="offcanvas__option">
@@ -18,7 +22,7 @@
             <a href="#">Hỏi Đáp</a>
         </div>
         <div class="offcanvas__top__hover">
-            <span>Langue<i class="arrow_carrot-down"></i></span>
+            <span>Ngôn ngữ<i class="arrow_carrot-down"></i></span>
             <ul>
                 <li>VN</li>
                 <li>EN</li>
@@ -27,10 +31,18 @@
     </div>
     <div class="offcanvas__nav__option">
         <a href="#" class="search-switch"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a>
-        <a href="{{ route('sites.wishlist') }}"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
-        <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}" alt="">
-            <span>{{ $cartQuantity ?? 0 }}</span></a>
-        {{-- <div class="price">$0.00</div> --}}
+        <a href="{{ route('sites.wishlist') }}" style="position: relative; display: inline-block;">
+            <img src="{{ asset('client/img/icon/heart.png') }}" width="20" alt="">
+            <span class="wishlist-quantity-header"
+                style="position: absolute; top: -5px; left: 12px; background: rgb(0, 0, 0); color: white; font-size: 12px; font-weight: bold; width: 16px; height: 16px; line-height: 16px; text-align: center; border-radius: 50%;">
+                {{ $wishlistQuantity ?? 0 }}
+            </span>
+        </a>
+        <a href="{{ route('sites.cart') }}" style="position: relative; display: inline-block;">
+            <img src="{{ asset('client/img/icon/cart.png') }}" width="20" alt="">
+            <span class="cart-quantity-header"
+                style="position: absolute; top: -5px; left: 12px; background: rgb(0, 0, 0); color: white; font-size: 12px; font-weight: bold; width: 16px; height: 16px; line-height: 16px; text-align: center; border-radius: 50%;">
+                {{ $cartQuantity ?? 0 }}</span></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__text">
@@ -74,8 +86,6 @@
                             @if (Auth::guard('customer')->check())
                                 <img src="{{ $avatarUrl }}" alt="User Avatar" width="30" alt=""
                                     class="rounded-circle">
-                                {{-- <img src="{{ asset('client/img/' . Auth::guard('customer')->user()->image) }}"
-                                    width="30" alt="" class="rounded-circle"> --}}
                                 <span>Xin chào, {{ Auth::guard('customer')->user()->name }}<i
                                         class="arrow_carrot-down"></i></span>
                                 <ul>
@@ -122,32 +132,14 @@
                         <li class="{{ request()->routeIs('sites.shop') ? 'active' : '' }}">
                             <a href="{{ route('sites.shop') }}">Shop</a>
                         </li>
-                        <li
-                            class="{{ request()->routeIs('sites.aboutUs', 'sites.shopDetail', 'sites.shoppingCart', 'sites.checkout', 'sites.blogDetail') ? 'active' : '' }}">
-                            <a href="{{ route('sites.aboutUs') }}">Pages</a>
-                            <ul class="dropdown">
-                                <li class="{{ request()->routeIs('sites.aboutUs') ? 'active' : '' }}">
-                                    <a href="{{ route('sites.aboutUs') }}">About Us</a>
-                                </li>
-                                <li class="{{ request()->routeIs('sites.shopDetail') ? 'active' : '' }}">
-                                    <a href="{{ route('sites.shopDetail') }}">Shop Details</a>
-                                </li>
-                                <li class="{{ request()->routeIs('sites.shoppingCart') ? 'active' : '' }}">
-                                    <a href="{{ route('sites.shoppingCart') }}">Shopping Cart</a>
-                                </li>
-                                <li class="{{ request()->routeIs('sites.checkout') ? 'active' : '' }}">
-                                    <a href="{{ route('sites.checkout') }}">Check Out</a>
-                                </li>
-                                <li class="{{ request()->routeIs('sites.blogDetail') ? 'active' : '' }}">
-                                    <a href="{{ route('sites.blogDetail') }}">Blog Details</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="{{ request()->routeIs('sites.blog') ? 'active' : '' }}">
-                            <a href="{{ route('sites.blog') }}">Blog</a>
+                        <li class="{{ request()->routeIs('sites.aboutUs') ? 'active' : '' }}">
+                            <a href="{{ route('sites.aboutUs') }}">About Us</a>
                         </li>
                         <li class="{{ request()->routeIs('sites.contact') ? 'active' : '' }}">
                             <a href="{{ route('sites.contact') }}">Contacts</a>
+                        </li>
+                        <li class="{{ request()->routeIs('sites.blog') ? 'active' : '' }}">
+                            <a href="{{ route('sites.blog') }}">Blog</a>
                         </li>
                     </ul>
                 </nav>
@@ -155,13 +147,20 @@
             <div class="col-lg-3 col-md-3">
                 <div class="header__nav__option">
                     <a class="search-btn" style="cursor: pointer;">
-                        <i class="fa fa-fw fa-search text-dark"></i>
+                        <i class="fa fa-fw fa-search text-dark" style="font-size: 20px"></i>
                     </a>
-                    <a href="{{ route('sites.wishlist') }}"><img src="{{ asset('client/img/icon/heart.png') }}" alt=""></a>
-                    <a href="{{ route('sites.cart') }}"><img src="{{ asset('client/img/icon/cart.png') }}"
-                            alt="">
-                        <span class="cart-quantity-header">{{ $cartQuantity ?? 0 }}</span></a>
-                    {{-- <div class="price">$0.00</div> --}}
+                    <a href="{{ route('sites.wishlist') }}" style="position: relative; display: inline-block;">
+                        <img src="{{ asset('client/img/icon/heart.png') }}" width="20" alt="">
+                        <span class="wishlist-quantity-header"
+                            style="position: absolute; top: -5px; left: 12px; background: rgb(0, 0, 0); color: white; font-size: 12px; font-weight: bold; width: 16px; height: 16px; line-height: 16px; text-align: center; border-radius: 50%;">
+                            {{ $wishlistQuantity ?? 0 }}
+                        </span>
+                    </a>
+                    <a href="{{ route('sites.cart') }}" style="position: relative; display: inline-block;">
+                        <img src="{{ asset('client/img/icon/cart.png') }}" width="20" alt="">
+                        <span class="cart-quantity-header"
+                            style="position: absolute; top: -5px; left: 12px; background: rgb(0, 0, 0); color: white; font-size: 12px; font-weight: bold; width: 16px; height: 16px; line-height: 16px; text-align: center; border-radius: 50%;">
+                            {{ $cartQuantity ?? 0 }}</span></a>
                 </div>
             </div>
         </div>
@@ -172,19 +171,4 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/css/header.css') }}">
-
-    {{-- <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}" /> --}}
-@endsection
-
-@section('js')
-    {{-- <script>
-        setTimeout(() => {
-            searchBtn = document.querySelector(".search-btn");
-            console.log(searchBtn);
-        }, 2000);
-    </script> --}}
-
-    {{-- @if (Session::has('success'))
-        <script src="{{ asset('assets/js/message.js') }}"></script>
-    @endif --}}
 @endsection

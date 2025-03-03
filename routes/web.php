@@ -58,8 +58,6 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/cart', [HomeController::class, 'cart'])->name('sites.cart');
     Route::get('/aboutUs', [HomeController::class, 'aboutUs'])->name('sites.aboutUs');
     Route::get('/blogDetail', [HomeController::class, 'blogDetail'])->name('sites.blogDetail');
-    Route::get('/shopDetail', [HomeController::class, 'shopDetail'])->name('sites.shopDetail');
-    Route::get('/shoppingCart', [HomeController::class, 'shoppingCart'])->name('sites.shoppingCart');
     Route::get('/contact', [HomeController::class, 'contact'])->name('sites.contact');
     Route::get('/blog', [HomeController::class, 'blog'])->name('sites.blog');
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
@@ -93,9 +91,8 @@ Route::group(['prefix' => '/cart'], function () {
     Route::get('/', [CartController::class, 'cart'])->name('sites.cart');
     Route::get('/add/{product?}/{quantity?}', [CartController::class, 'add'])->name('sites.add');
     Route::post('/add/{product?}/{quantity?}', [CartController::class, 'add'])->name('sites.addFromDetail');
-    Route::post('/addToCart-from-product/{product?}/{quantity?}', [CartController::class, 'addToCartFromProduct'])->name('sites.addToCartFromProduct');
     Route::get('/update/{id}/{quantity?}', [CartController::class, 'update'])->name('sites.update');
-    Route::get('/remove/{id}', [CartController::class, 'remove'])->name('sites.remove');
+    Route::get('/remove/{key}', [CartController::class, 'remove'])->name('sites.remove'); // xoá theo key (example: 1-XS-Đen) chứ ko theo id nữa
     Route::get('/clear', [CartController::class, 'clear'])->name('sites.clear');
     Route::get('/checkout', [CartController::class, 'checkout'])->name('sites.checkout');
     Route::post('/update-cart-session', [CartController::class, 'updateCartSession'])->name('sites.updateCartSession');

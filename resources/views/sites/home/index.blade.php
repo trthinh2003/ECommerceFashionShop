@@ -23,16 +23,15 @@
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
                             <div class="hero__text">
-                                <h6>Summer Collection</h6>
-                                <h2>Fall - Winter Collections 2030</h2>
-                                <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
-                                    commitment to exceptional quality.</p>
-                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <h6>Bộ sưu tập mùa hè</h6>
+                                <h2>Fall - Winter Collections 2025</h2>
+                                <p>Một thương hiệu chuyên biệt tạo ra các sản phẩm thiết yếu sang trọng. Được chế tác một cách có đạo đức với cam kết không lay chuyển đối với chất lượng vượt trội.</p>
+                                <a href="{{ route('sites.shop') }}" class="primary-btn">Mua ngay<span class="arrow_right"></span></a>
                                 <div class="hero__social">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="https://www.facebook.com/?locale=vi_VN"><i class="fa fa-facebook"></i></a>
+                                    <a href="https://x.com/?lang=vi"><i class="fa fa-twitter"></i></a>
+                                    <a href="https://www.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+                                    <a href="https://www.instagram.com/"><i class="fa fa-instagram"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -44,16 +43,15 @@
                     <div class="row">
                         <div class="col-xl-5 col-lg-7 col-md-8">
                             <div class="hero__text">
-                                <h6>Summer Collection</h6>
-                                <h2>Fall - Winter Collections 2030</h2>
-                                <p>A specialist label creating luxury essentials. Ethically crafted with an unwavering
-                                    commitment to exceptional quality.</p>
-                                <a href="#" class="primary-btn">Shop now <span class="arrow_right"></span></a>
+                                <h6>Bộ sưu tập Thu Đông</h6>
+                                <h2>Fall - Winter Collections 2025</h2>
+                                <p>Một thương hiệu chuyên biệt tạo ra các sản phẩm thiết yếu sang trọng. Được chế tác một cách có đạo đức với cam kết không lay chuyển đối với chất lượng vượt trội.</p>
+                                <a href="{{ route('sites.shop') }}" class="primary-btn">Mua ngay<span class="arrow_right"></span></a>
                                 <div class="hero__social">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="https://www.facebook.com/?locale=vi_VN"><i class="fa fa-facebook"></i></a>
+                                    <a href="https://x.com/?lang=vi"><i class="fa fa-twitter"></i></a>
+                                    <a href="https://www.pinterest.com/"><i class="fa fa-pinterest"></i></a>
+                                    <a href="https://www.instagram.com/"><i class="fa fa-instagram"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -234,7 +232,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="categories__text">
-                        <h2>Clothings Hot <br /> <span>Shoe Collection</span> <br /> Accessories</h2>
+                        <h2>Quần Áo Chính Hàng<br /> <span>Bộ sưu tập của chúng tôi</span> <br /> Liên Kết</h2>
                     </div>
                 </div>
                 <div class="col-lg-4">
@@ -299,9 +297,8 @@
                 <div class="col-lg-4">
                     <div class="instagram__text">
                         <h2>Instagram</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.</p>
-                        <h3>#Male_Fashion</h3>
+                        <p>Tìm hiểu thêm về chúng tôi qua instagram, cập nhật những thông tin và xu hướng thời trang mới nhất !</p>
+                        <h3>#TST_Fashion</h3>
                     </div>
                 </div>
             </div>
@@ -315,8 +312,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title">
-                        <span>Latest News</span>
-                        <h2>Fashion New Trends</h2>
+                        <span>Tin mới nhất</span>
+                        <h2>Xu hướng thời trang</h2>
                     </div>
                 </div>
             </div>
@@ -325,10 +322,9 @@
                     <div class="blog__item">
                         <div class="blog__item__pic set-bg" data-setbg="{{ asset('client/img/blog/blog-1.jpg') }}"></div>
                         <div class="blog__item__text">
-                            <span><img src="{{ asset('client/img/icon/calendar.png') }}" alt=""> 16 February
-                                2020</span>
+                            <span><img src="{{ asset('client/img/icon/calendar.png') }}" alt="">03 March 2025</span>
                             <h5>What Curling Irons Are The Best Ones</h5>
-                            <a href="#">Read More</a>
+                            <a href="{{ route('sites.blogDetail')}}">Đọc thêm</a>
                         </div>
                     </div>
                 </div>
@@ -337,9 +333,9 @@
                         <div class="blog__item__pic set-bg" data-setbg="{{ asset('client/img/blog/blog-2.jpg') }}"></div>
                         <div class="blog__item__text">
                             <span><img src="{{ asset('client/img/icon/calendar.png') }}" alt=""> 21 February
-                                2020</span>
+                                2025</span>
                             <h5>Eternity Bands Do Last Forever</h5>
-                            <a href="#">Read More</a>
+                            <a href="{{ route('sites.blogDetail')}}">Đọc thêm</a>
                         </div>
                     </div>
                 </div>
@@ -348,9 +344,9 @@
                         <div class="blog__item__pic set-bg" data-setbg="{{ asset('client/img/blog/blog-3.jpg') }}"></div>
                         <div class="blog__item__text">
                             <span><img src="{{ asset('client/img/icon/calendar.png') }}" alt=""> 28 February
-                                2020</span>
+                                2025</span>
                             <h5>The Health Benefits Of Sunglasses</h5>
-                            <a href="#">Read More</a>
+                            <a href="{{ route('sites.blogDetail')}}">Đọc thêm</a>
                         </div>
                     </div>
                 </div>

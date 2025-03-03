@@ -150,7 +150,7 @@
                                                 // Thêm viền xanh cho label được chọn
                                                 let selectedLabel = document.querySelector(`label[for="${e.target.id}"]`);
                                                 if (selectedLabel) {
-                                                    selectedLabel.style.border = '2px solid blue';
+                                                    selectedLabel.style.border = '3px solid blue';
                                                 }
 
                                                 // Lấy ID sản phẩm từ Laravel Blade
@@ -195,22 +195,10 @@
                                                 min="1" max="{{ $productDetail->stock }}">
                                         </div>
                                         @error('quantity')
-                                            {{-- <small class="text-danger">{{ $message }}</small> --}}
                                             <script>
                                                 alert(@json($message));
                                             </script>
                                         @enderror
-                                        {{-- <script>
-                                            @if ($errors->any())
-                                                $(document).ready(function() {
-                                                    // $('#modal-discount').addClass("open");
-                                                    // $('.btn-edit').click(function(e) {
-                                                    //     $('.error_validate').text("");
-                                                    // })
-                                                    alert(@json($errors));
-                                                })
-                                            @endif
-                                        </script> --}}
                                     </div>
                                     <input type="submit" class="site-btn" name="add_to_cart" value="Thêm vào giỏ hàng">
                                     {{-- <a href="{{route('sites.add', $productDetail->id, 1, 'true')}}" class="primary-btn">Thêm vào giỏ hàng</a> --}}

@@ -25,6 +25,7 @@ class Cart
             $this->items[$key]->quantity += $quantity;
         } else {
             $items = [
+                'key' => $key,
                 'id' => $product->id,
                 'name' => $product->product_name,
                 'image' => $product->image,
@@ -43,10 +44,10 @@ class Cart
 
 
 
-    public function remove($id)
+    public function remove($key)
     {
-        if (!empty($this->items[$id])) {
-            unset($this->items[$id]);
+        if (!empty($this->items[$key])) {
+            unset($this->items[$key]);
             session(['cart' => $this->items]);
         }
     }
