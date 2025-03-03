@@ -223,7 +223,7 @@ class InventoryController extends Controller
         // dd($request->all(), $size_assoc, $allKeys, $current_sizesAndStocks, $checkColor, preg_replace('/([^,]+)/', '$1-' . $color, $request->formatted_sizes));
         if ($checkColor == null) {
             foreach ($size_assoc as $size => $stock) {
-                DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
+                DB::statement('INSERT IGNORE INTO product_variants (color, size, stock, product_id)
                                VALUES (?, ?, ?, ?)', [$color, $size, $stock, $request->product_id]);
             };
         }
