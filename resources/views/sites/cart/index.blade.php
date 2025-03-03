@@ -359,6 +359,67 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $('.product-quantity').change(function(e) {
+                let row = $(this).closest("tr");
+                let input = row.find(".product-quantity");
+                let productId = row.data("id");
+                let productPrice = parseInt(row.find(".product-price").text().replace(/\D/g, ""));
+                let currentQuantity = parseInt(input.val());
+                let minValue = parseInt(input.attr("min")) || 1;
+                let maxValue = parseInt(input.attr("max")) || 10;
+
+                if (currentQuantity > maxValue) { // maxValue => số lượng còn lại trong kho
+                    input.val(maxValue); // số phông bạt
+                    currentQuantity = maxValue;
+                    alert("Số lượng không thể vượt quá số lượng trong kho!" + maxValue);
+                } else if (currentQuantity < minValue) {
+                    input.val(1);
+                    currentQuantity = 1;
+                    alert("Số lượng không thể là số âm!");
+                }
+                // console.log(currentQuantity);
+                let totalPrice = productPrice * currentQuantity;
+                row.find(".cart__price").text(totalPrice.toLocaleString() + " đ");
+                updateCartSession(productId, currentQuantity);
+                updateCartTotal();
+            });
+        });
+    </script>
+
+    {{-- <script>
+        $(document).ready(function() {
+            // Khi chọn "Chọn tất cả", tất cả checkbox sản phẩm sẽ được chọn hoặc bỏ chọn
+            $("#check-all").change(function() {
+                $(".product-checkbox").prop("checked", $(this).prop("checked"));
+            });
+
+            // Nếu bỏ chọn một sản phẩm, bỏ chọn "Chọn tất cả"
+            $(".product-checkbox").change(function() {
+                if (!$(this).prop("checked")) {
+                    $("#check-all").prop("checked", false);
+                }
+            });
+
+            // Khi bấm nút thanh toán, kiểm tra và lấy danh sách sản phẩm đã chọn
+            $("#checkout-form").click(function(event) {
+                let selectedItems = [];
+                $(".product-checkbox:checked").each(function() {
+                    selectedItems.push($(this).val());
+                });
+
+                if (selectedItems.length === 0) {
+                    alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
+                    event.preventDefault();
+                    return;
+                }
+
+                $("#selected-items").val(JSON.stringify(selectedItems));
+            });
+        });
+    </script> --}}
+
 
     <script>
         $(document).ready(function() {

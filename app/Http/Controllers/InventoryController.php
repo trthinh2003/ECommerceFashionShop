@@ -165,6 +165,7 @@ class InventoryController extends Controller
     }
 
     public function post_add_extra(Request $request) {
+        // Validate dữ liệu đầu vào
         $data = $request->validate([
             'id' => 'required',
             'product_name' => 'min:3|max:150',
@@ -185,73 +186,75 @@ class InventoryController extends Controller
             'color.required' => 'Vui lòng nhập màu sắc cho sản phẩm.',
             'sizes.required' => 'Vui lòng chọn kích cỡ cho sản phẩm.',
         ]);
+
         $inventory = new Inventory();
         $inventory->provider_id = $data['provider_id'];
         $inventory->staff_id = $data['id'];
-        //Xử lý chuỗi {size}-{số lượng}
+
+        // Xử lý chuỗi formatted_sizes -> Tạo mảng size và số lượng
         $size_and_quantitys = explode(',', $request->formatted_sizes);
-        // dd($size_and_quantitys);
         $totalQuantity = 0;
         $size_assoc = [];
+
         foreach ($size_and_quantitys as $size_and_quantity) {
             $item = explode('-', $size_and_quantity);
-            list($key, $value) = $item;
-            $size_assoc[$key] = (int)$value;
-            $totalQuantity += $item[1];
+            list($size, $quantity) = $item;
+            $size_assoc[$size] = (int)$quantity;
+            $totalQuantity += (int)$quantity;
         }
 
-        // dd($request->variant["XXL"] ?? 0, $size_assoc["XXL"]);
-        $current_sizesAndStocks = [];
-        // foreach ($current_sizesAndStocks as $size => $value) {
-        //     $current_sizesAndStocks[$size] += $stock;
-        // };
-        $allKeys = array_unique(array_merge(array_keys($request->variant), array_keys($size_assoc)));
+        // Tạo danh sách kích thước hiện có (từ request->variant) + size mới từ formatted_sizes
+        $allSizes = array_unique(array_merge(array_keys($request->variant ?? []), array_keys($size_assoc)));
+        $updatedStocks = [];
 
-        foreach ($allKeys as $size) {
-            $value1 = $request->variant[$size] ?? 0;
-            $value2 = $size_assoc[$size] ?? 0;
-            $current_sizesAndStocks[$size] = $value1 + $value2;
+        foreach ($allSizes as $size) {
+            $existingStock = $request->variant[$size] ?? 0;
+            $newStock = $size_assoc[$size] ?? 0;
+            $updatedStocks[$size] = $existingStock + $newStock;
         }
-        // dd($request->variant, $size_assoc, $current_sizesAndStocks, $new_sizesAndStocks);
-        // dd($size_assoc, $size_assoc["S"] - $request->variant["S"]);
-        // dd([$data['color'], $size, $size_assoc["XS"], $request->product_id]);
+
+        // Xử lý cập nhật hoặc thêm mới vào bảng product_variants
         $color = $data['color'];
-        $checkColor = ProductVariant::where('color', 'like', $color)
-                                    ->where('product_id', $request->product_id)
-                                    ->where('size', 'like', $size)
-                                    ->first();
-        // dd($request->all(), $size_assoc, $allKeys, $current_sizesAndStocks, $checkColor, preg_replace('/([^,]+)/', '$1-' . $color, $request->formatted_sizes));
-        if ($checkColor == null) {
-            foreach ($size_assoc as $size => $stock) {
-                DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
-                               VALUES (?, ?, ?, ?)', [$color, $size, $stock, $request->product_id]);
-            };
-        }
-        else {
-            foreach ($current_sizesAndStocks as $size => $stock) {
-                DB::statement('INSERT INTO product_variants (color, size, stock, product_id)
-                               VALUES (?, ?, ?, ?)
-                               ON DUPLICATE KEY UPDATE stock = ?', [$color, $size, $stock, $request->product_id, $stock]);
-            };
+
+        foreach ($size_assoc as $size => $stock) {
+            $existingVariant = ProductVariant::where([
+                'color' => $color,
+                'size' => $size,
+                'product_id' => $request->product_id
+            ])->first();
+
+            if ($existingVariant) {
+                // Nếu đã tồn tại -> Cộng dồn stock
+                $existingVariant->stock += $stock;
+                $existingVariant->save();
+            } else {
+                // Nếu chưa tồn tại -> Thêm mới
+                ProductVariant::create([
+                    'color' => $color,
+                    'size' => $size,
+                    'stock' => $stock,
+                    'product_id' => $request->product_id
+                ]);
+            }
         }
 
         $inventory->total = $totalQuantity * $data['price'];
         $inventory->save();
 
-        //Thêm vào Chi tiết Phiếu nhập
+        // Thêm vào bảng inventory_details
         $inventoryDetail = new InventoryDetail();
         $inventoryDetail->product_id = $request->product_id;
         $inventoryDetail->inventory_id = $inventory->id;
         $inventoryDetail->price = $data['price'];
         $inventoryDetail->quantity = $totalQuantity;
-        //Xử lý chuỗi sizes
+        // Thêm thông tin size kèm màu
         $inventoryDetail->size = preg_replace('/([^,]+)/', '$1-' . $color, $request->formatted_sizes);
-                                            // tìm từng phần tử trước dấu phẩy (,) và thêm chuỗi "-$color"
-                                            //VD: "XL-1, XXL-2" + "Xanh" -> "XL-1-Xanh, XXL-2-Xanh"
+                                //VD: Có 2 chuỗi "XS-3" và "Vàng" -> "XS-3-Vàng"
         $inventoryDetail->save();
 
         return redirect()->route('inventory.index')->with('success', "Thêm phiếu nhập mới thành công!");
     }
+
 
     public function search(Request $request) {
     }
