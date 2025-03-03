@@ -96,6 +96,10 @@ Route::group(['prefix' => '/cart'], function () {
     Route::get('/clear', [CartController::class, 'clear'])->name('sites.clear');
     Route::get('/checkout', [CartController::class, 'checkout'])->name('sites.checkout');
     Route::post('/update-cart-session', [CartController::class, 'updateCartSession'])->name('sites.updateCartSession');
+    // Xử lý cập nhật sản phẩm đc chọn trong giỏ hàng
+    Route::post('/update-check-status', [CartController::class, 'updateCheckStatus'])->name('sites.updateCheckStatus');
+
+
     Route::post('/create-percent-discount-session', [CartController::class, 'createPercentDiscountSession'])->name('sites.createPercentDiscountSession');
     Route::resources(
         [

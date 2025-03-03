@@ -2,8 +2,6 @@
     dd(Session::get('cart'));
 @endphp --}}
 
-
-
 @extends('sites.master')
 @section('content')
     <!-- Breadcrumb Section Begin -->
@@ -34,8 +32,10 @@
                         <table>
                             <thead>
                                 <tr>
-                                    {{-- <th>Chọn tất cả:<input type="checkbox" id="check-all"></th> --}}
-                                    <th>Sản Phẩm</th>
+                                    <th class="d-flex align-items-center">
+                                        <input type="checkbox" id="check-all" class="mr-2"> All
+                                    </th>
+                                    <th class="text-center">Sản Phẩm</th>
                                     <th>Hình Ảnh</th>
                                     <th>Số Lượng</th>
                                     <th>Tổng tiền</th>
@@ -46,34 +46,41 @@
                                 @if (Session::has('cart') && count(Session::get('cart')) > 0)
                                     @foreach (Session::get('cart') as $items)
                                         <tr class="cart-item" data-id="{{ $items->id }}">
-                                            {{-- <td>
-                                                <input type="checkbox" class="product-checkbox" name="selected_products[]"
-                                                    value="{{ $items->id }}">
-                                            </td> --}}
-                                            <td class="product__cart__item">
-                                                <div class="product__cart__item__text">
-                                                    <h6>{{ $items->name }}</h6>
-                                                    <h5 class="product-price">
-                                                        {{ number_format($items->price, 0, ',', '.') . ' đ' }}
-                                                    </h5>
-                                                    <h6 class="mt-1 color-variant">Màu sắc: {{ $items->color }}</h6>
-                                                    <h6 class="size-variant">Size: {{ $items->size }}</h6>
-                                                </div>
+                                            <td>
+                                                <input type="checkbox" data-key="{{ $items->key }}"
+                                                    class="product-checkbox" name="selected_products[]"
+                                                    value="{{ $items->id }}"
+                                                    {{ !empty($items->checked) && $items->checked ? 'checked' : '' }}>
                                             </td>
                                             <td class="product__cart__item">
-                                                <div class="product__cart__item__pic">
-                                                    <img src="{{ asset('uploads/' . $items->image) }}" width="80"
-                                                        alt="">
-                                                </div>
+                                                <a href="{{ route('sites.productDetail', $items->slug) }}">
+                                                    <div class="product__cart__item__text">
+                                                        <h6>{{ $items->name }}</h6>
+                                                        <h5 class="product-price">
+                                                            {{ number_format($items->price, 0, ',', '.') . ' đ' }}
+                                                        </h5>
+                                                        <h6 class="mt-1 color-variant">Màu sắc: {{ $items->color }}</h6>
+                                                        <h6 class="size-variant">Size: {{ $items->size }}</h6>
+                                                    </div>
+                                                </a>
                                             </td>
+                                            <td class="product__cart__item">
+                                                <a href="{{ route('sites.productDetail', $items->slug) }}">
+                                                    <div class="product__cart__item__pic">
+                                                        <img src="{{ asset('uploads/' . $items->image) }}" width="80"
+                                                            alt="">
+                                                    </div>
+                                                </a>
+                                            </td>
+
                                             <td class="quantity__item">
                                                 <div class="quantity">
                                                     <div class="input-group mt-3">
                                                         <button class="btn btn-outline-secondary button-decrease"
                                                             type="button">-</button>
                                                         <input type="text" class="text-center product-quantity"
-                                                            value="{{ $items->quantity }}" min="1" max="{{ $items->stock }}"
-                                                            style="width: 30%">
+                                                            value="{{ $items->quantity }}" min="1"
+                                                            max="{{ $items->stock }}" style="width: 30%">
                                                         <button class="btn btn-outline-secondary button-increase"
                                                             type="button">+</button>
                                                     </div>
@@ -124,6 +131,8 @@
                     </div>
 
                     @php
+                        // $totalPriceCart = collect($cart)->sum(fn($item) => $item->price * $item->quantity);
+                        // $ship = $totalPriceCart >= 500000 ? 0 : 30000;
                         if (Session::has('cart') && count(Session::get('cart')) > 0) {
                             $totalPriceCart = 0;
                             $vat = 0.1;
@@ -170,37 +179,6 @@
     <!-- Shopping Cart Section End -->
 @endsection
 
-{{-- <script>
-        $(document).ready(function() {
-            // Khi chọn "Chọn tất cả", tất cả checkbox sản phẩm sẽ được chọn hoặc bỏ chọn
-            $("#check-all").change(function() {
-                $(".product-checkbox").prop("checked", $(this).prop("checked"));
-            });
-
-            // Nếu bỏ chọn một sản phẩm, bỏ chọn "Chọn tất cả"
-            $(".product-checkbox").change(function() {
-                if (!$(this).prop("checked")) {
-                    $("#check-all").prop("checked", false);
-                }
-            });
-
-            // Khi bấm nút thanh toán, kiểm tra và lấy danh sách sản phẩm đã chọn
-            $("#checkout-form").click(function(event) {
-                let selectedItems = [];
-                $(".product-checkbox:checked").each(function() {
-                    selectedItems.push($(this).val());
-                });
-
-                if (selectedItems.length === 0) {
-                    alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
-                    event.preventDefault();
-                    return;
-                }
-
-                $("#selected-items").val(JSON.stringify(selectedItems));
-            });
-        });
-    </script> --}}
 @section('js')
     <script>
         // Hàm xử lý Cập nhật tổng giá trị giỏ hàng
@@ -263,7 +241,7 @@
                 let pecentDiscount = parseFloat(document.querySelector(".percent-discount-hidden").value);
                 // console.log(pecentDiscount);
                 // Gọi AJAX để lưu session
-                updateCartSession(productId,productColor, productSize, currentQuantity);
+                updateCartSession(productId, productColor, productSize, currentQuantity);
                 // Cập nhật tổng giá trị giỏ hàng
                 updateCartTotal();
             });
@@ -434,5 +412,97 @@
                 }
             });
         }
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            //Hàm prop() lấy giá trị element hoặc gán giá trị
+            //Xử lý skien change khi chọn "Chọn tất cả" => Tất cả checkbox sản phẩm sẽ được chọn hoặc bỏ chọn
+            $("#check-all").change(function() {
+                $(".product-checkbox").prop("checked", $(this).prop("checked"));
+            });
+            //Xử lý nếu bỏ chọn một sản phẩm, bỏ chọn "Chọn tất cả"
+            $(".product-checkbox").change(function() {
+                if (!$(this).prop("checked")) {
+                    $("#check-all").prop("checked", false); // Vô hiệu hoá 1 hoặc tất cả checkbox
+                } else {
+                    $("#check-all").prop("checked", true); // chọn tất cả nếu tất cả checkbox đc chọn
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            function updateCartTotalForCheckbox() {
+                let totalPrice = 0;
+                const vat = 0.1;
+                let ship = 30000;
+                $(".product-checkbox:checked").each(function() {
+                    let row = $(this).closest("tr");
+                    let price = parseFloat(row.find(".product-price").text().replace(/\D/g, ""));
+                    let quantity = parseInt(row.find(".product-quantity").val());
+                    totalPrice += price * quantity;
+                });
+                if (totalPrice >= 500000) {
+                    ship = 0;
+                }
+                let vatPrice = totalPrice * vat;
+                let total = totalPrice + vatPrice + ship;
+                $(".cart__total li:nth-child(1) span:nth-child(1)").text(totalPrice.toLocaleString('vi-VN') + " đ");
+                $(".cart__total li:nth-child(2) span").text(vatPrice.toLocaleString('vi-VN') + " đ");
+                $(".cart__total li:nth-child(3) span").text(ship.toLocaleString('vi-VN') + " đ");
+                $(".cart__total li:nth-child(4) span").text(total.toLocaleString('vi-VN') + " đ");
+            }
+            // Xử lý chọn/bỏ chọn tất cả
+            $("#check-all").on("change", function() {
+                $(".product-checkbox").prop("checked", $(this).prop("checked"));
+                updateCartTotalForCheckbox();
+            });
+            // Nếu bỏ chọn một sản phẩm, bỏ chọn "Chọn tất cả"
+            $(".product-checkbox").on("change", function() {
+                if (!$(this).prop("checked")) {
+                    $("#check-all").prop("checked", false);
+                } else if ($(".product-checkbox:checked").length === $(".product-checkbox").length) {
+                    $("#check-all").prop("checked", true);
+                }
+                updateCartTotalForCheckbox();
+            });
+
+            updateCartTotalForCheckbox();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $(".product-checkbox, #check-all").change(function() {
+                let checkedItems = [];
+                $(".product-checkbox:checked").each(function() {
+                    let productKey = $(this).data("key");
+                    checkedItems.push(productKey);
+                });
+                // console.log("Danh sách checked:", checkedItems);
+                $.ajax({
+                    url: "/cart/update-check-status",
+                    method: "POST",
+                    data: {
+                        keys: checkedItems, // Gửi danh sách key
+                        _token: $('meta[name="csrf-token"]').attr("content")
+                    },
+                    success: function(response) {
+                        console.log("Cập nhật session thành công:", response);
+                    },
+                    error: function(xhr) {
+                        console.error("Lỗi khi cập nhật session:", xhr.responseText);
+                    }
+                });
+            });
+            // Chọn tất cả
+            $("#check-all").change(function() {
+                $(".product-checkbox").prop("checked", $(this).prop("checked")).trigger("change");
+            });
+        });
     </script>
 @endsection

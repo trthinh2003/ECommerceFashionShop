@@ -251,7 +251,7 @@
                 dataType: "json",
                 success: function(data) {
                     if (data.length > 0) {
-                        
+                        console.log(data);
                         data.forEach(function(item) {
                             let productHTML = `
                                 <div class="col-lg-3 col-md-6 col-sm-6">
@@ -282,7 +282,7 @@
                                                 <i class="fa fa-star-o"></i>
                                                 <i class="fa fa-star-o"></i>
                                             </div>
-                                            <h5>{{ number_format(100000) }} VND</h5>
+                                            <h5>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</h5>
                                             <div class="product__color__select">
                                                 <label for="pc-4">
                                                     <input type="radio" id="pc-4">
@@ -312,7 +312,7 @@
         });
     </script>
 @endsection
-
-{{-- <button onclick="window.open('https://console.dialogflow.com/api-client/demo/embedded/d091fe6d-c3c9-487c-9c4b-855241a4956d', '_blank', 'width=400,height=500')">
+{{-- 
+<button onclick="window.open('https://console.dialogflow.com/api-client/demo/embedded/d091fe6d-c3c9-487c-9c4b-855241a4956d', '_blank', 'width=400,height=500')">
     Mở Chatbot
 </button> --}}

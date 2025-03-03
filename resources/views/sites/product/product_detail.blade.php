@@ -1,4 +1,12 @@
 @php
+    $totalProduct = 0;
+    if (Session::has('cart')) {
+        foreach (Session::get('cart') as $item) {
+            $totalProduct += $item->quantity;
+        }
+    } else {
+        $totalProduct = 0;
+    }
     // Xử lý màu sắc (hơi mủ)
     function getColorHex($color)
     {
@@ -14,6 +22,7 @@
         ];
         return $colorMap[$color] ?? '#CCCCCC';
     }
+
 @endphp
 
 @extends('sites.master')
@@ -316,6 +325,40 @@
     </section>
     <!-- Shop Details Section End -->
 
+        <!-- Icon giỏ hàng -->
+        <div class="cart-icon" id="cartIcon" onclick="toggleCart()">
+            <i class="fas fa-id-card-alt"></i><span class="cart-badge" id="cartCount">{{ $totalProduct }}</span>
+        </div>
+    
+        <!-- Danh sách sản phẩm trong giỏ -->
+        <div class="cart-items" id="cartItems" style="display: none;">
+            <strong>Các sản phẩm đã thêm:</strong>
+            <div id="cartList">
+                @if (Session::has('cart') && count(Session::get('cart')) > 0)
+                    @foreach (Session::get('cart') as $items)
+                        <div class="cart-item p-1">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <img src="uploads/{{ $items->image }}" alt="{{ $items->name }}" class="cart-item-img"
+                                        width="50">
+                                    <div class="d-inline-block flex-col">
+                                        <span>{{ Str::words($items->name, 5) }}</span></br>
+                                        <span
+                                            class="font-weight-bold">{{ number_format($items->price, 0, ',', '.') . ' đ' }}</span>
+                                    </div>
+                                </div>
+                                <span
+                                    class="cart-item-quantity-{{ $items->id }} quantity-badge">{{ $items->quantity }}</span>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
+            </div>
+            <div class="cart-footer">
+                <button class="btn btn-success w-100" onclick="goToCartPage()">Đến trang Giỏ hàng</button>
+            </div>
+        </div>
+
     <!-- Related Section Begin -->
     <section class="related spad">
         <div class="container">
@@ -326,15 +369,11 @@
             </div>
 
             <div class="row" id="suggestion-list-product">
-                {{-- ******** danh sách này nằm trong _chatbot_search.blade.php do bỏ đây mất chatbot và se **********--}}
+                {{-- ******** danh sách này nằm trong _chatbot_search.blade.php do bỏ đây mất chatbot và se ********** --}}
             </div>
         </div>
     </section>
     <!-- Related Section End -->
-        <!-- Icon giỏ hàng -->
-        {{-- <div class="cart-icon" id="cartIcon" onclick="toggleCart()">
-            <i class="fas fa-id-card-alt"></i><span class="cart-badge" id="cartCount">{{ $totalProduct }}</span>
-        </div> --}}
 @endsection
 
 

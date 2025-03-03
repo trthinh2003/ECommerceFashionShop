@@ -276,11 +276,16 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__right">
-                                    <p>Sort by Price:</p>
+                                    <p>Sắp xếp theo</p>
+                                    {{-- <ul class="list-unstyled">
+                                        <li><a class="sort" href="">abc</a></li>
+                                        <li><a href=""></a></li>
+                                        <li><a href=""></a></li>
+                                    </ul> --}}
                                     <select>
-                                        <option value="">Low To High</option>
-                                        <option value="">$0 - $55</option>
-                                        <option value="">$55 - $100</option>
+                                        <option class="sort" value="">Hàng mới về</option>
+                                        <option class="sort" value="">Thấp tới cao</option>
+                                        <option class="sort" value="">Cao tới thấp</option>
                                     </select>
                                 </div>
                             </div>
@@ -308,8 +313,7 @@
                                     <div class="product__item__text">
                                         <h6>{{ $items->product_name }}</h6>
                                         {{-- <a href="#" class="add-cart">+ Add To Cart</a> --}}
-                                        <a href="javascript:void(0);" class="add-cart" data-id="{{ $items->id }}">+
-                                            Add To Cart</a>
+                                        <a href="javascript:void(0);" class="add-cart" data-id="{{ $items->id }}">+Add To Cart</a>
                                         <div class="rating">
                                             <i class="fa fa-star-o"></i>
                                             <i class="fa fa-star-o"></i>

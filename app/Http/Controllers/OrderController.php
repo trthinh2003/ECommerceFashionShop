@@ -75,13 +75,7 @@ class OrderController extends Controller
         return $pdf->download('invoice_order_' . $id . '.pdf');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+
 
 
     /**
@@ -122,20 +116,42 @@ class OrderController extends Controller
         $order->customer_id = $data['customer_id'];
         $order->save();
 
-        if (Session::has('cart') && count(Session::get('cart')) > 0) {
-            foreach (Session::get('cart') as $items) {
-                OrderDetail::create([
-                    'order_id' => $order->id,
-                    'product_id' => $items->id,
-                    'quantity' => $items->quantity,
-                    'price' => $items->price,
-                    'size_and_color' => $items->size . '-' . $items->color,
-                    'code' => Session::get('percent_discount', 0)
-                ]);
-            }
-            Session::forget('cart');
-            Session::forget('percent_discount');
+        // Lấy giỏ hàng từ session
+        $cart = session('cart', []);
+
+        // Lọc ra các sản phẩm đã được chọn (checked = true)
+        $selectedItems = array_filter($cart, function ($item) {
+            return !empty($item->checked) && $item->checked;
+        });
+
+        if (empty($selectedItems)) {
+            return redirect()->back()->with('error', 'Không có sản phẩm nào được chọn để thanh toán.');
         }
+
+        // Tạo chi tiết đơn hàng từ các sản phẩm đã chọn
+        foreach ($selectedItems as $item) {
+            OrderDetail::create([
+                'order_id' => $order->id,
+                'product_id' => $item->id,
+                'quantity' => $item->quantity,
+                'price' => $item->price,
+                'size_and_color' => $item->size . '-' . $item->color,
+                'code' => session('percent_discount', 0),
+            ]);
+        }
+
+        // Nếu tất cả sản phẩm trong giỏ đều đã chọn, xóa toàn bộ giỏ hàng
+        if (count($selectedItems) === count($cart)) {
+            session()->forget('cart');
+        } else {
+            // Cập nhật lại giỏ hàng chỉ giữ lại sản phẩm chưa chọn
+            $cart = array_filter($cart, function ($item) {
+                return empty($item->checked) || !$item->checked;
+            });
+            session(['cart' => $cart]);
+        }
+
+        session()->forget('percent_discount');
 
         // Xử lý trừ đi số lượng sản phẩm trong kho theo số lượng đã được đặt
         $orderDetails = OrderDetail::where('order_id', $order->id)->get();
@@ -184,16 +200,6 @@ class OrderController extends Controller
 
 
 
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      */
@@ -203,6 +209,23 @@ class OrderController extends Controller
         $order->status = "Đã xử lý";
         $order->save();
         return redirect()->route('order.index')->with('success', "Duyệt đơn hàng thành công!");
+    }
+
+
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Order $order)
+    {
+        //
     }
 
     /**

@@ -9,6 +9,7 @@ window.addEventListener("scroll", function () {
 document.querySelectorAll(".add-cart").forEach(button => {
     button.addEventListener("click", function (event) {
         let productId = this.getAttribute("data-id");
+        // console.log(event.target);
         addToCart(productId, event);
     });
 });
@@ -21,12 +22,20 @@ function addToCart(productId, event) {
     })
     .then(response => response.json())
     .then(data => {
+    //    console.log(data);
         if (data.success) {
             document.getElementById("cartCount").innerText = data.cart_count;
             animateToCart(event);
             shakeCartIcon();
             let cartList = document.getElementById("cartList");
-            document.querySelector('.cart-quantity-header').textContent = data.cart_product_count;
+
+            // document.querySelector('.cart-quantity-header').textContent = data.cart_product_count;
+            
+            // Cập nhật số sản phẩm khác nhau trong giỏ hàng
+            document.querySelectorAll('.cart-quantity-header').forEach((element) => {
+                element.textContent = data.cart_product_count;
+            });
+
             let item = data.cart.items[productId];
             // console.log(data.cart.items[productId]);
             if (item) {
@@ -81,8 +90,8 @@ function toggleCart() {
 function animateToCart(event) {
     let cartIcon = document.getElementById("cartIcon");
     let productElement = event.target.closest(".product__item").querySelector(".set-bg");
-    let imageUrl = productElement.getAttribute("src");
-
+    // let imageUrl = productElement.getAttribute("src");
+    let imageUrl = productElement.getAttribute("src") || productElement.style.backgroundImage.replace(/url\(["']?(.*?)["']?\)/, '$1');
     let flyingImg = document.createElement("img");
     flyingImg.src = imageUrl;
     flyingImg.classList.add("fly-to-cart");

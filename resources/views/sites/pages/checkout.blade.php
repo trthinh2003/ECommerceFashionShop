@@ -1,5 +1,5 @@
 {{-- @php
-    dd(Auth::guard('customer')->user()->id);
+    dd(Session::get('cart'));
 @endphp --}}
 @extends('sites.master')
 @section('title', 'Thanh toán')
@@ -84,22 +84,25 @@
                                 <div class="checkout__order__products">Sản Phẩm<span>Đơn giá</span></div>
                                 @php
                                     $index = 1;
+                                    $totalPriceCart = 0;
+                                    $vat = 0.1;
+                                    $ship = 30000;
+                                    $percentDiscount = Session::get('percent_discount', 0); // Lấy giá trị mặc định nếu không có
+                                
                                     if (Session::has('cart') && count(Session::get('cart')) > 0) {
-                                        $totalPriceCart = 0;
-                                        $vat = 0.1;
-                                        $ship = 30000;
-                                        $percentDiscount = Session::get('percent_discount', 0); // Lấy giá trị mặc định nếu session không có
-
-                                        foreach (Session::get('cart') as $items) {
-                                            $discountedPrice =
-                                                $items->price * $items->quantity * (1 - $percentDiscount);
+                                        $cart = array_filter(Session::get('cart'), function ($item) {
+                                            return !empty($item->checked) && $item->checked;
+                                        }); // Lọc các sản phẩm được chọn (checked = true)
+                                
+                                        foreach ($cart as $items) {
+                                            $discountedPrice = $items->price * $items->quantity * (1 - $percentDiscount);
                                             $totalPriceCart += $discountedPrice;
                                         }
-
+                                
                                         if ($totalPriceCart >= 500000) {
                                             $ship = 0;
                                         }
-
+                                
                                         $vatPrice = $totalPriceCart * $vat;
                                         $total = $totalPriceCart + $vatPrice + $ship;
                                     } else {
@@ -109,19 +112,22 @@
                                         $total = 0;
                                     }
                                 @endphp
+                            
 
                                 @if (Session::has('cart') && count(Session::get('cart')) > 0)
                                     @foreach (Session::get('cart') as $items)
-                                        <ul class="checkout__total__products">
-                                            <li>{{ $index++ }}.
-                                                {{ Str::words($items->name, 10) }}<span>{{ number_format($items->price, 0, ',', '.') . ' đ' }}</span>
-                                                <img src="{{ asset('uploads/' . $items->image) }}" width="50"
-                                                    alt="">
-                                                <h6>Số lượng: {{ $items->quantity }}</h6>
-                                                <h6>Size: {{ $items->size }}</h6>
-                                                <h6>Màu: {{ $items->color }}</h6>
-                                            </li>
-                                        </ul>
+                                        @if (!empty($items->checked) && $items->checked)
+                                            <ul class="checkout__total__products">
+                                                <li>{{ $index++ }}.
+                                                    {{ Str::words($items->name, 10) }}<span>{{ number_format($items->price, 0, ',', '.') . ' đ' }}</span>
+                                                    <img src="{{ asset('uploads/' . $items->image) }}" width="50"
+                                                        alt="">
+                                                    <h6>Số lượng: {{ $items->quantity }}</h6>
+                                                    <h6>Size: {{ $items->size }}</h6>
+                                                    <h6>Màu: {{ $items->color }}</h6>
+                                                </li>
+                                            </ul>
+                                        @endif
                                     @endforeach
                                 @endif
                                 <ul class="checkout__total__all">

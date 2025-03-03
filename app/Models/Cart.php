@@ -20,7 +20,6 @@ class Cart
     public function add($product, $quantity = 1, $productVariant = null)
     {
         $key = $product->id . '-' . $productVariant->color . '-' . $productVariant->size;
-        
         if (!empty($this->items[$key])) {
             $this->items[$key]->quantity += $quantity;
         } else {
@@ -28,12 +27,14 @@ class Cart
                 'key' => $key,
                 'id' => $product->id,
                 'name' => $product->product_name,
+                'slug' => $product->slug,
                 'image' => $product->image,
                 'price' => $product->price,
                 'quantity' => $quantity,
                 'color' => $productVariant->color,
                 'size' => $productVariant->size,
-                'stock' => $productVariant->stock
+                'stock' => $productVariant->stock,
+                'checked' => false
             ];
             $this->items[$key] = (object)$items;
         }
