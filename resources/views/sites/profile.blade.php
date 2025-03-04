@@ -2,7 +2,7 @@
 @section('title', 'Hồ sơ cá nhân')
 @section('content')
     @if (Session::has('updateprofile'))
-        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 25rem; display:flex; text-align:center">
+        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 21rem; margin-top: 120px; display:flex; text-align:center;">
             <i
                 class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('updateprofile') }}
         </div>
@@ -12,7 +12,7 @@
             <div class="col-md-3 border-right">
                 <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                     @php
-                    $avatarUrl = asset('client/img/user.jpg'); // Ảnh mặc định
+                    $avatarUrl = asset('client/img/avatar-user.png'); // Ảnh mặc định
                 
                     if (Auth::guard('customer')->check() && Auth::guard('customer')->user() !== null) {
                         $user = Auth::guard('customer')->user();

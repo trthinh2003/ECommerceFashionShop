@@ -133,6 +133,7 @@ class OrderController extends Controller
             OrderDetail::create([
                 'order_id' => $order->id,
                 'product_id' => $item->id,
+                'product_variant_id' => $item->product_variant_id,
                 'quantity' => $item->quantity,
                 'price' => $item->price,
                 'size_and_color' => $item->size . '-' . $item->color,
@@ -187,11 +188,13 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+
+
         $data = DB::table('orders as o')
             ->join('customers as c', 'o.customer_id', '=', 'c.id')
             ->join('order_details as od', 'o.id', '=', 'od.order_id')
-            ->join('products as p', 'p.id', '=', 'od.product_id')
-            ->join('product_variants as pv', 'pv.product_id', '=', 'p.id')
+            ->join('product_variants as pv', 'pv.id', '=', 'od.product_variant_id')
+            ->join('products as p', 'p.id', '=', 'pv.product_id')
             ->where('o.id', $order->id)
             ->select('o.*', 'c.name as customer_name', 'p.product_name as product_name', 'p.image', 'pv.size', 'pv.color', 'od.quantity', 'od.price', 'od.code')
             ->get();

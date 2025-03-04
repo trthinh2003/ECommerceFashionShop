@@ -31,6 +31,7 @@ class Cart
                 'image' => $product->image,
                 'price' => $product->price,
                 'quantity' => $quantity,
+                'product_variant_id' => $productVariant->id,
                 'color' => $productVariant->color,
                 'size' => $productVariant->size,
                 'stock' => $productVariant->stock,

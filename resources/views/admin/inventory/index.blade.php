@@ -51,7 +51,7 @@
         </div>
     </div>
     {{-- chưa có xử lý phân trang --}}
-    <div id="pagination" class="mt-3 d-flex justify-content-left"></div>
+    <div id="pagination" class="mt-3 d-flex justify-content-center"></div>
 
 
     <!-- Modal InventoryDetail -->

@@ -36,7 +36,8 @@ function addToCart(productId, event) {
                 element.textContent = data.cart_product_count;
             });
 
-            let item = data.cart.items[productId];
+            let item = data.cart.items[`${productId}-${data.color}-${data.size}`];
+            // console.log(item, productId, data.color, data.size);
             // console.log(data.cart.items[productId]);
             if (item) {
                 let oldValue = document.querySelector(`.cart-item-quantity-${item.id}`);
@@ -90,13 +91,14 @@ function toggleCart() {
 function animateToCart(event) {
     let cartIcon = document.getElementById("cartIcon");
     let productElement = event.target.closest(".product__item").querySelector(".set-bg");
+    console.log(productElement);
     // let imageUrl = productElement.getAttribute("src");
     let imageUrl = productElement.getAttribute("src") || productElement.style.backgroundImage.replace(/url\(["']?(.*?)["']?\)/, '$1');
     let flyingImg = document.createElement("img");
     flyingImg.src = imageUrl;
     flyingImg.classList.add("fly-to-cart");
     document.body.appendChild(flyingImg);
-    console.log(productElement, imageUrl, flyingImg);
+    // console.log(productElement, imageUrl, flyingImg);
 
 
     let productRect = event.target.getBoundingClientRect();

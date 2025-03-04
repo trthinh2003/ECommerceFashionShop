@@ -72,14 +72,13 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/order-history', [CustomerController::class, 'getHistoryOrderOfCustomer'])->name('sites.getHistoryOrder');
     Route::get('/order-detail/{order}', [CustomerController::class, 'showOrderDetailOfCustomer'])->name('sites.showOrderDetailOfCustomer');
     Route::put('/cancel-order{id}', [CustomerController::class, 'cancelOrder'])->name('sites.cancelOrder');
-
     // Xuất hoá đơn PDF
     Route::get('/order/{id}/invoice', [OrderController::class, 'exportInvoice'])->name('order.invoice');
 
     // Xử lý thanh toán
-    Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout');
+    Route::get('/checkout', [HomeController::class, 'checkout'])->name('sites.checkout')->middleware('customer');
     Route::post('/payment', [CheckoutController::class, 'checkout'])->name('payment.checkout');
-    Route::get('/payment/success', [HomeController::class, 'successPayment'])->name('sites.success.payment');
+    Route::get('/payment/success', [HomeController::class, 'successPayment'])->name('sites.success.payment')->middleware('customer');
     // Routes xử lý callback từ các cổng thanh toán
     Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('payment.vnpay.return');
     Route::get('/momo-return', [CheckoutController::class, 'momoReturn'])->name('payment.momo.return');

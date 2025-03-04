@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
@@ -97,7 +98,9 @@ class HomeController extends Controller
 
     public function checkout()
     {
-        return view('sites.pages.checkout');
+      
+            return view('sites.pages.checkout');
+      
     }
 
     public function productDetail($slug)

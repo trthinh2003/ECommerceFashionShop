@@ -17,9 +17,9 @@
         <!-- Form tìm kiếm -->
         <div class="row mb-3">
             <div class="col-md-8 mx-auto">
-                <form method="GET" action="#">
+                <form method="GET" action="{{ route('sites.getHistoryOrder') }}">
                     <div class="input-group">
-                        <input name="query" type="text" class="form-control"
+                        <input name="query" type="number" class="form-control"
                             placeholder="Nhập ID đơn hàng hoặc số điện thoại...">
                         <button type="submit" class="btn btn-primary me-3">
                             <i class="fa fa-search"></i> Tìm kiếm

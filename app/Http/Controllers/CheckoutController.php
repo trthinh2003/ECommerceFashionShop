@@ -140,20 +140,56 @@ class CheckoutController extends Controller
                 $order->transaction_id = $vnp_TxnRef; // Lưu mã giao dịch VNPAY
                 $order->save();
 
-                // Lưu chi tiết đơn hàng vào db
-                if (Session::has('cart') && count(Session::get('cart')) > 0) {
-                    foreach (Session::get('cart') as $items) {
-                        OrderDetail::create([
-                            'order_id' => $order->id,
-                            'product_id' => $items->id,
-                            'quantity' => $items->quantity,
-                            'price' => $items->price,
-                            'size_and_color' => $items->size . '-' . $items->color,
-                            'code' => Session::get('percent_discount', 0)
-                        ]);
-                    }
-                    Session::forget('cart');
-                    Session::forget('percent_discount');
+                // // Lưu chi tiết đơn hàng vào db
+                // if (Session::has('cart') && count(Session::get('cart')) > 0) {
+                //     foreach (Session::get('cart') as $items) {
+                //         OrderDetail::create([
+                //             'order_id' => $order->id,
+                //             'product_id' => $items->id,
+                //             'quantity' => $items->quantity,
+                //             'price' => $items->price,
+                //             'size_and_color' => $items->size . '-' . $items->color,
+                //             'code' => Session::get('percent_discount', 0)
+                //         ]);
+                //     }
+                //     Session::forget('cart');
+                //     Session::forget('percent_discount');
+                // }
+
+                // Lấy giỏ hàng từ session
+                $cart = session('cart', []);
+
+                // Lọc ra các sản phẩm đã được chọn (checked = true)
+                $selectedItems = array_filter($cart, function ($item) {
+                    return !empty($item->checked) && $item->checked;
+                });
+
+                if (empty($selectedItems)) {
+                    return redirect()->back()->with('error', 'Không có sản phẩm nào được chọn để thanh toán.');
+                }
+
+                // Tạo chi tiết đơn hàng từ các sản phẩm đã chọn
+                foreach ($selectedItems as $item) {
+                    OrderDetail::create([
+                        'order_id' => $order->id,
+                        'product_id' => $item->id,
+                        'product_variant_id' => $item->product_variant_id,
+                        'quantity' => $item->quantity,
+                        'price' => $item->price,
+                        'size_and_color' => $item->size . '-' . $item->color,
+                        'code' => session('percent_discount', 0),
+                    ]);
+                }
+
+                // Nếu tất cả sản phẩm trong giỏ đều đã chọn, xóa toàn bộ giỏ hàng
+                if (count($selectedItems) === count($cart)) {
+                    session()->forget('cart');
+                } else {
+                    // Cập nhật lại giỏ hàng chỉ giữ lại sản phẩm chưa chọn
+                    $cart = array_filter($cart, function ($item) {
+                        return empty($item->checked) || !$item->checked;
+                    });
+                    session(['cart' => $cart]);
                 }
 
                 // Cập nhật số lượng tồn kho sau khi tạo đơn hàng
@@ -292,20 +328,56 @@ class CheckoutController extends Controller
                     $order->transaction_id = $transId; // Lưu mã giao dịch MoMo
                     $order->save();
 
-                    // Lưu chi tiết đơn hàng
-                    if (Session::has('cart') && count(Session::get('cart')) > 0) {
-                        foreach (Session::get('cart') as $item) {
-                            OrderDetail::create([
-                                'order_id' => $order->id,
-                                'product_id' => $item->id,
-                                'quantity' => $item->quantity,
-                                'price' => $item->price,
-                                'size_and_color' => $item->size . '-' . $item->color,
-                                'code' => Session::get('percent_discount', 0)
-                            ]);
-                        }
-                        Session::forget('cart'); // Xóa giỏ hàng sau khi tạo đơn thành công
-                        Session::forget('percent_discount');
+                    // // Lưu chi tiết đơn hàng
+                    // if (Session::has('cart') && count(Session::get('cart')) > 0) {
+                    //     foreach (Session::get('cart') as $item) {
+                    //         OrderDetail::create([
+                    //             'order_id' => $order->id,
+                    //             'product_id' => $item->id,
+                    //             'quantity' => $item->quantity,
+                    //             'price' => $item->price,
+                    //             'size_and_color' => $item->size . '-' . $item->color,
+                    //             'code' => Session::get('percent_discount', 0)
+                    //         ]);
+                    //     }
+                    //     Session::forget('cart'); // Xóa giỏ hàng sau khi tạo đơn thành công
+                    //     Session::forget('percent_discount');
+                    // }
+
+                    // Lấy giỏ hàng từ session
+                    $cart = session('cart', []);
+
+                    // Lọc ra các sản phẩm đã được chọn (checked = true)
+                    $selectedItems = array_filter($cart, function ($item) {
+                        return !empty($item->checked) && $item->checked;
+                    });
+
+                    if (empty($selectedItems)) {
+                        return redirect()->back()->with('error', 'Không có sản phẩm nào được chọn để thanh toán.');
+                    }
+
+                    // Tạo chi tiết đơn hàng từ các sản phẩm đã chọn
+                    foreach ($selectedItems as $item) {
+                        OrderDetail::create([
+                            'order_id' => $order->id,
+                            'product_id' => $item->id,
+                            'product_variant_id' => $item->product_variant_id,
+                            'quantity' => $item->quantity,
+                            'price' => $item->price,
+                            'size_and_color' => $item->size . '-' . $item->color,
+                            'code' => session('percent_discount', 0),
+                        ]);
+                    }
+
+                    // Nếu tất cả sản phẩm trong giỏ đều đã chọn, xóa toàn bộ giỏ hàng
+                    if (count($selectedItems) === count($cart)) {
+                        session()->forget('cart');
+                    } else {
+                        // Cập nhật lại giỏ hàng chỉ giữ lại sản phẩm chưa chọn
+                        $cart = array_filter($cart, function ($item) {
+                            return empty($item->checked) || !$item->checked;
+                        });
+                        session(['cart' => $cart]);
                     }
 
                     // Cập nhật tồn kho
@@ -323,7 +395,7 @@ class CheckoutController extends Controller
                         }
                     }
                     Session::put('success_data', [
-                        'logo' => 'vnpay.png',
+                        'logo' => 'momo.png',
                         'receiver_name' => $order->receiver_name,
                         'order_id' => $order->id,
                         'total' => $order->total

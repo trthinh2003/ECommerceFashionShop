@@ -238,62 +238,61 @@
             $(".dropdown-content").hide();
         });
     </script>
-    <script src="{{ asset('client/js/cart-add.js') }}"></script>
 
-    {{-- danh sách sản phẩm liên quan --}}
-    <script>
-        $(document).ready(function() {
-            $("#suggestion-list-product").empty(); // Xóa dữ liệu cũ trước khi cập nhật mới
-    
-            $.ajax({
-                url: "http://127.0.0.1:8000/api/suggest-content-based", // API lấy danh sách sản phẩm
-                method: "GET",
-                dataType: "json",
-                success: function(data) {
-                    if (data.length > 0) {
-                        console.log(data);
-                        data.forEach(function(item) {
-                            let productHTML = `
-                                <div class="col-lg-3 col-md-6 col-sm-6">
-                                    <div class="product__item" id="product-list-shop">
-                                        <div class="product__item__pic">
-                                            <img class="product__item__pic set-bg" width="280" height="250"
-                                                src="{{ asset('uploads/${item.image}')}}"
-                                                alt="${item.product_name}">
-                                            <ul class="product__hover">
-                                                <li><a href="{{ url('add-to-wishlist') }}/${item.id}"><img src="{{ asset('client/img/icon/heart.png') }}"
-                                                            alt=""></a></li>
-                                                <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}"
-                                                            alt=""><span>Compare</span></a></li>
+{{-- danh sách sản phẩm liên quan --}}
+<script>
+    $(document).ready(function() {
+        $("#suggestion-list-product").empty(); // Xóa dữ liệu cũ trước khi cập nhật mới
+        
+        $.ajax({
+            url: "http://127.0.0.1:8000/api/suggest-content-based", // API lấy danh sách sản phẩm
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                if (data.length > 0) {
+                    console.log(data);
+                    data.forEach(function(item) {
+                        let productHTML = `
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="product__item" id="product-list-shop">
+                                <div class="product__item__pic">
+                                    <img class="set-bg" width="280" height="250"
+                                    src="{{ asset('uploads/${item.image}')}}"
+                                    alt="${item.product_name}">
+                                    <ul class="product__hover">
+                                        <li><a href="{{ url('add-to-wishlist') }}/${item.id}"><img src="{{ asset('client/img/icon/heart.png') }}"
+                                            alt=""></a></li>
+                                            <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}"
+                                                alt=""><span>Compare</span></a></li>
                                                 <li><a href="{{ url('product') }}/${item.slug}"><img
-                                                            src="{{ asset('client/img/icon/search.png') }}"
-                                                            alt=""></a></li>
-                                            </ul>
-                                        </div>
-    
-                                        <div class="product__item__text">
-                                            <h6>${item.product_name}</h6>
-                                            <a href="javascript:void(0);" class="add-cart" data-id="${item.id}">+
-                                                Add To Cart</a>
+                                                    src="{{ asset('client/img/icon/search.png') }}"
+                                                    alt=""></a></li>
+                                                    </ul>
+                                                    </div>
+                                                    
+                                                    <div class="product__item__text">
+                                                        <h6>${item.product_name}</h6>
+                                                        <a href="javascript:void(0);" class="add-cart" data-id="${item.id}">+
+                                                            Add To Cart</a>
                                             <div class="rating">
                                                 <i class="fa fa-star-o"></i>
                                                 <i class="fa fa-star-o"></i>
                                                 <i class="fa fa-star-o"></i>
                                                 <i class="fa fa-star-o"></i>
                                                 <i class="fa fa-star-o"></i>
-                                            </div>
-                                            <h5>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</h5>
-                                            <div class="product__color__select">
-                                                <label for="pc-4">
-                                                    <input type="radio" id="pc-4">
-                                                </label>
+                                                </div>
+                                                <h5>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</h5>
+                                                <div class="product__color__select">
+                                                    <label for="pc-4">
+                                                        <input type="radio" id="pc-4">
+                                                        </label>
                                                 <label class="active black" for="pc-5">
                                                     <input type="radio" id="pc-5">
-                                                </label>
-                                                <label class="grey" for="pc-6">
-                                                    <input type="radio" id="pc-6">
-                                                </label>
-                                            </div>
+                                                    </label>
+                                                    <label class="grey" for="pc-6">
+                                                        <input type="radio" id="pc-6">
+                                                        </label>
+                                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -311,6 +310,7 @@
             });
         });
     </script>
+    <script src="{{ asset('client/js/cart-add.js') }}"></script>
 @endsection
 {{-- 
 <button onclick="window.open('https://console.dialogflow.com/api-client/demo/embedded/d091fe6d-c3c9-487c-9c4b-855241a4956d', '_blank', 'width=400,height=500')">

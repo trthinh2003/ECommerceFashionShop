@@ -57,6 +57,8 @@ class CartController extends Controller
                 return response()->json([
                     'success' => true,
                     'cart' => $cart,
+                    'color' => $productVariant->color,
+                    'size' => $productVariant->size,
                     'cart_count' => $totalItems,
                     'cart_product_count' => count(Session::get('cart'))
                 ]);

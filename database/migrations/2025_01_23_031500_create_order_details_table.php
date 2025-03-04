@@ -14,13 +14,15 @@ return new class extends Migration
         Schema::create('order_details', function (Blueprint $table) {
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('order_id');
+            $table->unsignedInteger('product_variant_id');
             $table->unsignedInteger('quantity')->default(1);
             $table->decimal('price', 10,2);
             $table->string('size_and_color', 100)->nullable();
             $table->float('code')->nullable();
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('order_id')->references('id')->on('orders');
-            $table->primary(['product_id', 'order_id']);
+            $table->foreign('product_variant_id')->references('id')->on('product_variants');
+            $table->primary(['product_id', 'order_id', 'product_variant_id']);
             $table->timestamps();
         });
     }

@@ -7,6 +7,7 @@
             <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('success') }}
         </div>
     @endif
+
     <div class="card">
         <div class="card-body">
             <div class="card-sub">
@@ -23,6 +24,13 @@
                             <input name="query" type="text"
                                 placeholder="Nhập vào id đơn hàng hoặc số điện thoại để tìm kiếm..." class="form-control" />
                         </div>
+                    </div>
+                    <div class="col-3" style="position: relative;">
+                        <select class="form-control" name="filter_order">
+                            <option value="Đơn hàng đã thanh toán">Đơn hàng đã thanh toán</option>
+                            <option value="Đơn hàng đã huỷ">Đơn hàng đã huỷ</option>
+                        </select>
+                        <div class="caret fs-2 down-caret" style="position:absolute; top: 17px; right: 25px"></div>
                     </div>
                 </form>
             </div>

@@ -95,22 +95,23 @@ class CustomerController extends Controller
 
     public function update_profile(Request $request, Customer $customer)
     {
+        // dd($customer);
+        //   dd($request->all());
         $request->validate([
             'name' => 'required|min:3|max:200',
             'email' => 'required|email',
-            'new_password' => 'required|min:6|max:200',
+            'new_password' => 'min:6|max:200',
             'phone' => 'required',
             'address' => 'required'
         ], [
             'name.required' => 'Họ và tên không được để trống.',
             'email.required' => 'Vui lòng nhập email của bạn.',
             'email.email' => 'Vui lòng nhập email hợp lệ.',
-            'new_password.required' => 'Vui lòng nhập mật khẩu.',
             'new_password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
             'phone.required' => 'Số điện thoại không được để trống',
             'address.required' => 'Địa chỉ không được để trống'
         ]);
-        dd($request->all());
+      
 
         $customer->update([
             'name' => $request->name,
@@ -130,27 +131,49 @@ class CustomerController extends Controller
     }
 
     public function getHistoryOrderOfCustomer(){
-        if(Auth::guard('customer')->check()){
-            $customer_id = Auth::guard('customer')->user()->id;
+        if (request()->has('query')) {
+            $query = request()->query('query');
+        
             $historyOrder = DB::table('orders as o')
-            ->join('customers as c', 'o.customer_id', '=', 'c.id')
-            ->orderBy('o.id', 'ASC')
-            ->where('o.customer_id', $customer_id)
-            ->select('o.*', 'c.name as customer_name')
-            ->paginate(5);
+                ->join('customers as c', 'o.customer_id', '=', 'c.id')
+                ->orderBy('o.id', 'ASC')
+                ->where(function ($q) use ($query) {
+                    if (is_numeric($query)) {
+                        $q->where('o.id', $query) // Tìm chính xác theo ID
+                          ->orWhere('o.phone', 'like', "%$query%"); // Tìm theo số điện thoại
+                    } else {
+                        $q->where('o.phone', 'like', "%$query%");
+                    }
+                })
+                ->select('o.*', 'c.name as customer_name')
+                ->paginate(5);
+        
+            return view('sites.customer.order_history', compact('historyOrder'));
+        } else {
+
+            if(Auth::guard('customer')->check()){
+                $customer_id = Auth::guard('customer')->user()->id;
+                $historyOrder = DB::table('orders as o')
+                ->join('customers as c', 'o.customer_id', '=', 'c.id')
+                ->orderBy('o.id', 'ASC')
+                ->where('o.customer_id', $customer_id)
+                ->select('o.*', 'c.name as customer_name')
+                ->paginate(5);
+            }
+            return view('sites.customer.order_history', compact('historyOrder'));
         }
-        return view('sites.customer.order_history', compact('historyOrder'));
     }
 
     public function showOrderDetailOfCustomer(Order $order){
         $orderDetail = DB::table('orders as o')
         ->join('customers as c', 'o.customer_id', '=', 'c.id')
         ->join('order_details as od', 'o.id', '=', 'od.order_id')
-        ->join('products as p', 'p.id', '=', 'od.product_id')
-        ->join('product_variants as pv', 'pv.product_id', '=', 'p.id')
+        ->join('product_variants as pv', 'pv.id', '=', 'od.product_variant_id')
+        ->join('products as p', 'p.id', '=', 'pv.product_id')
         ->where('o.id', $order->id)
-        ->select('o.*', 'c.name as customer_name', 'p.product_name as product_name','p.image', 'pv.size', 'pv.color', 'od.quantity', 'od.price', 'od.code')
+        ->select('o.*', 'c.name as customer_name', 'p.product_name as product_name', 'p.image', 'pv.size', 'pv.color', 'od.quantity', 'od.price', 'od.code')
         ->get();
+    
         return view('sites.customer.order_detail', compact('orderDetail'));
     }
 

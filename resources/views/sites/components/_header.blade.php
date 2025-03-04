@@ -65,7 +65,7 @@
                     <div class="header__top__right">
                         <div class="header__top__hover">
                             @php
-                                $avatarUrl = asset('client/img/user.jpg'); // Ảnh mặc định
+                                $avatarUrl = asset('client/img/avatar-user.png'); // Ảnh mặc định
 
                                 if (Auth::guard('customer')->check()) {
                                     $user = Auth::guard('customer')->user();

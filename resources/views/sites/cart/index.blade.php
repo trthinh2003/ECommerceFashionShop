@@ -213,16 +213,7 @@
                 let productPrice = parseInt(row.find(".product-price").text().replace(/\D/g, ""));
                 let productColor = row.find(".color-variant").text().split(" ")[2];
                 let productSize = row.find(".size-variant").text().split(" ")[1];
-                // console.log(productColor, productSize);
-                // $.ajax({
-                //     url: `http://127.0.0.1:8000/api/product-variant-check/${productColor}/${productSize}/${productId}`,
-                //     type: "GET",
-                //     dataType: "json",
-                //     success: function(response) {
-                //         let maxStock = response.data[0].stock; // Lấy số lượng tồn kho từ API
-                //         input.attr("max", maxStock);
-                //     }
-                // })
+
                 let currentQuantity = parseInt(input.val());
                 let minValue = parseInt(input.attr("min")) || 1;
                 let maxValue = parseInt(input.attr("max"));
@@ -279,17 +270,7 @@
                 let productPrice = parseInt(row.find(".product-price").text().replace(/\D/g, ""));
                 let productColor = row.find(".color-variant").text().split(" ")[2];
                 let productSize = row.find(".size-variant").text().split(" ")[1];
-                // console.log(productColor, productSize);
-                // $.ajax({
-                //     url: `http://127.0.0.1:8000/api/product-variant-check/${productColor}/${productSize}/${productId}`,
-                //     type: "GET",
-                //     dataType: "json",
-                //     success: function(response) {
-                //         // console.log(response.data);
-                //         let maxStock = response.data[0].stock; // Lấy số lượng tồn kho từ API
-                //         input.attr("max", maxStock);
-                //     }
-                // })
+
                 let currentQuantity = parseInt(input.val());
                 let minValue = parseInt(input.attr("min")) || 1;
                 let maxValue = parseInt(input.attr("max"));
@@ -388,37 +369,22 @@
         });
     </script>
 
-    {{-- <script>
+    <script>
         $(document).ready(function() {
-            // Khi chọn "Chọn tất cả", tất cả checkbox sản phẩm sẽ được chọn hoặc bỏ chọn
-            $("#check-all").change(function() {
-                $(".product-checkbox").prop("checked", $(this).prop("checked"));
-            });
-
-            // Nếu bỏ chọn một sản phẩm, bỏ chọn "Chọn tất cả"
-            $(".product-checkbox").change(function() {
-                if (!$(this).prop("checked")) {
-                    $("#check-all").prop("checked", false);
-                }
-            });
-
             // Khi bấm nút thanh toán, kiểm tra và lấy danh sách sản phẩm đã chọn
             $("#checkout-form").click(function(event) {
                 let selectedItems = [];
                 $(".product-checkbox:checked").each(function() {
                     selectedItems.push($(this).val());
                 });
-
                 if (selectedItems.length === 0) {
                     alert("Vui lòng chọn ít nhất một sản phẩm để thanh toán.");
                     event.preventDefault();
                     return;
                 }
-
-                $("#selected-items").val(JSON.stringify(selectedItems));
             });
         });
-    </script> --}}
+    </script>
 
 
     <script>
@@ -487,9 +453,10 @@
             $(".product-checkbox").change(function() {
                 if (!$(this).prop("checked")) {
                     $("#check-all").prop("checked", false); // Vô hiệu hoá 1 hoặc tất cả checkbox
-                } else {
-                    $("#check-all").prop("checked", true); // chọn tất cả nếu tất cả checkbox đc chọn
-                }
+                } 
+                // else {
+                //     $("#check-all").prop("checked", true); // chọn tất cả nếu tất cả checkbox đc chọn
+                // }
             });
         });
     </script>
