@@ -71,8 +71,9 @@
             </div>
         </div>
         </hr>
-        {{ $data->links() }}
-
+        <div class="d-flex justify-content-center mt-3">
+            {{ $data->links() }}
+        </div>
         <!-- Modal productDetail -->
         <div class="modal fade" id="productDetail" tabindex="-1" aria-labelledby="productDetailLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">

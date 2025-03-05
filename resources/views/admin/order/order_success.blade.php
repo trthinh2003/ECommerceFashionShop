@@ -1,13 +1,7 @@
 @can('salers')
     @extends('admin.master')
-    @section('title', 'Đơn hàng chưa xử lý')
+    @section('title', 'Đơn hàng đã thanh toán thành công')
 @section('content')
-    @if (Session::has('success'))
-        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 26rem; display:flex; text-align:center">
-            <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('success') }}
-        </div>
-    @endif
-
     <div class="card">
         <div class="card-body">
             <div class="card-sub">
@@ -25,13 +19,6 @@
                                 placeholder="Nhập vào id đơn hàng hoặc số điện thoại để tìm kiếm..." class="form-control" />
                         </div>
                     </div>
-                    {{-- <div class="col-3" style="position: relative;">
-                        <select class="form-control" name="filter_order">
-                            <option value="Đơn hàng đã thanh toán">Đơn hàng đã thanh toán</option>
-                            <option value="Đơn hàng đã huỷ">Đơn hàng đã huỷ</option>
-                        </select>
-                        <div class="caret fs-2 down-caret" style="position:absolute; top: 17px; right: 25px"></div>
-                    </div> --}}
                 </form>
             </div>
             <table class="table mt-3">
@@ -58,23 +45,9 @@
                             <td>{{ $model->status }}</td>
                             <td>{{ $model->created_at }}</td>
                             <td>
-                                @if ($model->status === 'Chờ xử lý')
-                                    <a href="{{ route('order.show', $model->id) }}" class="btn btn-sm btn-secondary"><i
-                                            class="fa fa-edit"></i>Xem</a>
-
-                                    <form action="{{ route('order.update', $model->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        {{-- <a href="{{ route('order.update', $model->id) }}" class="btn btn-sm btn-primary"><i
-                                        class="fa fa-edit"></i>Duyệt</a> --}}
-                                        <button type="submit" class="btn btn-sm btn-primary"><i
-                                                class="fa fa-edit"></i>Duyệt</button>
-                                    </form>
-                                @else
-                                    <a href="{{ route('order.show', $model->id) }}" class="btn btn-sm btn-secondary"><i
-                                            class="fa fa-edit"></i>Xem</a>
-                                @endif       
-                                </td>
+                                <a href="{{ route('order.show', $model->id) }}" class="btn btn-sm btn-secondary"><i
+                                        class="fa fa-edit"></i>Xem</a>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

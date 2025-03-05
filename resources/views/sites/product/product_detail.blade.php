@@ -149,53 +149,9 @@
                                             </label>
                                         @endforeach
                                     </div>
-
-                                    <script>
-                                        document.querySelectorAll('.color-choice-item').forEach(item => {
-                                            item.addEventListener('change', async (e) => {
-                                                // Xóa viền tất cả label trước khi thêm viền mới
-                                                document.querySelectorAll('.color-box').forEach(label => label.style.border = 'none');
-
-                                                // Thêm viền xanh cho label được chọn
-                                                let selectedLabel = document.querySelector(`label[for="${e.target.id}"]`);
-                                                if (selectedLabel) {
-                                                    selectedLabel.style.border = '3px solid blue';
-                                                }
-
-                                                // Lấy ID sản phẩm từ Laravel Blade
-                                                let productId = @json($productDetail->id);
-
-                                                try {
-                                                    let response = await fetch(
-                                                        `http://127.0.0.1:8000/api/product-variant-size/${item.value}/${productId}`);
-                                                    let data = await response.json();
-
-                                                    if (data.status_code === 200) {
-                                                        let availableSizes = data.data.map(variant => variant
-                                                            .size); // Lấy danh sách size có sẵn
-
-                                                        document.querySelectorAll('.product__details__option__size label').forEach(
-                                                            label => {
-                                                                let input = label.querySelector('input[type="radio"]');
-                                                                if (availableSizes.includes(input.value)) {
-                                                                    input.disabled = false;
-                                                                    label.style.textDecoration = "none";
-                                                                    label.style.opacity = "1";
-                                                                    document.querySelector('.quantity-input').setAttribute("max", )
-
-                                                                } else {
-                                                                    input.disabled = true;
-                                                                    label.style.textDecoration = "line-through";
-                                                                    label.style.opacity = "0.5";
-                                                                }
-                                                            });
-                                                    }
-                                                } catch (error) {
-                                                    console.error("Lỗi khi fetch dữ liệu:", error);
-                                                }
-                                            });
-                                        });
-                                    </script>
+                                </div>
+                                <div class="mb-3">
+                                    <span class="stock-extist"></span>
                                 </div>
                                 <div class="product__details__cart__option">
                                     <div class="quantity">
@@ -210,7 +166,6 @@
                                         @enderror
                                     </div>
                                     <input type="submit" class="site-btn" name="add_to_cart" value="Thêm vào giỏ hàng">
-                                    {{-- <a href="{{route('sites.add', $productDetail->id, 1, 'true')}}" class="primary-btn">Thêm vào giỏ hàng</a> --}}
                                 </div>
                                 <div class="product__details__btns__option">
                                     <a href="{{ route('sites.addToWishList', $productDetail->id) }}"><i
@@ -219,7 +174,17 @@
                                 </div>
                                 <div class="product__details__last__option">
                                     <h5><span>Các phương thức thanh toán:</span></h5>
-                                    <img src="{{ 'client/img/shop-details/details-payment.png' }}" alt="">
+                                    {{-- <img src="{{ 'client/img/shop-details/details-payment.png' }}" alt=""> --}}
+                                    <div class="payment-pic">
+                                        <img src="{{ asset('client/img/checkout/cod.png') }}" width="50"
+                                            alt="">
+                                        <img src="{{ asset('client/img/checkout/vnpay.png') }}" width="50"
+                                            alt="">
+                                        <img src="{{ asset('client/img/checkout/momo.png') }}" width="50"
+                                            alt="">
+                                        <img src="{{ asset('client/img/checkout/image.png') }}" width="50"
+                                            alt="">
+                                    </div>
                                     <ul>
                                         <li><span>SKU: </span>{{ $productDetail->sku }}</li>
                                         <li><span>Danh mục: </span>{{ $productDetail->category->category_name }}</li>
@@ -261,7 +226,7 @@
                                 <div class="tab-pane" id="tabs-6" role="tabpanel">
                                     <div class="product__details__tab__content">
                                         <!-- Đánh giá sao -->
-                                        <div class="review-section">
+                                        <div class="review-section" id="review-section-content">
                                             <h5>Đánh giá sản phẩm</h5>
                                             <div class="rating">
                                                 <span class="star" data-value="1">&#9733;</span>
@@ -322,42 +287,184 @@
                 </div>
             </div>
         </div>
+        <script>
+            document.querySelectorAll('.color-choice-item').forEach(item => {
+                item.addEventListener('change', async (e) => {
+                    // Xóa viền tất cả label 
+                    document.querySelectorAll('.color-box').forEach(label => label.style.border = 'none');
+
+                    // Thêm viền xanh cho label được chọn
+                    let selectedLabel = document.querySelector(`label[for="${e.target.id}"]`);
+                    if (selectedLabel) {
+                        selectedLabel.style.border = '3px solid blue';
+                    }
+
+                    let selectedColor = e.target.value;
+                    let productId = @json($productDetail->id);
+
+                    try {
+                        let response = await fetch(
+                            `http://127.0.0.1:8000/api/product-variant-size/${selectedColor}/${productId}`
+                        );
+                        let data = await response.json();
+
+                        if (data.status_code === 200) {
+                            let availableVariants = data.data;
+                            let availableSizes = availableVariants.map(variant => variant.size);
+
+                            document.querySelectorAll('.product__details__option__size label').forEach(
+                                label => {
+                                    let input = label.querySelector('input[type="radio"]');
+                                    input.checked = false;
+
+                                    if (availableSizes.includes(input.value)) {
+                                        input.disabled = false;
+                                        label.style.textDecoration = "none";
+                                        label.style.opacity = "1";
+                                    } else {
+                                        input.disabled = true;
+                                        label.style.textDecoration = "line-through";
+                                        label.style.opacity = "0.5";
+                                    }
+                                });
+
+                            // Chỉ reset số lượng tồn kho nếu không có size hợp lệ
+                            if (availableSizes.length === 0) {
+                                resetQuantityAndCart(0);
+                            } else {
+                                document.querySelector(".stock-extist").innerText = "";
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Lỗi khi fetch dữ liệu:", error);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.product__details__option__size label').forEach(label => {
+                label.addEventListener('click', (e) => {
+                    let input = label.querySelector('input[type="radio"]');
+                    if (input.disabled) {
+                        e.preventDefault();
+                        resetQuantityAndCart(0);
+                    }
+                });
+            });
+
+            document.querySelectorAll('.product__details__option__size input').forEach(sizeInput => {
+                sizeInput.addEventListener('change', async (e) => {
+                    let selectedColor = document.querySelector('.color-choice-item:checked')?.value;
+                    let selectedSize = e.target.value;
+                    let productId = @json($productDetail->id);
+
+                    if (e.target.disabled) {
+                        resetQuantityAndCart(0);
+                        return;
+                    }
+
+                    if (!selectedColor || !selectedSize) return;
+
+                    try {
+                        let response = await fetch(
+                            `http://127.0.0.1:8000/api/product-variant-selected/${selectedSize}/${selectedColor}/${productId}`
+                        );
+                        let data = await response.json();
+
+                        if (data.status_code === 200 && data.data) {
+                            let stock = data.data.stock;
+                            updateStockUI(stock);
+                        }
+                    } catch (error) {
+                        console.error("Lỗi khi lấy dữ liệu số lượng tồn kho:", error);
+                    }
+                });
+            });
+
+            function resetQuantityAndCart(stock = null) {
+                let quantityInput = document.querySelector(".quantity-input");
+                let quantityContainer = document.querySelector(".quantity");
+                let proqty = document.querySelector(".pro-qty");
+                let addToCartBtn = document.querySelector("input[name='add_to_cart']");
+                let stockText = document.querySelector(".stock-extist");
+
+                quantityInput.value = 1;
+                quantityInput.max = 1;
+                quantityInput.disabled = true;
+                quantityContainer.style.opacity = "0.5";
+                proqty.style.pointerEvents = "none";
+                addToCartBtn.disabled = true;
+                addToCartBtn.style.backgroundColor = "gray";
+
+                if (stock !== null) {
+                    stockText.innerText = `Còn lại: ${stock} sản phẩm`;
+                } else {
+                    stockText.innerText = "";
+                }
+            }
+
+            function updateStockUI(stock) {
+                let quantityInput = document.querySelector(".quantity-input");
+                let quantityContainer = document.querySelector(".quantity");
+                let proqty = document.querySelector(".pro-qty");
+                let addToCartBtn = document.querySelector("input[name='add_to_cart']");
+                let stockText = document.querySelector(".stock-extist");
+
+                stockText.innerText = `Còn lại: ${stock} sản phẩm`;
+
+                if (stock === 0) {
+                    resetQuantityAndCart(0);
+                    stockText.classList.remove("in-stock");
+                    stockText.classList.add("out-of-stock");
+                } else {
+                    quantityInput.value = 1;
+                    quantityInput.max = stock;
+                    quantityInput.disabled = false;
+                    quantityContainer.style.opacity = "1";
+                    quantityContainer.style.backgroundColor = "white";
+                    proqty.style.pointerEvents = "auto";
+                    addToCartBtn.disabled = false;
+                    addToCartBtn.style.backgroundColor = "#000000";
+                    stockText.classList.remove("out-of-stock");
+                    stockText.classList.add("in-stock");
+                }
+            }
+        </script>
     </section>
     <!-- Shop Details Section End -->
 
-        <!-- Icon giỏ hàng -->
-        <div class="cart-icon" id="cartIcon" onclick="toggleCart()">
-            <i class="fas fa-id-card-alt"></i><span class="cart-badge" id="cartCount">{{ $totalProduct }}</span>
-        </div>
-    
-        <!-- Danh sách sản phẩm trong giỏ -->
-        <div class="cart-items" id="cartItems" style="display: none;">
-            <strong>Các sản phẩm đã thêm:</strong>
-            <div id="cartList">
-                @if (Session::has('cart') && count(Session::get('cart')) > 0)
-                    @foreach (Session::get('cart') as $items)
-                        <div class="cart-item p-1">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <img src="uploads/{{ $items->image }}" alt="{{ $items->name }}" class="cart-item-img"
-                                        width="50">
-                                    <div class="d-inline-block flex-col">
-                                        <span>{{ Str::words($items->name, 5) }}</span></br>
-                                        <span
-                                            class="font-weight-bold">{{ number_format($items->price, 0, ',', '.') . ' đ' }}</span>
-                                    </div>
+    <!-- Icon giỏ hàng -->
+    <div class="cart-icon" id="cartIcon" onclick="toggleCart()">
+        <i class="fas fa-id-card-alt"></i><span class="cart-badge" id="cartCount">{{ $totalProduct }}</span>
+    </div>
+
+    <!-- Danh sách sản phẩm trong giỏ -->
+    <div class="cart-items" id="cartItems" style="display: none;">
+        <strong>Các sản phẩm đã thêm:</strong>
+        <div id="cartList">
+            @if (Session::has('cart') && count(Session::get('cart')) > 0)
+                @foreach (Session::get('cart') as $items)
+                    <div class="cart-item p-1">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <img src="uploads/{{ $items->image }}" alt="{{ $items->name }}" class="cart-item-img"
+                                    width="50">
+                                <div class="d-inline-block flex-col">
+                                    <span>{{ Str::words($items->name, 5) }}</span></br>
+                                    <span
+                                        class="font-weight-bold">{{ number_format($items->price, 0, ',', '.') . ' đ' }}</span>
                                 </div>
-                                <span
-                                    class="cart-item-quantity-{{ $items->id }} quantity-badge">{{ $items->quantity }}</span>
                             </div>
+                            <span
+                                class="cart-item-quantity-{{ $items->id }} quantity-badge">{{ $items->quantity }}</span>
                         </div>
-                    @endforeach
-                @endif
-            </div>
-            <div class="cart-footer">
-                <button class="btn btn-success w-100" onclick="goToCartPage()">Đến trang Giỏ hàng</button>
-            </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
+        <div class="cart-footer">
+            <button class="btn btn-success w-100" onclick="goToCartPage()">Đến trang Giỏ hàng</button>
+        </div>
+    </div>
 
     <!-- Related Section Begin -->
     <section class="related spad">
@@ -377,7 +484,10 @@
 @endsection
 
 
+
+
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/css/comment.css') }}">
     <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
+    <link rel="stylesheet" href="{{ asset('client/css/stock.css') }}">
 @endsection

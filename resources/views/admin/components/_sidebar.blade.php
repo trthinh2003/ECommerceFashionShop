@@ -87,13 +87,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('order.create') }}">
+                                    <a href="{{ route('order.orderSuccess') }}">
                                         <span class="sub-item">Đơn hàng đã hoàn thành</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('order.create') }}">
-                                        <span class="sub-item">Đơn hàng đã huỷ</span>
                                     </a>
                                 </li>
                             </ul>

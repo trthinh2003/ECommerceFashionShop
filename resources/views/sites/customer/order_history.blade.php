@@ -82,25 +82,22 @@
                             @endif
                         </tr>
                     @endforeach
+                    @if ($historyOrder->isEmpty())
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                <i class="fa fa-box-open fa-2x"></i>
+                                <p class="mt-2">Không có đơn hàng nào</p>
+                            </td>
+                        </tr>
+                    @endif
 
                 </tbody>
             </table>
         </div>
-
-        <!-- Phân trang (Dữ liệu mẫu, không có phân trang thật) -->
-        {{-- <div class="d-flex justify-content-center mt-3">
-        <nav>
-            <ul class="pagination">
-                <li class="page-item disabled"><a class="page-link" href="#">«</a></li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">»</a></li>
-            </ul>
-        </nav>
-    </div> --}}
-
     </div>
+    <div class="d-flex justify-content-center mt-3 mb-3">
+        {{ $historyOrder->links() }}
+    </div>    
 @endsection
 
 @section('css')

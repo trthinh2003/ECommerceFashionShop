@@ -90,21 +90,22 @@
                                     $vat = 0.1;
                                     $ship = 30000;
                                     $percentDiscount = Session::get('percent_discount', 0); // Lấy giá trị mặc định nếu không có
-                                
+
                                     if (Session::has('cart') && count(Session::get('cart')) > 0) {
                                         $cart = array_filter(Session::get('cart'), function ($item) {
                                             return !empty($item->checked) && $item->checked;
                                         }); // Lọc các sản phẩm được chọn (checked = true)
-                                
+
                                         foreach ($cart as $items) {
-                                            $discountedPrice = $items->price * $items->quantity * (1 - $percentDiscount);
+                                            $discountedPrice =
+                                                $items->price * $items->quantity * (1 - $percentDiscount);
                                             $totalPriceCart += $discountedPrice;
                                         }
-                                
+
                                         if ($totalPriceCart >= 500000) {
                                             $ship = 0;
                                         }
-                                
+
                                         $vatPrice = $totalPriceCart * $vat;
                                         $total = $totalPriceCart + $vatPrice + $ship;
                                     } else {
@@ -114,7 +115,7 @@
                                         $total = 0;
                                     }
                                 @endphp
-                            
+
 
                                 @if (Session::has('cart') && count(Session::get('cart')) > 0)
                                     @foreach (Session::get('cart') as $items)
@@ -140,22 +141,30 @@
                                 </ul>
                                 <div class="checkout__input__checkbox">
                                     <label for="COD">
+                                        <img src="{{ asset('client/img/checkout/cod.png') }}" alt=""
+                                            width="20">
                                         COD: Thanh toán khi nhận hàng
                                         <input type="radio" name="payment" id="COD" value="COD" checked>
                                         <span class="checkmark"></span>
                                     </label>
                                     <label for="vnpay">
-                                        VNPAY: Thanh toán qua VNPAY
+                                        <img src="{{ asset('client/img/checkout/vnpay.png') }}" alt=""
+                                            width="20">
+                                        VNPAY: Thanh toán qua ví VNPAY
                                         <input type="radio" name="payment" id = "vnpay" value="vnpay">
                                         <span class="checkmark"></span>
                                     </label>
                                     <label for="momo">
-                                        Momo: Thanh toán qua MoMo
+                                        <img src="{{ asset('client/img/checkout/momo.png') }}" alt=""
+                                            width="20">
+                                        Momo: Thanh toán qua ví MoMo
                                         <input type="radio" name="payment" id = "momo" value="momo">
                                         <span class="checkmark"></span>
                                     </label>
                                     <label for="zalopay">
-                                        ZaloPay: Thanh toán qua ZaloPay
+                                        <img src="{{ asset('client/img/checkout/image.png') }}" alt=""
+                                            width="20">
+                                        ZaloPay: Thanh toán qua ví ZaloPay
                                         <input type="radio" name="payment" id = "zalopay" value="zalopay">
                                         <span class="checkmark"></span>
                                     </label>
@@ -165,11 +174,12 @@
                                 <input type="hidden" name ="shipping_fee" value="{{ $ship }}">
                                 <input type="hidden" name="VAT" value="{{ $vatPrice }}">
                                 {{-- test do chưa có khách hàng --}}
-                                <input type="hidden" name="customer_id" 
-                                value="{{ Auth::guard('customer')->check() ? Auth::guard('customer')->user()->id : '' }}">                            
+                                <input type="hidden" name="customer_id"
+                                    value="{{ Auth::guard('customer')->check() ? Auth::guard('customer')->user()->id : '' }}">
                                 {{-- danh sách sản phẩm --}}
                                 {{-- <input type="hidden" name="selected_items" id="selected-items"> --}}
-                                <input type="submit" id="checkout-form" name="redirect" class="site-btn" value="ĐẶT HÀNG">
+                                <input type="submit" id="checkout-form" name="redirect" class="site-btn"
+                                    value="ĐẶT HÀNG">
                             </div>
                         </div>
                     </div>

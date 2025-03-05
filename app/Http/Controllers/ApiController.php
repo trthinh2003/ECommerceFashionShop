@@ -177,6 +177,13 @@ class ApiController extends Controller
         return $this->apiStatus($productVariants, 200, $productVariants->count(), 'ok');
     }
 
+    public function getSeletedProductVariant(Request $request){
+        $productVariants = ProductVariant::where('color', $request->color)
+                                         ->where('product_id', $request->product_id)
+                                         ->where('size', $request->size)->first();
+        return $this->apiStatus($productVariants, 200, 1, 'ok');
+    }
+
 
     public function getProductsClient()
     {

@@ -23,13 +23,14 @@ class OrderController extends Controller
     {
         $data = DB::table('orders as o')
             ->join('customers as c', 'o.customer_id', '=', 'c.id')
-            ->where('o.status', 'Chờ xử lý')
+            ->whereIn('o.status', ['Chờ xử lý', 'Đã huỷ đơn hàng']) // Sửa lại đúng logic
             ->orderBy('o.id', 'ASC')
             ->select('o.*', 'c.name as customer_name')
             ->paginate(5);
 
         return view('admin.order.order_pending', compact('data'));
     }
+
 
     public function orderApproval()
     {
@@ -42,21 +43,29 @@ class OrderController extends Controller
         return view('admin.order.order_approved', compact('data'));
     }
 
+    public function orderSuccess(){
+        $data = DB::table('orders as o')
+        ->join('customers as c', 'o.customer_id', '=', 'c.id')
+        ->where('o.status', 'Đã thanh toán')
+        ->orderBy('o.id', 'ASC')
+        ->select('o.*', 'c.name as customer_name')
+        ->paginate(5);
+        return view('admin.order.order_success', compact('data'));
+    }
+
 
     public function exportInvoice($id)
     {
         $orderDetail = DB::table('orders as o')
             ->join('customers as c', 'o.customer_id', '=', 'c.id')
             ->join('order_details as od', 'o.id', '=', 'od.order_id')
-            ->join('products as p', 'p.id', '=', 'od.product_id')
-            ->join('product_variants as pv', 'pv.product_id', '=', 'p.id')
+            ->join('product_variants as pv', 'pv.id', '=', 'od.product_variant_id') // Thay đổi JOIN này
+            ->join('products as p', 'p.id', '=', 'pv.product_id') // Lấy sản phẩm từ product_variants
             ->where('o.id', $id)
             ->select(
                 'o.*',
                 'c.name as customer_name',
-                'c.phone',
                 'c.email',
-                'c.address',
                 'p.product_name',
                 'p.id as product_id',
                 'p.image',
@@ -67,6 +76,7 @@ class OrderController extends Controller
                 'pv.color'
             )
             ->get();
+
         if ($orderDetail->isEmpty()) {
             return redirect()->back()->with('error', 'Đơn hàng không tồn tại!');
         }
@@ -74,6 +84,7 @@ class OrderController extends Controller
         $pdf = Pdf::loadView('sites.export.pdf.invoice', compact('orderDetail'));
         return $pdf->download('invoice_order_' . $id . '.pdf');
     }
+
 
 
 
@@ -171,6 +182,15 @@ class OrderController extends Controller
             if ($variant) {
                 $variant->stock -= $detail->quantity;
                 $variant->save();
+
+                Session::put('success_data', [
+                    'logo' => 'cod.png',
+                    'receiver_name' => $order->receiver_name,
+                    'order_id' => $order->id,
+                    'total' => $order->total
+                ]);
+                Session::forget('order_data'); // Xóa session sau khi lưu vào db
+                return redirect()->route('sites.success.payment');
             } else {
                 // Xử lý trường hợp không tìm thấy variant
                 Log::warning("Không tìm thấy variant cho sản phẩm ID: {$detail->product_id}, size: {$size}, color: {$color}");
@@ -188,8 +208,6 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-
-
         $data = DB::table('orders as o')
             ->join('customers as c', 'o.customer_id', '=', 'c.id')
             ->join('order_details as od', 'o.id', '=', 'od.order_id')

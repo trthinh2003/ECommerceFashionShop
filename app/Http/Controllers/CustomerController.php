@@ -158,7 +158,7 @@ class CustomerController extends Controller
                 ->orderBy('o.id', 'ASC')
                 ->where('o.customer_id', $customer_id)
                 ->select('o.*', 'c.name as customer_name')
-                ->paginate(5);
+                ->paginate(3);
             }
             return view('sites.customer.order_history', compact('historyOrder'));
         }

@@ -10,7 +10,9 @@
     @endif
 
     <div class="container">
-
+            <a href="{{ route('order.invoice', $data[0]->id) }}" class="btn btn-primary mb-3">
+                <i class="fa fa-file-pdf"></i> Xuất hóa đơn PDF
+            </a>
         <div class="row">
             <!-- Thông tin khách hàng -->
             <div class="col-md-6">

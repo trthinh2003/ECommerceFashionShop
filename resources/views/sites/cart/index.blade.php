@@ -137,6 +137,7 @@
                             $totalPriceCart = 0;
                             $vat = 0.1;
                             $ship = 30000;
+                            $massage = '';
                             foreach (Session::get('cart') as $items) {
                                 $totalPriceCart += $items->price * $items->quantity;
                             }
@@ -165,6 +166,7 @@
                             <li>Phí Ship:<span>{{ number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
                             <li>Thành tiền:<span>{{ number_format($total, 0, ',', '.') . ' đ' }}</span></li>
                         </ul>
+     
                         <a href="{{ route('sites.checkout') }}" id="checkout-form" class="primary-btn">Thanh Toán</a>
                     </div>
                     <div class="mt-3">

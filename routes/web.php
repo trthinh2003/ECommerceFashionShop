@@ -144,6 +144,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/search_order', [OrderController::class, 'search'])->name('order.search');
     Route::get('/profile', [StaffController::class, 'profile'])->name('staff.profile');
     Route::get('/order-approval', [OrderController::class, 'orderApproval'])->name('order.approval');
+    Route::get('/order_success', [OrderController::class, 'orderSuccess'])->name('order.orderSuccess');
+
 
     // Thong ke doanh thu va loi nhuan
     Route::group(['prefix' => '/revenue'], function () {
