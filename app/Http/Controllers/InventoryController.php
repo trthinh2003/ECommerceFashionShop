@@ -165,7 +165,6 @@ class InventoryController extends Controller
     }
 
     public function post_add_extra(Request $request) {
-        // Validate dữ liệu đầu vào
         $data = $request->validate([
             'id' => 'required',
             'product_name' => 'min:3|max:150',

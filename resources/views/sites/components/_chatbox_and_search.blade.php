@@ -106,7 +106,6 @@
                 chatboxInput.val("");
                 scrollToBottom(); // Cuộn xuống sau khi gửi tin nhắn
 
-                // Gửi tin nhắn đến API Laravel
                 $.post("/chatbot", {
                     message: message,
                     _token: "{{ csrf_token() }}"
@@ -119,7 +118,7 @@
                                                 </div>
                                             </div>
                                         `);
-                    scrollToBottom(); // Cuộn xuống sau khi bot phản hồi
+                    scrollToBottom();
                 });
             }
 
@@ -162,16 +161,16 @@
                                 console.log(item);
                                 let price = Intl.NumberFormat('vi-VN').format(item.price);
                                 results.append(`
-                                        <li class="p-2 search-item" 
-                                                style="cursor: pointer;" 
-                                                onmouseover="this.style.backgroundColor='#ccc'; this.style.textDecoration='underline';" 
+                                        <li class="p-2 search-item"
+                                                style="cursor: pointer;"
+                                                onmouseover="this.style.backgroundColor='#ccc'; this.style.textDecoration='underline';"
                                                 onmouseout="this.style.backgroundColor='#fff'; this.style.textDecoration='none';">
                                             <a class="text-dark" href="{{ url('product') }}/${item.slug}">
                                             <img src="{{ asset('uploads/${item.image}') }}" width="30" height="30" alt="">
                                             ${item.product_name} | <p class="d-inline">Giá:</p> ${price} đ
                                             </a>
                                         </li>
-                                    
+
                                 `);
                             });
                         } else {
@@ -243,7 +242,7 @@
 <script>
     $(document).ready(function() {
         $("#suggestion-list-product").empty(); // Xóa dữ liệu cũ trước khi cập nhật mới
-        
+
         $.ajax({
             url: "http://127.0.0.1:8000/api/suggest-content-based", // API lấy danh sách sản phẩm
             method: "GET",
@@ -269,7 +268,7 @@
                                                     alt=""></a></li>
                                                     </ul>
                                                     </div>
-                                                    
+
                                                     <div class="product__item__text">
                                                         <h6>${item.product_name}</h6>
                                                         <a href="javascript:void(0);" class="add-cart" data-id="${item.id}">+
@@ -312,7 +311,7 @@
     </script>
     <script src="{{ asset('client/js/cart-add.js') }}"></script>
 @endsection
-{{-- 
+{{--
 <button onclick="window.open('https://console.dialogflow.com/api-client/demo/embedded/d091fe6d-c3c9-487c-9c4b-855241a4956d', '_blank', 'width=400,height=500')">
     Mở Chatbot
 </button> --}}

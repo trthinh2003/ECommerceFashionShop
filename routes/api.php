@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\DialogflowWebhookController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -59,3 +60,4 @@ Route::delete('/clear-search-history', [SearchController::class, 'clearSearchHis
 
 
 // Route::get('/order/{id}', [ApiController::class, 'test'])->name('api.orders');
+Route::post('/webhook', [DialogflowWebhookController::class, 'handle']);

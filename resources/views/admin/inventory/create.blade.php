@@ -129,7 +129,6 @@
         <script src="{{ asset('assets/js/plugin/select2/select2.full.min.js') }}"></script>
         <script>
             $(document).ready(function() {
-                //Xử lý input nhập file hình ảnh
                 $("#fileInput").change(function(e) {
                     var file = e.target.files[0];
                     var validTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif", "image/webp", "image/avif"];

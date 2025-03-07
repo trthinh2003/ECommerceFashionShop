@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        '/chatbot' // Bỏ qua kiểm tra CSRF cho API chatbot
+        '/chatbot', // Bỏ qua kiểm tra CSRF cho API chatbot
+        'api/webhook'
     ];
 }
