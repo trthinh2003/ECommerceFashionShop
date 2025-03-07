@@ -9,17 +9,17 @@ use Google\Cloud\Dialogflow\V2\DetectIntentRequest;
 use Google\Cloud\Dialogflow\V2\Client\SessionsClient;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class DialogflowController extends Controller
 {
     public function detectIntent(Request $request)
     {
-        $projectId = 'ct258laravelchatbot';
+        $projectId = 'chatbotlaravel';
         $text = $request->input('message');
         $sessionId = $request->input('session_id', session()->getId());
 
-        $credentialsPath = storage_path('app/dialogflow/ct258laravelchatbot-61b1d74e12de.json');
+        $credentialsPath = storage_path('app/dialogflow/chatbotlaravel-f149074225c4.json');
 
         if (!file_exists($credentialsPath)) {
             return response()->json(['error' => 'File credentials không tồn tại']);
@@ -38,17 +38,52 @@ class DialogflowController extends Controller
         $queryInput = new QueryInput();
         $queryInput->setText($textInput);
 
-        $request = new DetectIntentRequest();
-        $request->setSession($session);
-        $request->setQueryInput($queryInput);
+        $detectIntentRequest = new DetectIntentRequest();
+        $detectIntentRequest->setSession($session);
+        $detectIntentRequest->setQueryInput($queryInput);
 
-        $response = $sessionClient->detectIntent($request);
+        $response = $sessionClient->detectIntent($detectIntentRequest);
         $queryResult = $response->getQueryResult();
+        $intent = $queryResult->getIntent()->getDisplayName();
         $replyMessage = $queryResult->getFulfillmentText();
 
-        $sessionClient->close();
-        Log::info("Response từ Dialogflow: " . json_encode($queryResult));
+        //Intent iProducts
+        if ($intent === "iProducts") {
+            $parameters = json_decode($queryResult->getParameters()->serializeToJsonString(), true);
+            $productName = $parameters['product'] ?? '';
 
+            if (!empty($productName)) {
+                $matchedProducts = DB::table('products')
+                                    ->where('product_name', 'LIKE', "%{$productName}%")
+                                    ->orWhere('description', 'LIKE', "%{$productName}%")
+                                    ->orWhere('tags', 'LIKE', "%{$productName}%")
+                                    ->select('product_name', 'price', 'image', 'slug')
+                                    ->get()
+                                    ->take(5);
+
+                if ($matchedProducts->isNotEmpty()) {
+                    $productList = $matchedProducts->map(function ($product) {
+                        return "<a href='" . url('product/' . $product->slug) . "' 
+                        style='cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 5px; border-radius: 5px; transition: 0.3s; text-decoration: none; color: #333;'
+                        onmouseover='this.style.backgroundColor=\"#f0f0f0\"; this.style.textDecoration=\"underline\";'
+                        onmouseout='this.style.backgroundColor=\"#fff\"; this.style.textDecoration=\"none\";'>
+                        <img src='uploads/{$product->image}' width='50' height='50' style='border-radius: 5px;'> 
+                        <span>{$product->product_name} (" . number_format($product->price, 0, ',', '.') . " đ)</span>
+                    </a><br>";
+            
+            
+        })->implode("\n");
+
+                    $replyMessage = "Các sản phẩm chúng tôi tìm được dựa trên \"" . $productName . "\":</br>" . $productList . "Bạn muốn chúng tôi tư vấn chi tiết cho từng sản phẩm không?";
+                } else {
+                    $replyMessage = "Xin lỗi, chúng tôi không tìm thấy sản phẩm phù hợp.";
+                }
+            } else {
+                $replyMessage = "Bạn muốn tìm sản phẩm nào? Vui lòng nói rõ hơn.";
+            }
+        }
+
+        $sessionClient->close();
 
         return response()->json([
             'message' => $replyMessage

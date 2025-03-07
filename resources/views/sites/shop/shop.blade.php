@@ -36,7 +36,8 @@
                     <div class="shop__sidebar">
                         <div class="shop__sidebar__search">
                             <form action="/shop" method="GET">
-                                <input type="text" name="q" placeholder="Search..." value="{{ request('search') }}">
+                                <input type="text" name="q" placeholder="Search..."
+                                    value="{{ request('search') }}">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
                         </div>
@@ -143,11 +144,20 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__price">
                                                 <ul>
-                                                    <li><a class="price__item" href="javascript:void(0)">{{ number_format(0, 0, ',', '.') }} - {{ number_format(100000, 0, ',', '.') }}</a></li>
-                                                    <li><a class="price__item" href="javascript:void(0)">{{ number_format(100000, 0, ',', '.') }} - {{ number_format(300000, 0, ',', '.') }}</a></li>
-                                                    <li><a class="price__item" href="javascript:void(0)">{{ number_format(300000, 0, ',', '.') }} - {{ number_format(500000, 0, ',', '.') }}</a></li>
-                                                    <li><a class="price__item" href="javascript:void(0)">{{ number_format(500000, 0, ',', '.') }} - {{ number_format(1000000, 0, ',', '.') }}</a></li>
-                                                    <li><a class="price__item" href="javascript:void(0)">Trên {{ number_format(1000000, 0, ',', '.') }}</a></li>
+                                                    <li><a class="price__item"
+                                                            href="javascript:void(0)">{{ number_format(0, 0, ',', '.') }} -
+                                                            {{ number_format(100000, 0, ',', '.') }}</a></li>
+                                                    <li><a class="price__item"
+                                                            href="javascript:void(0)">{{ number_format(100000, 0, ',', '.') }}
+                                                            - {{ number_format(300000, 0, ',', '.') }}</a></li>
+                                                    <li><a class="price__item"
+                                                            href="javascript:void(0)">{{ number_format(300000, 0, ',', '.') }}
+                                                            - {{ number_format(500000, 0, ',', '.') }}</a></li>
+                                                    <li><a class="price__item"
+                                                            href="javascript:void(0)">{{ number_format(500000, 0, ',', '.') }}
+                                                            - {{ number_format(1000000, 0, ',', '.') }}</a></li>
+                                                    <li><a class="price__item" href="javascript:void(0)">Trên
+                                                            {{ number_format(1000000, 0, ',', '.') }}</a></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -157,7 +167,8 @@
                                                 item.addEventListener('click', function(e) {
                                                     e.preventDefault();
                                                     let price = this.textContent;
-                                                    window.location.href = '/shop?price=' + encodeURIComponent(price.replaceAll(' ', '').replace('Trên', ''));
+                                                    window.location.href = '/shop?price=' + encodeURIComponent(price.replaceAll(' ', '')
+                                                        .replace('Trên', ''));
                                                 });
                                             });
                                         </script>
@@ -293,14 +304,26 @@
                     </div>
                     <div class="row">
                         @foreach ($products as $items)
+                            @php
+                                $discountName = '';
+                                if ($items->discount_id && $items->discount_id !== null) {
+                                    $items->price = $items->price - $items->price * $items->Discount->percent_discount;
+                                    $discountName = $items->Discount->name;
+                                } else {
+                                    $discountName = 'New';
+                                }
+                            @endphp
+
                             <div class="col-lg-4 col-md-6 col-sm-6">
                                 <div class="product__item" id="product-list-shop">
                                     <div class="product__item__pic">
                                         <img class="product__item__pic set-bg" width="280" height="250"
                                             src="{{ asset('uploads/' . $items->image) }}"
                                             alt="{{ $items->product_name }}">
+                                        <span class="label name-discount-shop">{{ $discountName }}</span>
                                         <ul class="product__hover">
-                                            <li><a href="{{route('sites.addToWishList', $items->id)}}"><img src="{{ asset('client/img/icon/heart.png') }}"
+                                            <li><a href="{{ route('sites.addToWishList', $items->id) }}"><img
+                                                        src="{{ asset('client/img/icon/heart.png') }}"
                                                         alt=""></a></li>
                                             <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}"
                                                         alt=""><span>Compare</span></a></li>
@@ -313,7 +336,8 @@
                                     <div class="product__item__text">
                                         <h6>{{ $items->product_name }}</h6>
                                         {{-- <a href="#" class="add-cart">+ Add To Cart</a> --}}
-                                        <a href="javascript:void(0);" class="add-cart" data-id="{{ $items->id }}">+Add To Cart</a>
+                                        <a href="javascript:void(0);" class="add-cart"
+                                            data-id="{{ $items->id }}">+Add To Cart</a>
                                         <div class="rating">
                                             <i class="fa fa-star-o"></i>
                                             <i class="fa fa-star-o"></i>
@@ -409,4 +433,15 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
+@endsection
+
+
+@section('js')
+    <script>
+        document.querySelectorAll('.name-discount-shop').forEach(element => {
+            if (element.textContent.trim() !== "New") {
+                element.classList.add('bg-danger', 'text-white');
+            }
+        });
+    </script>
 @endsection

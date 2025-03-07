@@ -71,4 +71,5 @@ class Cart
         }
         return $total;
     }
+
 }

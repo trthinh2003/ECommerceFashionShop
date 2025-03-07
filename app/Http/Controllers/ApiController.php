@@ -187,7 +187,7 @@ class ApiController extends Controller
 
     public function getProductsClient()
     {
-        $products = Product::orderBy('id', 'ASC')->get();
+        $products = Product::with('Discount')->orderBy('id', 'ASC')->get();
         return $this->apiStatus($products, 200, $products->count(), 'ok');
     }
 
@@ -226,4 +226,11 @@ class ApiController extends Controller
     //     ->get();
     //     return $this->apiStatus($data, 200, 1, 'ok');
     // }
+
+
+    public function getProductDiscount() {
+        $products = Product::with('Discount')->whereNotNull('discount_id')->get();
+        return $this->apiStatus($products, 200, 1, 'ok');
+    }
+    
 }

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
-use App\Http\Controllers\DialogflowController;
+use App\Http\Controllers\DialogflowWebhookController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +35,7 @@ Route::get('product-client', [ApiController::class, 'getProductsClient'])->name(
 Route::get('product/{id}', [ApiController::class, 'product'])->name('api.product');
 Route::get('product-variant-size/{color}/{product_id}', [ApiController::class, 'productVariantSizes'])->name('api.productVariantSizes');
 Route::get('product-variant-selected/{size}/{color}/{product_id}', [ApiController::class, 'getSeletedProductVariant'])->name('api.getSeletedProductVariant');
-
+Route::get('product-discount', [ApiController::class, 'getProductDiscount'])->name('api.getProductDiscount');
 Route::get('brand', [ApiController::class, 'brands'])->name('api.brands');
 
 Route::get('product-variant', [ApiController::class, 'productVariants'])->name('api.productVariants');
@@ -60,6 +60,4 @@ Route::delete('/clear-search-history', [SearchController::class, 'clearSearchHis
 
 
 // Route::get('/order/{id}', [ApiController::class, 'test'])->name('api.orders');
-
-
-    
+Route::post('/webhook', [DialogflowWebhookController::class, 'handle']);
