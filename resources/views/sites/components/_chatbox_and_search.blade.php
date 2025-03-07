@@ -108,6 +108,7 @@
 
                 // Gửi tin nhắn đến API Laravel
                 $.post("/chatbot", {
+                    session_id: "{{ session()->getId() }}",
                     message: message,
                     _token: "{{ csrf_token() }}"
                 }, function(response) {

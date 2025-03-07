@@ -67,6 +67,9 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/remove-from-wishlist/{id}', [WishListProductController::class, 'removefromWishList'])->name('sites.removefromWishList');
     // Xử lý chatbot
     Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
+    // Xử lý chatbot
+    Route::post('/get-product-info/webhook', [DialogflowController::class, 'getProductInfo'])->name('dialogflow.getProductInfo');
+
 
     // Xử lý đơn hàng
     Route::get('/order-history', [CustomerController::class, 'getHistoryOrderOfCustomer'])->name('sites.getHistoryOrder');

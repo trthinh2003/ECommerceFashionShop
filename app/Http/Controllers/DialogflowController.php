@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-// use Google\Cloud\Dialogflow\V2\SessionsClient;
+use App\Models\Product;
 use Google\Cloud\Dialogflow\V2\QueryInput;
 use Google\Cloud\Dialogflow\V2\TextInput;
 use Google\Cloud\Dialogflow\V2\DetectIntentRequest;
 use Google\Cloud\Dialogflow\V2\Client\SessionsClient;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class DialogflowController extends Controller
 {
@@ -46,9 +47,39 @@ class DialogflowController extends Controller
         $replyMessage = $queryResult->getFulfillmentText();
 
         $sessionClient->close();
-        // Log::info('Request từ Dialogflow:', $request);
+        Log::info("Response từ Dialogflow: " . json_encode($queryResult));
+
+
         return response()->json([
             'message' => $replyMessage
         ]);
     }
+
+
+    public function getProductInfo(Request $request) {
+        Log::info('Webhook nhận request:', $request->all()); // Log dữ liệu từ Dialogflow
+    
+        $intent = $request->input('queryResult.intent.displayName');
+    
+        if ($intent === "AoThun") {
+            $productName = $request->input('queryResult.parameters.product'); 
+            
+            Log::info("Sản phẩm tìm kiếm: " . $productName);
+    
+            $product = Product::where('product_name', 'like', "%$productName%")->first();
+    
+            if ($product) {
+                $priceFormatted = number_format($product->price, 0, ',', '.'); // Format tiền VND
+                $responseText = "Sản phẩm {$product->product_name} có giá {$priceFormatted} VNĐ. Bạn muốn đặt hàng không?";
+            } else {
+                $responseText = "Xin lỗi, shop không tìm thấy sản phẩm này. Bạn có thể thử tên khác không?";
+            }
+    
+            Log::info("Phản hồi gửi về Dialogflow: " . $responseText);
+            return response()->json(['fulfillment_text' => $responseText]);
+        }
+    
+        return response()->json(['fulfillment_text' => "Mình chưa hiểu câu hỏi của bạn."]);
+    }
+    
 }

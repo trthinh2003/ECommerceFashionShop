@@ -23,6 +23,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         // đăng kí middleware xoá cache khi logout
         \App\Http\Middleware\PreventBackHistory::class,
+        \App\Http\Middleware\VerifyCors::class
     ];
 
     /**
