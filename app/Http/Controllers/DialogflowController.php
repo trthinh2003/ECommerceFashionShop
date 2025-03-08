@@ -60,7 +60,6 @@ class DialogflowController extends Controller
                                         ->select('product_name', 'price')
                                         ->get()
                                         ->take(5);
-
                     if ($matchedProducts->isNotEmpty()) {
                         $productList = $matchedProducts->map(function ($product) {
                             return "- {$product->product_name} ({$product->price} đ) </br>";
@@ -89,7 +88,6 @@ class DialogflowController extends Controller
             default:
                 break;
         }
-        //Intent iProducts
 
         $sessionClient->close();
 
