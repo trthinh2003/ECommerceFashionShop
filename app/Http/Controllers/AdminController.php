@@ -11,7 +11,20 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return view('admin.dashboard');
+
+        $staffQuantity = DB::table('staff')->count();
+        $customerQuantity = DB::table('customers')->count();
+        $productQuantity = DB::table('products')->count();
+        $orderQuantity = DB::table('orders')->where('status', 'Chờ xử lý')->count();
+
+        $revenueMonth = collect(DB::select("SELECT YEAR(created_at) AS namtao, MONTH(created_at) AS thangtao, SUM(total) AS tongtien 
+                                            FROM orders 
+                                            WHERE status = 'Đã thanh toán' 
+                                            GROUP BY namtao, thangtao"))
+                                                ->where('namtao', now()->year)
+                                                ->where('thangtao', now()->month)
+                                                ->first();
+        return view('admin.dashboard', compact('staffQuantity', 'customerQuantity', 'productQuantity', 'orderQuantity', 'revenueMonth'));
     }
 
     public function login()

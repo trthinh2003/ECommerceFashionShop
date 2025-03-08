@@ -13,7 +13,7 @@ class RevenueController extends Controller
     {
         $revenueDay = DB::select(" SELECT DATE(created_at) AS ngaytao, SUM(total) AS tongtien 
                                     FROM orders 
-                                    WHERE status = 'Chờ xử lý'
+                                    WHERE status = 'Đã thanh toán'
                                     GROUP BY DATE(created_at) 
                                     ORDER BY DATE(created_at)");
         //  dd($revenueDay);
@@ -38,7 +38,7 @@ class RevenueController extends Controller
     {
         $revenuemonth = DB::select("SELECT YEAR(created_at) AS namtao, MONTH(created_at) AS thangtao, SUM(total) AS tongtien 
                                     FROM orders 
-                                    WHERE status = 'Chờ xử lý'
+                                    WHERE status = 'Đã thanh toán'
                                     GROUP BY YEAR(created_at), MONTH(created_at) 
                                     ORDER BY YEAR(created_at), MONTH(created_at)");
         $month = [];
@@ -59,7 +59,7 @@ class RevenueController extends Controller
     {
         $revenueYear = DB::select("SELECT YEAR(created_at) AS namtao, SUM(total) AS tongtien 
                                     FROM orders 
-                                    WHERE status = 'Chờ xử lý'
+                                    WHERE status = 'Đã thanh toán'
                                     GROUP BY YEAR(created_at) 
                                     ORDER BY YEAR(created_at)");
         $year = [];
@@ -80,7 +80,7 @@ class RevenueController extends Controller
     {
         // khó điên truy vấn dữ liệu
         $profitYear = Order::selectRaw('YEAR(created_at) AS nam, SUM(total) AS doanhthu')
-            ->where('status', 'Chờ xử lý')
+            ->where('status', 'Đã thanh toán')
             ->groupByRaw('YEAR(created_at)')
             ->orderByRaw('YEAR(created_at)')
             ->get()

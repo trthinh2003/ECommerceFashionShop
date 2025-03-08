@@ -18,7 +18,7 @@
         <p>Bạn không có quyền truy cập</p>
     @endcan --}}
     <div class="row">
-        <div class="col-sm-6 col-md-3">
+        <div class="col-sm-6 col-md-4">
             <div class="card card-stats card-round">
                 <div class="card-body">
                     <div class="row align-items-center">
@@ -29,15 +29,15 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category">Visitors</p>
-                                <h4 class="card-title">1,294</h4>
+                                <p class="card-category">Số lượng nhân viên</p>
+                                <h4 class="card-title">{{$staffQuantity}}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-3">
+        <div class="col-sm-6 col-md-4">
             <div class="card card-stats card-round">
                 <div class="card-body">
                     <div class="row align-items-center">
@@ -48,15 +48,15 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category">Subscribers</p>
-                                <h4 class="card-title">1303</h4>
+                                <p class="card-category">Số lượng khách hàng</p>
+                                <h4 class="card-title">{{$customerQuantity}}</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-3">
+        <div class="col-sm-6 col-md-4">
             <div class="card card-stats card-round">
                 <div class="card-body">
                     <div class="row align-items-center">
@@ -67,15 +67,15 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category">Sales</p>
-                                <h4 class="card-title">$ 1,345</h4>
+                                <p class="card-category">Doanh thu tháng này</p>
+                                <h4 class="card-title">{{number_format($revenueMonth->tongtien, 0, ',', '.')}} đ</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6 col-md-3">
+        <div class="col-sm-6 col-md-4">
             <div class="card card-stats card-round">
                 <div class="card-body">
                     <div class="row align-items-center">
@@ -86,8 +86,8 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category">Order</p>
-                                <h4 class="card-title">576</h4>
+                                <p class="card-category">Đơn hàng chờ xử lý</p>
+                                <h4 class="card-title">{{$orderQuantity}}</h4>
                             </div>
                         </div>
                     </div>

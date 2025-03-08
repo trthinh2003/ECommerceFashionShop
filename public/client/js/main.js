@@ -34,6 +34,7 @@
     /*------------------
         Background Set
     --------------------*/
+    // lỗi 404 nằm đây
     $('.set-bg').each(function () {
         var bg = $(this).data('setbg');
         $(this).css('background-image', 'url(' + bg + ')');

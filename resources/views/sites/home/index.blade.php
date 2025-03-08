@@ -143,6 +143,36 @@
                                     currency: 'VND'
                                 }).format(finalPrice);
 
+                                // console.log(product);
+                                let totalStock = [];
+                                let addCartOrNone = [];
+                                product['product-variant'].map((variant) => {
+                                    totalStock[variant.product_id] = 0;
+                                })
+                                product['product-variant'].forEach((variant) => {
+                                    totalStock[variant.product_id] += variant.stock + 0;
+                                });
+                                product['product-variant'].map((variant) => {
+                                    if (totalStock[variant.product_id] == 0) {
+                                        addCartOrNone[variant.product_id] = false;
+                                    } else {
+                                        addCartOrNone[variant.product_id] = true;
+                                    };
+                                })
+                                // console.log(addCartOrNone);
+
+                                // console.log(addCartOrNone);
+                                
+                                // console.log(addCartOrNone);
+                                // product['product-variant'].forEach((variant) => {
+                                //     variant.stock > 0 ? 
+                                        
+                                    
+                                // })
+                                // if(product['product-variant']. > 0) va{
+                                    
+                                // }
+
                                 // console.log(formattedPrice); // Kiểm tra giá đã format
 
 
@@ -151,7 +181,7 @@
                                 productItem.innerHTML = `
                                             <div class="product__item" id="product-list-home">
                                                   <div class="product__item__pic">
-                                                        <img src="{{ asset('uploads/${product.image}') }}" class="set-bg" width="280" height="280" alt="${product.product_name}">
+                                                        <img src="{{ asset('uploads/${product.image}') }}" class="set-bg" width="280" height="280" alt="${product.name}">
                                                         <span class="label name-discount" >${product.discount.name}</span>
                                                         <ul class="product__hover">
                                                           <li>
@@ -165,9 +195,11 @@
                                                         </ul>
                                                  </div>
                                                 <div class="product__item__text">
-                                                    <h6>${product.product_name}</h6>
-                                                     <a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>
-                                                    <div class="rating">
+                                                    <h6>${product.name}</h6>` +
+                                                     
+                                                    (addCartOrNone[product.id] > 0 ? `<a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>` : `<span class=" badge badge-warning">Hết hàng</span>`)
+                                                    
+                                                    +`<div class="rating">
                                                         <i class="fa fa-star-o"></i>
                                                         <i class="fa fa-star-o"></i>
                                                         <i class="fa fa-star-o"></i>
@@ -249,6 +281,22 @@
                                     currency: 'VND'
                                 }).format(finalPrice);
 
+                                let totalStock = [];
+                                let addCartOrNone = [];
+                                product['product_variants'].map((variant) => {
+                                    totalStock[variant.product_id] = 0;
+                                })
+                                product['product_variants'].forEach((variant) => {
+                                    totalStock[variant.product_id] += variant.stock + 0;
+                                });
+                                product['product_variants'].map((variant) => {
+                                    if (totalStock[variant.product_id] == 0) {
+                                        addCartOrNone[variant.product_id] = false;
+                                    } else {
+                                        addCartOrNone[variant.product_id] = true;
+                                    };
+                                })
+
 
                                 let productItem = document.createElement('div');
                                 productItem.classList.add("col-lg-3", "col-md-6", "col-sm-6", "mix", index % 2 === 0 ?
@@ -271,7 +319,11 @@
                                              </div>
                                             <div class="product__item__text">
                                                 <h6>${product.product_name}</h6>
-                                                 <a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>
+                                                ` +
+                                                     
+                                                    (addCartOrNone[product.id] > 0 ? `<a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>` : `<span class=" badge badge-warning">Hết hàng</span>`)
+                                                    
+                                                    +`
                                                 <div class="rating">
                                                     <i class="fa fa-star-o"></i>
                                                     <i class="fa fa-star-o"></i>
