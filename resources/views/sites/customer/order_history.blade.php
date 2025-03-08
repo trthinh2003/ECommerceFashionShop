@@ -61,26 +61,49 @@
                                             class="btn btn-sm btn-secondary">
                                             <i class="fa fa-eye"></i> Xem
                                         </a>
-                                        <form action="{{ route('sites.cancelOrder', $item->id) }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="_method" value="PUT">
-                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                <i class="fa fa-times"></i> Hủy
-                                            </button>
-                                        </form>
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
+                                            data-target="#cancelOrderModal{{ $item->id }}">
+                                            <i class="fa fa-times"></i> Hủy
+                                        </button>
                                     </div>
                                 </td>
                             @else
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center">
-                                    <a href="{{ route('sites.showOrderDetailOfCustomer', $item->id) }}"
-                                        class="btn btn-sm btn-secondary">
-                                        <i class="fa fa-eye"></i> Xem
-                                    </a>
-                                </div>
-                            </td>
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center">
+                                        <a href="{{ route('sites.showOrderDetailOfCustomer', $item->id) }}"
+                                            class="btn btn-sm btn-secondary">
+                                            <i class="fa fa-eye"></i> Xem
+                                        </a>
+                                    </div>
+                                </td>
                             @endif
                         </tr>
+                        <!-- Modal Xác Nhận Hủy Đơn -->
+                        <div class="modal fade" id="cancelOrderModal{{ $item->id }}" tabindex="-1">
+                            <div class="modal-dialog" style="position: absolute; top: 10%; left: 50%; transform: translate(-50%, 0); margin: 0; width: 200px;">
+                                <div class="modal-content">
+                                    <div class="modal-header bg-danger text-white">
+                                        <h5 class="modal-title">Hủy đơn hàng này?</h5>
+                                        <button type="button" class="close" data-dismiss="modal">
+                                            <span>&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        Bạn có chắc chắn muốn hủy đơn hàng này không?
+                                    </div>
+                                    <div class="modal-footer justify-content-center">
+                                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Trở Lại</button>
+                                        <form action="{{ route('sites.cancelOrder', $item->id) }}" id="cancelOrderForm" method="POST">
+                                            @csrf
+                                            @method('PUT')
+                                            <button type="submit" class="btn btn-danger btn-sm">Xác Nhận</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     @endforeach
                     @if ($historyOrder->isEmpty())
                         <tr>
@@ -97,7 +120,8 @@
     </div>
     <div class="d-flex justify-content-center mt-3 mb-3">
         {{ $historyOrder->links() }}
-    </div>    
+    </div>
+
 @endsection
 
 @section('css')

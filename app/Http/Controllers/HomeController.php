@@ -20,7 +20,7 @@ class HomeController extends Controller
     public function shop(Request $request)
     {
         // dd($request->all());
-        $query = Product::with('category', 'Discount');
+        $query = Product::with('category', 'Discount', 'ProductVariants');
 
         if ($request->has('q')) {
             $search = $request->q;

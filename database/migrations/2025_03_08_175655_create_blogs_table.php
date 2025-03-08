@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commments', function (Blueprint $table) {
+        Schema::create('blogs', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('product_id');
-            $table->unsignedInteger('customer_id');
+            $table->string('title', 100);
             $table->text('content');
-            $table->integer('start');
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->string('image');
+            $table->string('slug', 100);
+            $table->string('tags');
+            $table->unsignedInteger('staff_id');
+            $table->foreign('staff_id')->references('id')->on('staff');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('commments');
+        Schema::dropIfExists('blogs');
     }
 };

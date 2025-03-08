@@ -53,4 +53,9 @@ class Product extends Model
     {
         return $this->hasMany(InventoryDetail::class);
     }
+    
+    public function comments()
+    {
+        return $this->hasMany(Commment::class);
+    }
 }
