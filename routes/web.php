@@ -72,9 +72,9 @@ Route::group(['prefix' => '/'], function () {
 
 
     // Xử lý đơn hàng
-    Route::get('/order-history', [CustomerController::class, 'getHistoryOrderOfCustomer'])->name('sites.getHistoryOrder');
-    Route::get('/order-detail/{order}', [CustomerController::class, 'showOrderDetailOfCustomer'])->name('sites.showOrderDetailOfCustomer');
-    Route::put('/cancel-order{id}', [CustomerController::class, 'cancelOrder'])->name('sites.cancelOrder');
+    Route::get('/order-history', [CustomerController::class, 'getHistoryOrderOfCustomer'])->name('sites.getHistoryOrder')->middleware('customer');
+    Route::get('/order-detail/{order}', [CustomerController::class, 'showOrderDetailOfCustomer'])->name('sites.showOrderDetailOfCustomer')->middleware('customer');
+    Route::put('/cancel-order{id}', [CustomerController::class, 'cancelOrder'])->name('sites.cancelOrder')->middleware('customer');
     // Xuất hoá đơn PDF
     Route::get('/order/{id}/invoice', [OrderController::class, 'exportInvoice'])->name('order.invoice');
 

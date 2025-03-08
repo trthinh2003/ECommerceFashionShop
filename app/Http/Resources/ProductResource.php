@@ -21,9 +21,11 @@ class ProductResource extends JsonResource
             'sku' => $this->sku,
             'price' => $this->price,
             'image' => $this->image,
+            'slug' => $this->slug,
             'description' => $this->description,
             'category' => new CategoryResource($this->Category),
             'product-variant' => ProductVariantResource::collection($this->ProductVariants),
+            'discount' => new DiscountResource($this->Discount),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];
