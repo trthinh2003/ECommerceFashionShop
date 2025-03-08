@@ -24,12 +24,17 @@ class CartController extends Controller
     // Thêm vào giỏ hàng mặc định lấy theo id sản phẩm
     public function add(Cart $cart, Product $product, $quantity = 1)
     {
-        $product = Product::with('Discount')->whereNotNull('discount_id')->find($product->id);
-        if($product){
+        // thêm trong chi tiết cái form add_to_cart
+        $product = Product::with('Discount')->find($product->id);
+        if ($product->discount_id != null) {
             $product->price = $product->price - ($product->price * $product->Discount->percent_discount);
         }
         if (request()->has('add_to_cart')) {
-            $productVariant = ProductVariant::where('product_id', $product->id)->where('size', request()->size)->where('color', request()->color)->first();
+            $productVariant = ProductVariant::where('product_id', $product->id)
+                ->where('size', request()->size)
+                ->where('color', request()->color)
+                ->first();
+
             if (!$productVariant) {
                 return back()->with('error', 'Sản phẩm này hiện không có sẵn biến thể!');
             }
@@ -47,13 +52,18 @@ class CartController extends Controller
 
             $cart->add($product, request()->quantity, $productVariant);
             return redirect()->route('sites.cart');
-        } else {
-            $product = Product::with('Discount')->whereNotNull('discount_id')->find($product->id);
-            if($product){
+        } 
+        // thêm ở bên ngoài 
+        else {
+            $product = Product::with('Discount')->find($product->id);
+            if ($product->discount_id != null) {
                 $product->price = $product->price - ($product->price * $product->Discount->percent_discount);
             }
             // dd(request()->all());
-            $productVariant = ProductVariant::where('product_id', $product->id)->first();
+            // $productVariant = ProductVariant::where('product_id', $product->id)->first();
+            $productVariant = ProductVariant::where('product_id', $product->id)
+                ->where('stock', '>', 0)
+                ->first();
             if (!$productVariant) {
                 return back()->with('error', 'Sản phẩm này hiện không có sẵn biến thể!');
             }
@@ -139,5 +149,4 @@ class CartController extends Controller
         }
         return response()->json(['message' => 'Cập nhật thành công!', 'cart' => session('cart')]);
     }
-    
 }

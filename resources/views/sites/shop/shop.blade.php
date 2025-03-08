@@ -429,14 +429,6 @@
             <button class="btn btn-success w-100" onclick="goToCartPage()">Đến trang Giỏ hàng</button>
         </div>
     </div>
-@endsection
-
-@section('css')
-    <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
-@endsection
-
-
-@section('js')
     <script>
         document.querySelectorAll('.name-discount-shop').forEach(element => {
             if (element.textContent.trim() !== "New") {
@@ -444,4 +436,8 @@
             }
         });
     </script>
+@endsection
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
 @endsection
