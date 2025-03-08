@@ -20,7 +20,7 @@ class HomeController extends Controller
     public function shop(Request $request)
     {
         // dd($request->all());
-        $query = Product::with('category');
+        $query = Product::with('category', 'Discount');
 
         if ($request->has('q')) {
             $search = $request->q;
@@ -106,7 +106,7 @@ class HomeController extends Controller
     public function productDetail($slug)
     {
         $productDetail = Product::where('slug', $slug)
-            ->with(['ProductVariants', 'Category'])
+            ->with(['ProductVariants', 'Category', 'Discount'])
             ->firstorfail();
         $prices = $productDetail->ProductVariants->pluck('price');
         // Lấy danh sách size của sản phẩm

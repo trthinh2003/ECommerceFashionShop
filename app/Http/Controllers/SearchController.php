@@ -18,7 +18,8 @@ class SearchController extends Controller
         }
 
         // Tìm kiếm sản phẩm
-        $results = Product::where('product_name', 'LIKE', "%{$query}%")
+        $results = Product::with('Discount')
+            ->where('product_name', 'LIKE', "%{$query}%")
             ->orWhere('description', 'LIKE', "%{$query}%")
             ->orWhere('tags', 'LIKE', "%{$query}%")
             ->get()
@@ -58,10 +59,10 @@ class SearchController extends Controller
         }
 
         // Tìm tất cả sản phẩm liên quan đến bất kỳ từ khóa nào trong lịch sử tìm kiếm
-        $suggestedProducts = Product::where(function ($query) use ($history) {
+        $suggestedProducts = Product::with('Discount')->where(function ($query) use ($history) {
             foreach ($history as $term) {
                 $query->orWhere('product_name', 'LIKE', "%{$term}%")
-                    ->orWhere('tags', 'LIKE', "%{$term}%");
+                ->orWhere('tags', 'LIKE', "%{$term}%");
             }
         })
             ->orderByRaw("
@@ -70,7 +71,7 @@ class SearchController extends Controller
                             WHEN tags LIKE ? THEN 2
                             ELSE 3
                         END", ["%{$history[0]}%", "%{$history[0]}%"])
-            ->limit(8)
+            ->limit(10)
             ->get();
 
         return response()->json($suggestedProducts);

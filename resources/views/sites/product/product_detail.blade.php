@@ -22,7 +22,6 @@
         ];
         return $colorMap[$color] ?? '#CCCCCC';
     }
-
 @endphp
 
 @extends('sites.master')
@@ -125,8 +124,30 @@
                                     <i class="fa fa-star-o"></i>
                                     <span> - 5 Đánh Giá</span>
                                 </div>
-                                <h3>{{ number_format($productDetail->price) }}đ<span>{{ number_format($productDetail->price) }}</span>
+                                @php
+                                    $priceDiscount = $productDetail->price;
+                                    $hasDiscount =
+                                        $productDetail->discount_id &&
+                                        optional($productDetail->Discount)->percent_discount !== null;
+
+                                    if ($hasDiscount) {
+                                        $priceDiscount =
+                                            $productDetail->price -
+                                            $productDetail->price * $productDetail->Discount->percent_discount;
+                                    }
+                                @endphp
+
+                                <h3>
+                                    {{ number_format($priceDiscount) }}đ
+                                    @if ($hasDiscount)
+                                        <span id="price-discount-detail"
+                                            style="text-decoration: line-through; color: gray;">
+                                            {{ number_format($productDetail->price) }}đ
+                                        </span>
+                                    @endif
                                 </h3>
+
+
                                 <p>{{ $productDetail->short_description }}</p>
                                 <div class="product__details__option">
                                     <div class="product__details__option__size">

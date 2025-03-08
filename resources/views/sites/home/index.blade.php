@@ -25,8 +25,10 @@
                             <div class="hero__text">
                                 <h6>Bộ sưu tập mùa hè</h6>
                                 <h2>Fall - Winter Collections 2025</h2>
-                                <p>Một thương hiệu chuyên biệt tạo ra các sản phẩm thiết yếu sang trọng. Được chế tác một cách có đạo đức với cam kết không lay chuyển đối với chất lượng vượt trội.</p>
-                                <a href="{{ route('sites.shop') }}" class="primary-btn">Mua ngay<span class="arrow_right"></span></a>
+                                <p>Một thương hiệu chuyên biệt tạo ra các sản phẩm thiết yếu sang trọng. Được chế tác một
+                                    cách có đạo đức với cam kết không lay chuyển đối với chất lượng vượt trội.</p>
+                                <a href="{{ route('sites.shop') }}" class="primary-btn">Mua ngay<span
+                                        class="arrow_right"></span></a>
                                 <div class="hero__social">
                                     <a href="https://www.facebook.com/?locale=vi_VN"><i class="fa fa-facebook"></i></a>
                                     <a href="https://x.com/?lang=vi"><i class="fa fa-twitter"></i></a>
@@ -45,8 +47,10 @@
                             <div class="hero__text">
                                 <h6>Bộ sưu tập Thu Đông</h6>
                                 <h2>Fall - Winter Collections 2025</h2>
-                                <p>Một thương hiệu chuyên biệt tạo ra các sản phẩm thiết yếu sang trọng. Được chế tác một cách có đạo đức với cam kết không lay chuyển đối với chất lượng vượt trội.</p>
-                                <a href="{{ route('sites.shop') }}" class="primary-btn">Mua ngay<span class="arrow_right"></span></a>
+                                <p>Một thương hiệu chuyên biệt tạo ra các sản phẩm thiết yếu sang trọng. Được chế tác một
+                                    cách có đạo đức với cam kết không lay chuyển đối với chất lượng vượt trội.</p>
+                                <a href="{{ route('sites.shop') }}" class="primary-btn">Mua ngay<span
+                                        class="arrow_right"></span></a>
                                 <div class="hero__social">
                                     <a href="https://www.facebook.com/?locale=vi_VN"><i class="fa fa-facebook"></i></a>
                                     <a href="https://x.com/?lang=vi"><i class="fa fa-twitter"></i></a>
@@ -104,6 +108,107 @@
     </section>
     <!-- Banner Section End -->
 
+    <!-- Product Discount Section Begin -->
+    <section class="product spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="filter__controls">
+                        <li>Hot Sales</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row product__filter" id="product-discount-container">
+                <script>
+                    async function fetchProductDiscount() {
+                        try {
+                            let response = await fetch("http://127.0.0.1:8000/api/product-discount");
+                            let data = await response.json();
+                            let products = data.data;
+
+                            let container = document.querySelector('#product-discount-container');
+                            container.innerHTML = "";
+
+                            products.forEach((product, index) => {
+                                let finalPrice;
+
+                                if (product.discount_id != null) {
+                                    finalPrice = product.price - (product.price * product.discount.percent_discount);
+                                } else {
+                                    finalPrice = product.price ?? 0;
+                                }
+
+                                let formattedPrice = new Intl.NumberFormat('vi-VN', {
+                                    style: 'currency',
+                                    currency: 'VND'
+                                }).format(finalPrice);
+
+                                // console.log(formattedPrice); // Kiểm tra giá đã format
+
+
+                                let productItem = document.createElement('div');
+                                productItem.classList.add("col-lg-3", "col-md-6", "col-sm-6", "mix");
+                                productItem.innerHTML = `
+                                            <div class="product__item" id="product-list-home">
+                                                  <div class="product__item__pic">
+                                                        <img src="{{ asset('uploads/${product.image}') }}" class="set-bg" width="280" height="280" alt="${product.product_name}">
+                                                        <span class="label name-discount" >${product.discount.name}</span>
+                                                        <ul class="product__hover">
+                                                          <li>
+                                                                <a href="{{ url('add-to-wishlist') }}/${product.id}" class="add-to-wishlist">
+                                                                    <img src="{{ asset('client/img/icon/heart.png') }}" alt="">
+                                                                </a>
+                                                        </li>
+    
+                                                            <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}" alt=""><span>Compare</span></a></li>
+                                                            <li><a href="{{ url('product') }}/${product.slug}"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a></li>
+                                                        </ul>
+                                                 </div>
+                                                <div class="product__item__text">
+                                                    <h6>${product.product_name}</h6>
+                                                     <a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>
+                                                    <div class="rating">
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                        <i class="fa fa-star-o"></i>
+                                                    </div>
+                                                    <h5>${formattedPrice}</h5>
+                                                    <div class="product__color__select">
+                                                                                <label for="pc-${index * 3 + 1}">
+                                                                                    <input type="radio" id="pc-${index * 3 + 1}">
+                                                                                </label>
+                                                                                <label class="active black" for="pc-${index * 3 + 2}">
+                                                                                    <input type="radio" id="pc-${index * 3 + 2}">
+                                                                                </label>
+                                                                                <label class="grey" for="pc-${index * 3 + 3}">
+                                                                                    <input type="radio" id="pc-${index * 3 + 3}">
+                                                                                </label>
+                                                                            </div>
+                                                </div>
+                                            </div>
+                                        `;
+                                container.appendChild(productItem);
+                                if (document.querySelector('.name-discount')) {
+                                    document.querySelectorAll('.name-discount').forEach(element => {
+                                        element.classList.add('bg-danger', 'text-white');
+                                    });
+
+                                }
+                            });
+                        } catch (error) {
+                            console.error("Lỗi API:", error);
+                        }
+                    }
+                    fetchProductDiscount();
+                </script>
+            </div>
+        </div>
+    </section>
+    <!-- Product Section End -->
+
+
     <!-- Product Section Begin -->
     <section class="product spad">
         <div class="container">
@@ -116,7 +221,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="row product__filter">
+            <div class="row product__filter" id="product-client-container">
                 <script>
                     async function fetchProduct() {
                         try {
@@ -124,14 +229,26 @@
                             let data = await response.json();
                             let products = data.data;
 
-                            let container = document.querySelector('.product__filter');
+                            let container = document.querySelector('#product-client-container');
                             container.innerHTML = "";
 
                             products.forEach((product, index) => {
+                                let finalPrice;
+                                let nameDiscount = "";
+
+                                if (product.discount_id != null) {
+                                    finalPrice = product.price - (product.price * product.discount.percent_discount);
+                                    nameDiscount = product.discount.name;
+                                } else {
+                                    finalPrice = product.price ?? 0;
+                                    nameDiscount = "New";
+                                }
+
                                 let formattedPrice = new Intl.NumberFormat('vi-VN', {
                                     style: 'currency',
                                     currency: 'VND'
-                                }).format(product.price ?? 0);
+                                }).format(finalPrice);
+
 
                                 let productItem = document.createElement('div');
                                 productItem.classList.add("col-lg-3", "col-md-6", "col-sm-6", "mix", index % 2 === 0 ?
@@ -140,7 +257,7 @@
                                         <div class="product__item" id="product-list-home">
                                               <div class="product__item__pic">
                                                     <img src="{{ asset('uploads/${product.image}') }}" class="set-bg" width="280" height="280" alt="${product.product_name}">
-                                                    <span class="label">New</span>
+                                                    <span class="label name-discount-section" >${nameDiscount}</span>
                                                     <ul class="product__hover">
                                                       <li>
                                                             <a href="{{ url('add-to-wishlist') }}/${product.id}" class="add-to-wishlist">
@@ -178,6 +295,12 @@
                                         </div>
                                     `;
                                 container.appendChild(productItem);
+                                document.querySelectorAll('.name-discount-section').forEach(element => {
+                                    if (element.textContent.trim() !== "New") {
+                                        element.classList.add('bg-danger', 'text-white');
+                                    }
+                                });
+
                             });
                         } catch (error) {
                             console.error("Lỗi API:", error);
@@ -297,7 +420,8 @@
                 <div class="col-lg-4">
                     <div class="instagram__text">
                         <h2>Instagram</h2>
-                        <p>Tìm hiểu thêm về chúng tôi qua instagram, cập nhật những thông tin và xu hướng thời trang mới nhất !</p>
+                        <p>Tìm hiểu thêm về chúng tôi qua instagram, cập nhật những thông tin và xu hướng thời trang mới
+                            nhất !</p>
                         <h3>#TST_Fashion</h3>
                     </div>
                 </div>
@@ -322,9 +446,10 @@
                     <div class="blog__item">
                         <div class="blog__item__pic set-bg" data-setbg="{{ asset('client/img/blog/blog-1.jpg') }}"></div>
                         <div class="blog__item__text">
-                            <span><img src="{{ asset('client/img/icon/calendar.png') }}" alt="">03 March 2025</span>
+                            <span><img src="{{ asset('client/img/icon/calendar.png') }}" alt="">03 March
+                                2025</span>
                             <h5>What Curling Irons Are The Best Ones</h5>
-                            <a href="{{ route('sites.blogDetail')}}">Đọc thêm</a>
+                            <a href="{{ route('sites.blogDetail') }}">Đọc thêm</a>
                         </div>
                     </div>
                 </div>
@@ -335,7 +460,7 @@
                             <span><img src="{{ asset('client/img/icon/calendar.png') }}" alt=""> 21 February
                                 2025</span>
                             <h5>Eternity Bands Do Last Forever</h5>
-                            <a href="{{ route('sites.blogDetail')}}">Đọc thêm</a>
+                            <a href="{{ route('sites.blogDetail') }}">Đọc thêm</a>
                         </div>
                     </div>
                 </div>
@@ -346,7 +471,7 @@
                             <span><img src="{{ asset('client/img/icon/calendar.png') }}" alt=""> 28 February
                                 2025</span>
                             <h5>The Health Benefits Of Sunglasses</h5>
-                            <a href="{{ route('sites.blogDetail')}}">Đọc thêm</a>
+                            <a href="{{ route('sites.blogDetail') }}">Đọc thêm</a>
                         </div>
                     </div>
                 </div>

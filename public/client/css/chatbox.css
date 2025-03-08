@@ -18,8 +18,8 @@
     position: fixed;
     right: 20px;
     bottom: 20px;
-    height: 450px;
-    min-width: 35%;
+    height: 500px;
+    min-width: 50%;
 }
 
 .modal-content {

@@ -107,9 +107,11 @@
                 scrollToBottom(); // Cuộn xuống sau khi gửi tin nhắn
 
                 $.post("/chatbot", {
+                    session_id: "{{ session()->getId() }}",
                     message: message,
                     _token: "{{ csrf_token() }}"
                 }, function(response) {
+                    // console.log(response);
                     chatboxMessages.append(`
                                             <div class="d-flex align-items-start gap-2 mb-3">
                                                 <img class="rounded-circle mt-2" src="{{ asset('client/img/chatbot/bot.avif') }}" width="30">
@@ -160,6 +162,10 @@
                             data.results.forEach(function(item) {
                                 console.log(item);
                                 let price = Intl.NumberFormat('vi-VN').format(item.price);
+                                if (item.discount_id != null) {
+                                    price = Intl.NumberFormat('vi-VN').format(item.price - (item
+                                        .price * item.discount.percent_discount));
+                                }
                                 results.append(`
                                         <li class="p-2 search-item"
                                                 style="cursor: pointer;"
@@ -238,34 +244,45 @@
         });
     </script>
 
-{{-- danh sách sản phẩm liên quan --}}
-<script>
-    $(document).ready(function() {
-        $("#suggestion-list-product").empty(); // Xóa dữ liệu cũ trước khi cập nhật mới
+    {{-- danh sách sản phẩm liên quan --}}
+    <script>
+        $(document).ready(function() {
+            $("#suggestion-list-product").empty(); // Xóa dữ liệu cũ trước khi cập nhật mới
 
-        $.ajax({
-            url: "http://127.0.0.1:8000/api/suggest-content-based", // API lấy danh sách sản phẩm
-            method: "GET",
-            dataType: "json",
-            success: function(data) {
-                if (data.length > 0) {
-                    console.log(data);
-                    data.forEach(function(item) {
-                        let productHTML = `
+            $.ajax({
+                url: "http://127.0.0.1:8000/api/suggest-content-based", // API lấy danh sách sản phẩm
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+                    if (data.length > 0) {
+                        console.log(data);
+                        data.forEach(function(item) {
+                            let price = item.price;
+                            let nameDiscount = "";
+                            if (item.discount_id != null) {
+                                price = item.price - (item.price * item.discount
+                                    .percent_discount);
+                                nameDiscount = item.discount.name;
+                            } else {
+                                nameDiscount = "New";
+                            }
+                            let productHTML = `
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="product__item" id="product-list-shop">
                                 <div class="product__item__pic">
                                     <img class="set-bg" width="280" height="250"
-                                    src="{{ asset('uploads/${item.image}')}}"
+                                    src="{{ asset('uploads/${item.image}') }}"
                                     alt="${item.product_name}">
+                                    <span class="label name-discount-suggest" >${nameDiscount}</span></li>
                                     <ul class="product__hover">
                                         <li><a href="{{ url('add-to-wishlist') }}/${item.id}"><img src="{{ asset('client/img/icon/heart.png') }}"
                                             alt=""></a></li>
                                             <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}"
                                                 alt=""><span>Compare</span></a></li>
-                                                <li><a href="{{ url('product') }}/${item.slug}"><img
-                                                    src="{{ asset('client/img/icon/search.png') }}"
-                                                    alt=""></a></li>
+                                                <li><a href="{{ url('product') }}/${item.slug}">
+                                                    <img src="{{ asset('client/img/icon/search.png') }}"
+                                                    alt=""></a>
+                                                  
                                                     </ul>
                                                     </div>
 
@@ -280,7 +297,7 @@
                                                 <i class="fa fa-star-o"></i>
                                                 <i class="fa fa-star-o"></i>
                                                 </div>
-                                                <h5>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.price)}</h5>
+                                                <h5>${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price)}</h5>
                                                 <div class="product__color__select">
                                                     <label for="pc-4">
                                                         <input type="radio" id="pc-4">
@@ -296,6 +313,14 @@
                                     </div>
                                 </div>
                             `;
+                            $(document).ready(function() {
+                                $('.name-discount-suggest').each(function() {
+                                    if ($(this).text().trim() !== "New") {
+                                        $(this).addClass(
+                                        'bg-danger text-white');
+                                    }
+                                });
+                            });
                             $("#suggestion-list-product").append(productHTML);
                         });
                     } else {
@@ -307,8 +332,13 @@
                     $("#suggestion-list-product").html("<p>Lỗi khi tải sản phẩm.</p>");
                 }
             });
+
+
         });
     </script>
+
+
+
     <script src="{{ asset('client/js/cart-add.js') }}"></script>
 @endsection
 {{--

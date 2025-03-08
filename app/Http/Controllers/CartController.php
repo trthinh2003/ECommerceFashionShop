@@ -24,6 +24,10 @@ class CartController extends Controller
     // Thêm vào giỏ hàng mặc định lấy theo id sản phẩm
     public function add(Cart $cart, Product $product, $quantity = 1)
     {
+        $product = Product::with('Discount')->whereNotNull('discount_id')->find($product->id);
+        if($product){
+            $product->price = $product->price - ($product->price * $product->Discount->percent_discount);
+        }
         if (request()->has('add_to_cart')) {
             $productVariant = ProductVariant::where('product_id', $product->id)->where('size', request()->size)->where('color', request()->color)->first();
             if (!$productVariant) {
@@ -44,6 +48,10 @@ class CartController extends Controller
             $cart->add($product, request()->quantity, $productVariant);
             return redirect()->route('sites.cart');
         } else {
+            $product = Product::with('Discount')->whereNotNull('discount_id')->find($product->id);
+            if($product){
+                $product->price = $product->price - ($product->price * $product->Discount->percent_discount);
+            }
             // dd(request()->all());
             $productVariant = ProductVariant::where('product_id', $product->id)->first();
             if (!$productVariant) {
