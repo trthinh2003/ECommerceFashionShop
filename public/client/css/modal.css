@@ -7,7 +7,7 @@
     background: #ffffff;
     justify-content: center;
     display: none;
-    z-index: 100;
+    z-index: 10000;
 }
 
 .modal-search.open {
