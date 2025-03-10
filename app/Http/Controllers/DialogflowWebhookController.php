@@ -19,7 +19,7 @@ class DialogflowWebhookController extends Controller
             $productName = $parameters['product'] ?? '';
 
             if (empty($productName)) {
-                return response()->json(["fulfillmentText" => "Bạn muốn tìm sản phẩm nào?"]);
+                return response()->json(["fulfillmentText" => "Có phải bạn muốn biết thông tin về \"" . $productName . "\"?"]);
             }
 
             $products = DB::table('products')

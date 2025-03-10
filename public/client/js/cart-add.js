@@ -3,7 +3,7 @@ let cart = {};
 
 window.addEventListener("scroll", function () {
     let cartIcon = document.getElementById("cartIcon");
-    cartIcon.style.display = window.scrollY >= 0 ? "block" : "none";
+    cartIcon.style.display = "block";
 });
 
 document.querySelectorAll(".add-cart").forEach(button => {
@@ -30,7 +30,7 @@ function addToCart(productId, event) {
             let cartList = document.getElementById("cartList");
 
             // document.querySelector('.cart-quantity-header').textContent = data.cart_product_count;
-            
+
             // Cập nhật số sản phẩm khác nhau trong giỏ hàng
             document.querySelectorAll('.cart-quantity-header').forEach((element) => {
                 element.textContent = data.cart_product_count;
@@ -91,7 +91,7 @@ function toggleCart() {
 function animateToCart(event) {
     let cartIcon = document.getElementById("cartIcon");
     let productElement = event.target.closest(".product__item").querySelector(".set-bg");
-    console.log(productElement);
+    // console.log(productElement);
     // let imageUrl = productElement.getAttribute("src");
     let imageUrl = productElement.getAttribute("src") || productElement.style.backgroundImage.replace(/url\(["']?(.*?)["']?\)/, '$1');
     let flyingImg = document.createElement("img");
