@@ -71,7 +71,7 @@ class SearchController extends Controller
                             WHEN tags LIKE ? THEN 2
                             ELSE 3
                         END", ["%{$history[0]}%", "%{$history[0]}%"])
-            ->limit(8)
+            ->limit(10)
             ->get();
 
         return response()->json($suggestedProducts);

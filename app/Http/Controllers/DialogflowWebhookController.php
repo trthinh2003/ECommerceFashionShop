@@ -10,10 +10,8 @@ class DialogflowWebhookController extends Controller
 {
     public function handle(Request $request)
     {
-        // Ghi log để kiểm tra request từ Dialogflow
         Log::info('Received Webhook Request:', $request->all());
 
-        // Lấy intent và parameters từ request
         $intent = $request->input('queryResult.intent.displayName');
         $parameters = $request->input('queryResult.parameters', []);
 
@@ -21,10 +19,9 @@ class DialogflowWebhookController extends Controller
             $productName = $parameters['product'] ?? '';
 
             if (empty($productName)) {
-                return response()->json(["fulfillmentText" => "Bạn muốn tìm sản phẩm nào?"]);
+                return response()->json(["fulfillmentText" => "Có phải bạn muốn biết thông tin về \"" . $productName . "\"?"]);
             }
 
-            // Truy vấn trực tiếp từ database
             $products = DB::table('products')
                 ->where('product_name', 'LIKE', "%{$productName}%")
                 ->select('product_name', 'price')
