@@ -21,7 +21,7 @@
                     <div class="input-group">
                         <input name="query" type="number" class="form-control"
                             placeholder="Nhập ID đơn hàng hoặc số điện thoại...">
-                        <button type="submit" class="btn btn-primary me-3">
+                        <button type="submit" class="btn btn-primary">
                             <i class="fa fa-search"></i> Tìm kiếm
                         </button>
                     </div>
@@ -46,40 +46,31 @@
                 </thead>
                 <tbody>
                     @foreach ($historyOrder as $item)
-                        <tr>
+                        <tr id="orderRow{{ $item->id }}">
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->customer_name }}</td>
                             <td>{{ $item->address }}</td>
                             <td>{{ $item->phone }}</td>
                             <td>{{ number_format($item->total, 0, ',', '.') }} đ</td>
-                            <td><span class="badge bg-warning">{{ $item->status }}</span></td>
+                            <td>
+                                <span id="status{{ $item->id }}" class="badge bg-warning">{{ $item->status }}</span>
+                            </td>
                             <td>{{ $item->created_at }}</td>
-                            @if ($item->status === 'Chờ xử lý')
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center">
-                                        <a href="{{ route('sites.showOrderDetailOfCustomer', $item->id) }}"
-                                            class="btn btn-sm btn-secondary">
-                                            <i class="fa fa-eye"></i> Xem
-                                        </a>
-                                        <form action="{{ route('sites.cancelOrder', $item->id) }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="_method" value="PUT">
-                                            <button type="submit" class="btn btn-sm btn-danger">
-                                                <i class="fa fa-times"></i> Hủy
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            @else
-                            <td class="text-center">
-                                <div class="d-flex justify-content-center">
+                            <td class="text-center" id="action{{ $item->id }}">
+                                <div class="d-flex justify-content-center action-buttons">
                                     <a href="{{ route('sites.showOrderDetailOfCustomer', $item->id) }}"
                                         class="btn btn-sm btn-secondary">
                                         <i class="fa fa-eye"></i> Xem
                                     </a>
+                                    @if ($item->status === 'Chờ xử lý')
+                                        <button type="button" class="btn btn-sm btn-danger ms-2"
+                                            onclick="openCancelModal({{ $item->id }})">
+                                            <i class="fa fa-times"></i> Hủy
+                                        </button>
+                                    @endif
                                 </div>
                             </td>
-                            @endif
+
                         </tr>
                     @endforeach
                     @if ($historyOrder->isEmpty())
@@ -90,22 +81,138 @@
                             </td>
                         </tr>
                     @endif
-
                 </tbody>
             </table>
         </div>
     </div>
     <div class="d-flex justify-content-center mt-3 mb-3">
         {{ $historyOrder->links() }}
-    </div>    
+    </div>
+
+    <!-- Modal Xác nhận Hủy -->
+    <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="cancelOrderModalLabel">Xác nhận hủy đơn hàng</h5>
+                    <button type="button" class="btn-close btn-close-modal" data-bs-dismiss="modal"
+                        aria-label="Close">X</button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn hủy đơn hàng này không?</p>
+                    <div class="mb-3">
+                        <label for="reason" class="form-label">Lý do hủy</label>
+                        <textarea id="reason" class="form-control" placeholder="Nhập lý do hủy..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-close-modal" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmCancel()">Xác nhận hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <style>
+        .input-group .btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .input-group input {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .modal-dialog {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+            width: 600px;
+        }
+
+        .modal-content {
+            width: 100%;
+        }
+
+        .action-buttons a,
+        .action-buttons button {
+            margin: 0 5px;
+        }
+
+        .toast-success {
+            background-color: #6dff8f;
+        }
+
+        .toast-error {
+            background-color: #dc3545;
+        }
+    </style>
 @endsection
+
 
 @section('js')
     @if (Session::has('success'))
         <script src="{{ asset('assets/js/message.js') }}"></script>
     @endif
+
+    <!-- Toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        let currentOrderId = null;
+
+        function openCancelModal(orderId) {
+            currentOrderId = orderId;
+            $('#reason').val(''); // Xóa nội dung cũ
+            $('#cancelOrderModal').modal('show');
+        }
+
+        function showToast(type, message) {
+            toastr[type](message);
+        }
+
+        function confirmCancel() {
+            const reason = document.getElementById('reason').value;
+
+            if (!reason.trim()) {
+                showToast('error', 'Vui lòng nhập lý do hủy!');
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('sites.cancelOrder', ':id') }}".replace(':id', currentOrderId),
+                type: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    reason: reason
+                },
+                success: function(response) {
+                    showToast('success', response.message);
+                    $("#status" + currentOrderId).text("Đã hủy");
+                    $("#action" + currentOrderId).html(`
+                        <div class="action-buttons">
+                            <a href="{{ route('sites.showOrderDetailOfCustomer', '') }}/${currentOrderId}" 
+                                class="btn btn-sm btn-secondary">
+                                <i class="fa fa-eye"></i> Xem
+                            </a>
+                        </div>
+                    `);
+                    $('#cancelOrderModal').modal('hide');
+                    currentOrderId = null;
+                },
+                error: function(xhr) {
+                    showToast('error', 'Có lỗi xảy ra, vui lòng thử lại!');
+                }
+            });
+
+            $('.btn-close-modal').modal('hide');
+        }
+    </script>
 @endsection

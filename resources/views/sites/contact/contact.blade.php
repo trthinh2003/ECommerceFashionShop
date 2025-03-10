@@ -82,17 +82,18 @@
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="contact__form">
-                        <form action="#">
+                        <form action="{{ route('contact.send') }}" method="POST">
+                            @csrf
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Họ và Tên">
+                                    <input type="text" name="name" placeholder="Họ và Tên" required>
                                 </div>
                                 <div class="col-lg-6">
-                                    <input type="text" placeholder="Email">
+                                    <input type="email" name="email" placeholder="Email" required>
                                 </div>
                                 <div class="col-lg-12">
-                                    <textarea placeholder="Nội dung tin nhắn"></textarea>
-                                    <button type="submit" class="site-btn">Gửi Tin Nhắn</button>
+                                    <textarea placeholder="Nội dung tin nhắn" name="message" required></textarea>
+                                    <input type="submit" name="send-message" class="site-btn" value="Gửi Tin Nhắn">
                                 </div>
                             </div>
                         </form>

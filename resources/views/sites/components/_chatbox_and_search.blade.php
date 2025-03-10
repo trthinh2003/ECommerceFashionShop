@@ -266,6 +266,23 @@
                             } else {
                                 nameDiscount = "New";
                             }
+
+                            let totalStock = [];
+                            let addCartOrNone = [];
+                            item.product_variants.map((variant) => {
+                                totalStock[variant.product_id] = 0;
+                            })
+                            item.product_variants.forEach((variant) => {
+                                totalStock[variant.product_id] += variant.stock + 0;
+                            });
+                            item.product_variants.map((variant) => {
+                                if (totalStock[variant.product_id] == 0) {
+                                    addCartOrNone[variant.product_id] = false;
+                                } else {
+                                    addCartOrNone[variant.product_id] = true;
+                                };
+                            })
+
                             let productHTML = `
                         <div class="col-lg-3 col-md-6 col-sm-6">
                             <div class="product__item" id="product-list-shop">
@@ -288,8 +305,11 @@
 
                                                     <div class="product__item__text">
                                                         <h6>${item.product_name}</h6>
-                                                        <a href="javascript:void(0);" class="add-cart" data-id="${item.id}">+
-                                                            Add To Cart</a>
+                                                        ` +
+                                                     
+                                                    (addCartOrNone[item.id] > 0 ? `<a href="javascript:void(0);" class="add-cart" data-id="${item.id}">+ Add To Cart</a>` : `<span class=" badge badge-warning">Hết hàng</span>`)
+                                                    
+                                                    +`
                                             <div class="rating">
                                                 <i class="fa fa-star-o"></i>
                                                 <i class="fa fa-star-o"></i>
@@ -317,7 +337,7 @@
                                 $('.name-discount-suggest').each(function() {
                                     if ($(this).text().trim() !== "New") {
                                         $(this).addClass(
-                                        'bg-danger text-white');
+                                            'bg-danger text-white');
                                     }
                                 });
                             });

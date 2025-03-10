@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DiscountController;
 use App\Http\Controllers\HomeController;
@@ -21,6 +23,7 @@ use App\Models\Customer;
 use App\Models\Order;
 use App\Models\Staff;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -58,7 +61,24 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/cart', [HomeController::class, 'cart'])->name('sites.cart');
     Route::get('/aboutUs', [HomeController::class, 'aboutUs'])->name('sites.aboutUs');
     Route::get('/blogDetail', [HomeController::class, 'blogDetail'])->name('sites.blogDetail');
+
+    // xử lý gửi email
     Route::get('/contact', [HomeController::class, 'contact'])->name('sites.contact');
+    // Route::get('/contact-success', [ContactController::class, 'contactSuccess'])->name('contact.contactSuccess');
+    // Route::get('/test-mail', function () {
+    //     $data = ['name' => 'Test User', 'email' => 'minhminh@gmail.com', 'message' => 'This is a test message'];
+    
+    //     Mail::raw("Tên người gửi: {$data['name']}\nĐịa chỉ Email: {$data['email']}\nNội dung: {$data['message']}", function($message) use ($data) {
+    //         $message->from('raucuquasachnhom@gmail.com', $data['name'])
+    //                 ->to('raucuquasachnhom@gmail.com', 'TST Fashion Shop')
+    //                 ->subject('Test Email');
+    //     });
+    
+    //     return 'Gửi email thành công!';
+    // });
+    
+    
+    Route::post('/contact/send', [ContactController::class, 'sendContact'])->name('contact.send');
     Route::get('/blog', [HomeController::class, 'blog'])->name('sites.blog');
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
     // Xử lý danh sách yêu thích
@@ -132,7 +152,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
             'product' => ProductController::class,
             'provider' => ProviderController::class,
             'inventory' => InventoryController::class,
-            'staff' => StaffController::class
+            'staff' => StaffController::class,
+            'blog' => BlogController::class
         ]
     );
     Route::put('/staff/{staff}/update', [StaffController::class, 'update_staff'])->name('staff.update_staff');
@@ -145,6 +166,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/search_staff', [StaffController::class, 'search'])->name('staff.search');
     Route::get('/search_inventory', [InventoryController::class, 'search'])->name('inventory.search');
     Route::get('/search_order', [OrderController::class, 'search'])->name('order.search');
+    Route::get('/search_blog', [BlogController::class, 'search'])->name('blog.search');
     Route::get('/profile', [StaffController::class, 'profile'])->name('staff.profile');
     Route::get('/order-approval', [OrderController::class, 'orderApproval'])->name('order.approval');
     Route::get('/order_success', [OrderController::class, 'orderSuccess'])->name('order.orderSuccess');

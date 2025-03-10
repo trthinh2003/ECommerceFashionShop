@@ -47,7 +47,7 @@
                             <td>{{ $model->address }}</td>
                             <td>{{ $model->phone }}</td>
                             <td>{{ $model->total }}</td>
-                            <td>{{ $model->status }}</td>
+                            <td class="text-warning fw-bold">{{ $model->status }}</td>
                             <td>{{ $model->created_at }}</td>
                             <td>
                                 <a href="{{ route('order.show', $model->id) }}" class="btn btn-sm btn-secondary"><i

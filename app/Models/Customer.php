@@ -32,4 +32,9 @@ class Customer extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Commment::class);
+    }
 }

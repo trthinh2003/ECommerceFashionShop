@@ -312,6 +312,17 @@
                                 } else {
                                     $discountName = 'New';
                                 }
+                                $totalStock = 0;
+                                if ($items->ProductVariants) {
+                                    // Kiểm tra nếu có productVariants
+                                    foreach ($items->ProductVariants as $variant) {
+                                        if ($variant) {
+                                            $totalStock += $variant->stock;
+                                        }
+                                    }
+                                }
+                                
+                                
                             @endphp
 
                             <div class="col-lg-4 col-md-6 col-sm-6">
@@ -336,8 +347,13 @@
                                     <div class="product__item__text">
                                         <h6>{{ $items->product_name }}</h6>
                                         {{-- <a href="#" class="add-cart">+ Add To Cart</a> --}}
-                                        <a href="javascript:void(0);" class="add-cart"
-                                            data-id="{{ $items->id }}">+Add To Cart</a>
+                                        @php
+                                            if($totalStock == 0 ) {
+                                                echo '<span class=" badge badge-warning">Hết hàng</span>';
+                                            } else {
+                                                echo '<a href="javascript:void(0);" class="add-cart" data-id="'. $items->id .'">+Add To Cart</a>';
+                                            }
+                                        @endphp
                                         <div class="rating">
                                             <i class="fa fa-star-o"></i>
                                             <i class="fa fa-star-o"></i>
