@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image');
             $table->string('slug', 100);
             $table->string('tags');
+            $table->tinyInteger('status')->nullable();
             $table->unsignedInteger('staff_id');
             $table->foreign('staff_id')->references('id')->on('staff');
             $table->timestamps();

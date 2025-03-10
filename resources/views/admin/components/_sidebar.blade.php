@@ -183,6 +183,22 @@
                         </div>
                     </li>
                     <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#base11">
+                            <i class="fas fa-newspaper"></i>
+                            <p>Quản lý Blog</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="base11">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('blog.index') }}">
+                                        <span class="sub-item">Thông tin bài viết</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#base9">
                             <i class="fas fa-chart-line"></i>
                             <p>Thống kê doanh thu</p>

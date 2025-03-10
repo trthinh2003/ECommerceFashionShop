@@ -45,17 +45,15 @@ class HomeController extends Controller
                 $items = explode('-', $price);
                 $minPrice = str_replace('.', '', $items[0]);
                 $maxPrice = str_replace('.', '', $items[1]);
-            }
-            else if ($price === '1.000.000') {
+            } else if ($price === '1.000.000') {
                 $minPrice = str_replace('.', '', $price);
             }
             empty($maxPrice) ? $query->where('price', '>=', $minPrice) : $query->whereBetween('price', [$minPrice, $maxPrice]);
         }
 
-        if($request->has('tag')) {
+        if ($request->has('tag')) {
             $tag = str_replace('-', ' ', $request->tag);
             $query->where('tags', 'like', "%$tag%");
-
         }
         //  dd($minPrice, $maxPrice ?? 0);
         // dd($tag);
@@ -98,9 +96,8 @@ class HomeController extends Controller
 
     public function checkout()
     {
-      
-            return view('sites.pages.checkout');
-      
+
+        return view('sites.pages.checkout');
     }
 
     public function productDetail($slug)
@@ -116,7 +113,8 @@ class HomeController extends Controller
         return view('sites.product.product_detail', compact('productDetail', 'sizes', 'colors'));
     }
 
-    public function successPayment() {
+    public function successPayment()
+    {
         return view('sites.success.payment');
     }
 }
