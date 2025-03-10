@@ -83,53 +83,43 @@ class DialogflowController extends Controller
 
     private function searchProduct($parameters)
     {
-        $category = $parameters['product_category'] ?? null;
-        $material = $parameters['material'] ?? null;
-        $style = $parameters['style'] ?? null;
-        $color = $parameters['color'] ?? null;
-
-        Log::info("🔍 Tìm kiếm sản phẩm với các tham số:", [
-            'category' => $category,
-            'material' => $material,
-            'style' => $style,
-            'color' => $color
-        ]);
-
-        // Truy vấn sản phẩm từ DB
+        $category = $parameters['product_category'] ?? '';
+        $material = $parameters['material'] ?? '';
+        $style = $parameters['style'] ?? '';
+        $color = $parameters['color'] ?? '';
+    
+        // Tạo mảng các từ khóa để tìm kiếm trong tags
+        $keywords = array_filter([$category, $material, $style, $color]);
+    
+        // Truy vấn sản phẩm
         $query = DB::table('products')
             ->leftJoin('discounts', 'products.discount_id', '=', 'discounts.id')
             ->select('product_name', 'price', 'image', 'slug', 'discount_id', 'percent_discount');
-
-        if (!empty($category)) {
-            $query->where('category_id', function ($subquery) use ($category) {
-                $subquery->select('id')
-                    ->from('categories')
-                    ->where('name', $category)
-                    ->limit(1);
-            });
+    
+        if (!empty($keywords)) {
+            foreach ($keywords as $keyword) {
+                $query->orWhere('tags', 'LIKE', '%' . $keyword . '%');
+            }
         }
-
-        if (!empty($material)) $query->where('material', $material);
-        if (!empty($style)) $query->where('style', $style);
-        if (!empty($color)) $query->where('color', $color);
-
+    
         $products = $query->take(5)->get();
-
+    
         if ($products->isNotEmpty()) {
             return $products->map(function ($product) {
                 $price = $product->discount_id ?
-                    $product->price - ($product->price * $product->percent_discount)
-                    : $product->price;
-
-                return "<a href='" . url('product/' . $product->slug) . "'
-                        style='display: flex; align-items: center; gap: 10px; padding: 5px; text-decoration: none; color: #333;'>
-                        <img src='uploads/{$product->image}' width='50' height='50' style='border-radius: 5px;'>
-                        <span>{$product->product_name} (" . number_format($price, 0, ',', '.') . " đ)</span>
-                    </a>";
+                    $product->price - ($product->price * $product->percent_discount) :
+                    $product->price;
+    
+                return "<a href='" . url('product/' . $product->slug) . "' style='display: flex; align-items: center; gap: 10px; padding: 5px; text-decoration: none; color: #333;'>
+                            <img src='uploads/{$product->image}' width='50' height='50' style='border-radius: 5px;'>
+                            <span>{$product->product_name} (" . number_format($price, 0, ',', '.') . " đ)</span>
+                        </a>";
             })->implode("\n");
         } else {
-            Log::warning("⚠️ Không tìm thấy sản phẩm phù hợp.");
             return "Không tìm thấy sản phẩm phù hợp. Bạn có thể thử tìm với từ khóa khác không?";
         }
     }
+    
+    
+    
 }

@@ -25,38 +25,9 @@ class SendEmailJob implements ShouldQueue
     public function handle()
     {
         try {
-            // Log::info("Bắt đầu gửi email đến: " . $this->data['email']);
             Mail::to('raucuquasachnhom@gmail.com')->send(new ContactMail($this->data));
-            // Log::info("Gửi email thành công đến: raucuquasachnhom@gmail.com");
-            // Log::info("Dữ liệu gửi mail: " . json_encode($this->data));
         } catch (\Exception $e) {
             Log::error("Gửi email thất bại: " . $e->getMessage());
         }
     }
-
-
-    // public function handle()
-    // {
-    //     try {
-         
-    //         $data = $this->data;
-    //         Log::info("Bắt đầu gửi email đến: " . $data);
-    //         // Truyền biến $this->data vào closure bằng từ khóa use
-    //         Mail::raw("Tên người gửi: {$data['name']}\nĐịa chỉ Email: {$data['email']}\nNội dung: {$data['message']}", function ($message) use ($data) {
-    //             $message->from('raucuquasachnhom@gmail.com', $data['name'])
-    //                     ->to('raucuquasachnhom@gmail.com', 'TST Fashion Shop')
-    //                     ->subject('Thông tin liên hệ từ ' . $data['name']);
-    //         });
-    
-    //         Log::info("Gửi email thành công đến: " . $data['email']);
-    //     } catch (\Exception $e) {
-    //         Log::error("Gửi email thất bại: " . $e->getMessage());
-    //     }
-    // }
-    
-
-
-
-
-
 }
