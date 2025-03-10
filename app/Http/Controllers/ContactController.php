@@ -16,7 +16,7 @@ class ContactController extends Controller
             'email' => 'required',
             'message' => 'required',
         ]);
-      
+
 
         // Đẩy job vào hàng đợi
         SendEmailJob::dispatch($data);

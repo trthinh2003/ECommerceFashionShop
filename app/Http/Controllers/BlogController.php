@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
 
 class BlogController extends Controller
 {
@@ -29,7 +31,36 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'image' => 'required',
+            'blog_tag' => 'required',
+            'status' => 'required',
+            'staff_id' => 'required',
+        ], [
+            'title.required' => 'Title is required',
+            'content.required' => 'Content is required',
+            'image.required' => 'Image is required',
+            'blog_tag.required' => 'Blog Tag is required',
+            'status.required' => 'Status is required',
+        ]);
+
+        $blog = new Blog();
+        $blog->title = $data['title'];
+        $blog->content = $data['content'];
+        //Xu ly anh
+        $file_name = $request->image->hashName();
+        $request->image->move(public_path('uploads'), $file_name);
+        $blog->image = $file_name;
+        $blog->slug = Str::slug($data['title']); //"Áo thun Polo XXL"->"ao-thun-polo-xxl"
+
+        $blog->tags = $data['blog_tag'];
+        $blog->status = $data['status'];
+        $blog->staff_id = $data['staff_id'];
+        $blog->save();
+
+        return redirect()->route('blog.index')->with('success', 'Thêm bài viết thành công');
     }
 
     /**
@@ -53,7 +84,7 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        //
+
     }
 
     /**

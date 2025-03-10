@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\InventoryResource;
 use App\Http\Resources\ProductResource;
+use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Discount;
 use App\Models\Inventory;
@@ -233,5 +234,13 @@ class ApiController extends Controller
         $productResource = ProductResource::collection($products);
         return $this->apiStatus($productResource, 200, 1, 'ok');
     }
-    
+
+    public function blogDetail($id) {
+        $blog = Blog::with('staff')->find($id);
+        if ($blog) {
+            return $this->apiStatus($blog, 200, 1, 'ok');
+        }
+        return $this->apiStatus(null, 404, 0, 'Data not found.');
+    }
+
 }

@@ -61,3 +61,5 @@ Route::delete('/clear-search-history', [SearchController::class, 'clearSearchHis
 
 // Route::get('/order/{id}', [ApiController::class, 'test'])->name('api.orders');
 Route::post('/webhook', [DialogflowWebhookController::class, 'handle']);
+
+Route::get('blog_detail/{id}', [ApiController::class, 'blogDetail'])->name('api.blogDetail');

@@ -162,15 +162,15 @@
                                 // console.log(addCartOrNone);
 
                                 // console.log(addCartOrNone);
-                                
+
                                 // console.log(addCartOrNone);
                                 // product['product-variant'].forEach((variant) => {
-                                //     variant.stock > 0 ? 
-                                        
-                                    
+                                //     variant.stock > 0 ?
+
+
                                 // })
                                 // if(product['product-variant']. > 0) va{
-                                    
+
                                 // }
 
                                 // console.log(formattedPrice); // Kiểm tra giá đã format
@@ -189,16 +189,16 @@
                                                                     <img src="{{ asset('client/img/icon/heart.png') }}" alt="">
                                                                 </a>
                                                         </li>
-    
+
                                                             <li><a href="#"><img src="{{ asset('client/img/icon/compare.png') }}" alt=""><span>Compare</span></a></li>
                                                             <li><a href="{{ url('product') }}/${product.slug}"><img src="{{ asset('client/img/icon/search.png') }}" alt=""></a></li>
                                                         </ul>
                                                  </div>
                                                 <div class="product__item__text">
                                                     <h6>${product.name}</h6>` +
-                                                     
+
                                                     (addCartOrNone[product.id] > 0 ? `<a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>` : `<span class=" badge badge-warning">Hết hàng</span>`)
-                                                    
+
                                                     +`<div class="rating">
                                                         <i class="fa fa-star-o"></i>
                                                         <i class="fa fa-star-o"></i>
@@ -320,9 +320,9 @@
                                             <div class="product__item__text">
                                                 <h6>${product.product_name}</h6>
                                                 ` +
-                                                     
+
                                                     (addCartOrNone[product.id] > 0 ? `<a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>` : `<span class=" badge badge-warning">Hết hàng</span>`)
-                                                    
+
                                                     +`
                                                 <div class="rating">
                                                     <i class="fa fa-star-o"></i>
