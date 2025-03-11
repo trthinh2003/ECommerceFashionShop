@@ -43,13 +43,14 @@ class OrderController extends Controller
         return view('admin.order.order_approved', compact('data'));
     }
 
-    public function orderSuccess(){
+    public function orderSuccess()
+    {
         $data = DB::table('orders as o')
-        ->join('customers as c', 'o.customer_id', '=', 'c.id')
-        ->where('o.status', 'Đã thanh toán')
-        ->orderBy('o.id', 'ASC')
-        ->select('o.*', 'c.name as customer_name')
-        ->paginate(5);
+            ->join('customers as c', 'o.customer_id', '=', 'c.id')
+            ->where('o.status', 'Đã thanh toán')
+            ->orderBy('o.id', 'ASC')
+            ->select('o.*', 'c.name as customer_name')
+            ->paginate(5);
         return view('admin.order.order_success', compact('data'));
     }
 
