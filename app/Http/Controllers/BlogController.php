@@ -118,6 +118,10 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        //
+      if($blog->staff()->count() == 0) {
+        $blog->delete();
+        return redirect()->route('blog.index')->with('success', 'Xoá bài viết thành công');
+      }
+      return redirect()->route('blog.index')->with('success', 'Xoá thất bại');
     }
 }

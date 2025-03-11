@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductVariant;
 use Google\Cloud\Dialogflow\V2\QueryInput;
 use Google\Cloud\Dialogflow\V2\TextInput;
 use Google\Cloud\Dialogflow\V2\DetectIntentRequest;
@@ -83,55 +84,62 @@ class DialogflowController extends Controller
 
     private function searchProduct($parameters)
     {
-        $productName = !empty($parameters['product_name']) ? implode(" ", $parameters['product_name']) : null;
-        $tags = !empty($parameters['tags']) ? $parameters['tags'] : null;
-        $material = !empty($parameters['material']) ? $parameters['material'] : null;
-        $categoryId = !empty($parameters['category_id']) ? $parameters['category_id'] : null;
+        if (empty($parameters['category_id']) || empty($parameters['price_min']) || empty($parameters['price_max'])) {
+            return "Vui lòng cung cấp đầy đủ thông tin như loại sản phẩm và mức giá.";
+        }
 
-        DB::flushQueryLog(); // Xóa cache truy vấn cũ
+        $category = $parameters['category_id'];
+        $material = $parameters['material'] ?? '';
+        $tags = $parameters['tags'] ?? '';
+        $priceMin = $parameters['price_min'];
+        $priceMax = $parameters['price_max'];
+        $size = $parameters['size'] ?? '';
+        $color = $parameters['color'] ?? '';
+        $productName = $parameters['product_name'] ?? '';
+
+        $keywords = array_filter([$category, $material, $tags, $size, $color, $productName]);
 
         $query = DB::table('products')
-            ->leftJoin('discounts', 'products.discount_id', '=', 'discounts.id')
-            ->select(
-                'products.product_name',
-                'products.price',
-                'products.image',
-                'products.slug',
-                'products.discount_id',
-                'discounts.percent_discount'
-            );
+            ->leftJoin('productVariants', 'products.id', '=', 'productVariants.product_id')
+            ->select('product_name', 'price', 'image', 'slug', 'size', 'color');
 
-        // Áp dụng điều kiện nếu giá trị tồn tại
-        if ($productName) {
-            $query->where('products.product_name', 'LIKE', "%$productName%");
+        $query->where('category_id', $category);
+
+        if (!empty($productName)) {
+            $query->where('product_name', 'LIKE', "%$productName%");
         }
-        if ($categoryId) {
-            $query->where('products.category_id', $categoryId);
+
+        if (!empty($material)) {
+            $query->where('material', 'LIKE', "%$material%");
         }
-        if ($tags) {
-            $query->where('products.tags', 'LIKE', "%$tags%");
+
+        if (!empty($size)) {
+            $query->where('size', 'LIKE', "%$size%");
         }
-        if ($material) {
-            $query->where('products.material', 'LIKE', "%$material%");
+
+        if (!empty($color)) {
+            $query->where('color', 'LIKE', "%$color%");
         }
+
+        if (!empty($keywords)) {
+            foreach ($keywords as $keyword) {
+                $query->orWhere('tags', 'LIKE', '%' . $keyword . '%');
+            }
+        }
+
+        $query->whereBetween('price', [$priceMin, $priceMax]);
 
         $products = $query->take(5)->get();
 
         if ($products->isNotEmpty()) {
             return $products->map(function ($product) {
-                $price = $product->discount_id
-                    ? $product->price - ($product->price * $product->percent_discount)
-                    : $product->price;
-
-                return "<a href='" . url('product/' . $product->slug) . "'
-                            style='display: flex; align-items: center; gap: 10px; padding: 5px; text-decoration: none; color: #333;'>
-                            <img src='uploads/{$product->image}' width='50' height='50' style='border-radius: 5px;'>
-                            <span>{$product->product_name} (" . number_format($price, 0, ',', '.') . " đ)</span>
-                        </a>";
+                return "<a href='" . url('product/' . $product->slug) . "' style='display: flex; align-items: center; gap: 10px; padding: 5px; text-decoration: none; color: #333;'>
+                        <img src='uploads/{$product->image}' width='50' height='50' style='border-radius: 5px;'>
+                        <span>{$product->product_name} (" . number_format($product->price, 0, ',', '.') . " đ)</span>
+                    </a>";
             })->implode("\n");
         } else {
             return "Không tìm thấy sản phẩm phù hợp.";
         }
     }
-
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Blog;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,8 @@ class HomeController extends Controller
         if (Session::has('success_payment')) {
             Session::forget('success_payment');
         }
-        return view('sites.home.index');
+        $data = Blog::with('staff')->paginate(5);
+        return view('sites.home.index', compact('data'));
     }
 
     public function shop(Request $request)
@@ -74,7 +76,8 @@ class HomeController extends Controller
 
     public function blog()
     {
-        return view('sites.blog.blog');
+        $data = Blog::with('staff')->paginate(5);
+        return view('sites.blog.blog', compact('data'));
     }
 
 
@@ -84,9 +87,10 @@ class HomeController extends Controller
         return view('sites.pages.aboutUs');
     }
 
-    public function blogDetail()
+    public function blogDetail($slug)
     {
-        return view('sites.pages.blogDetail');
+        $blogDetail = Blog::where('slug', $slug)->with('staff')->firstorfail();
+        return view('sites.pages.blogDetail', compact('blogDetail'));
     }
 
     public function shoppingCart()

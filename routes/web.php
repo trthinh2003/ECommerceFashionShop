@@ -60,7 +60,7 @@ Route::group(['prefix' => '/'], function () {
     Route::post('/shop', [HomeController::class, 'shop'])->name('sites.shopSearch');
     Route::get('/cart', [HomeController::class, 'cart'])->name('sites.cart');
     Route::get('/aboutUs', [HomeController::class, 'aboutUs'])->name('sites.aboutUs');
-    Route::get('/blogDetail', [HomeController::class, 'blogDetail'])->name('sites.blogDetail');
+    Route::get('/blog-detail/{slug}', [HomeController::class, 'blogDetail'])->name('sites.blogDetail');
 
     // xử lý gửi email
     Route::get('/contact', [HomeController::class, 'contact'])->name('sites.contact');
