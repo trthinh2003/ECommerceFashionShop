@@ -184,21 +184,21 @@ class OrderController extends Controller
                 $variant->stock -= $detail->quantity;
                 $variant->save();
 
-                Session::put('success_data', [
-                    'logo' => 'cod.png',
-                    'receiver_name' => $order->receiver_name,
-                    'order_id' => $order->id,
-                    'total' => $order->total
-                ]);
-                Session::forget('order_data'); // Xóa session sau khi lưu vào db
-                return redirect()->route('sites.success.payment');
             } else {
                 // Xử lý trường hợp không tìm thấy variant
                 Log::warning("Không tìm thấy variant cho sản phẩm ID: {$detail->product_id}, size: {$size}, color: {$color}");
             }
         }
+        Session::put('success_data', [
+            'logo' => 'cod.png',
+            'receiver_name' => $order->receiver_name,
+            'order_id' => $order->id,
+            'total' => $order->total
+        ]);
+        Session::forget('order_data'); // Xóa session sau khi lưu vào db
+        return redirect()->route('sites.success.payment');
 
-        return redirect()->route('sites.home')->with('success', "Đặt hàng thành công!");
+        // return redirect()->route('sites.home')->with('success', "Đặt hàng thành công!");
     }
 
 

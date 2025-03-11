@@ -45,8 +45,7 @@
                         </div>
                         <div class="blog__details__quote">
                             <i class="fa fa-quote-left"></i>
-                            <p>“When designing an advertisement for a particular product many things should be
-                                researched like where it should be displayed.”</p>
+                            <p>“He he he, ha ha ha”</p>
                             <h6>_ {{$blogDetail->staff->name}} _</h6>
                         </div>
                         <div class="blog__details__text">

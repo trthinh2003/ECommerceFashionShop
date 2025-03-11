@@ -140,22 +140,6 @@ class CheckoutController extends Controller
                 $order->transaction_id = $vnp_TxnRef; // Lưu mã giao dịch VNPAY
                 $order->save();
 
-                // // Lưu chi tiết đơn hàng vào db
-                // if (Session::has('cart') && count(Session::get('cart')) > 0) {
-                //     foreach (Session::get('cart') as $items) {
-                //         OrderDetail::create([
-                //             'order_id' => $order->id,
-                //             'product_id' => $items->id,
-                //             'quantity' => $items->quantity,
-                //             'price' => $items->price,
-                //             'size_and_color' => $items->size . '-' . $items->color,
-                //             'code' => Session::get('percent_discount', 0)
-                //         ]);
-                //     }
-                //     Session::forget('cart');
-                //     Session::forget('percent_discount');
-                // }
-
                 // Lấy giỏ hàng từ session
                 $cart = session('cart', []);
 
@@ -328,22 +312,6 @@ class CheckoutController extends Controller
                     $order->transaction_id = $transId; // Lưu mã giao dịch MoMo
                     $order->save();
 
-                    // // Lưu chi tiết đơn hàng
-                    // if (Session::has('cart') && count(Session::get('cart')) > 0) {
-                    //     foreach (Session::get('cart') as $item) {
-                    //         OrderDetail::create([
-                    //             'order_id' => $order->id,
-                    //             'product_id' => $item->id,
-                    //             'quantity' => $item->quantity,
-                    //             'price' => $item->price,
-                    //             'size_and_color' => $item->size . '-' . $item->color,
-                    //             'code' => Session::get('percent_discount', 0)
-                    //         ]);
-                    //     }
-                    //     Session::forget('cart'); // Xóa giỏ hàng sau khi tạo đơn thành công
-                    //     Session::forget('percent_discount');
-                    // }
-
                     // Lấy giỏ hàng từ session
                     $cart = session('cart', []);
 
@@ -402,10 +370,8 @@ class CheckoutController extends Controller
                     ]);
                     DB::commit();
                     Session::forget('order_data');
-
                     return redirect()->route('sites.success.payment');
                 } catch (Exception $e) {
-                    // Hiển thị lỗi ngay trên trình duyệt để dễ debug
                     dd($e->getMessage(), $e->getFile(), $e->getLine());
                 }
             }

@@ -67,6 +67,10 @@
                                             onclick="openCancelModal({{ $item->id }})">
                                             <i class="fa fa-times"></i> Hủy
                                         </button>
+                                    @elseif ($item->status === 'Đã thanh toán')
+                                        <button type="button" class="btn btn-sm btn-success ms-2" onclick="openSidebar()">
+                                            <i class="fa fa-comments"></i> Đánh giá
+                                        </button>
                                     @endif
                                 </div>
                             </td>
@@ -89,14 +93,122 @@
         {{ $historyOrder->links() }}
     </div>
 
+    <!-- Sidebar -->
+    <div id="ratingSidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h5 class="text-white fw-bold">Đánh Giá Sản Phẩm</h5>
+            <button type="button" class="btn-close" onclick="closeSidebar()">×</button>
+        </div>
+        <div class="sidebar-body">
+            <!-- Danh sách sản phẩm -->
+            <div class="product-list">
+                <div class="product-item d-flex align-items-center mb-3">
+                    <img src="{{ asset('client/img/product/product-1.jpg') }}"  alt="Sản phẩm" class="product-image">
+                    <div class="product-info w-100" style="margin-left: 20px">
+                        <h6>Tên sản phẩm 1</h6>
+                        <p>Màu: Đỏ | Size: L</p>
+                        <div class="star-rating">
+                            <input type="radio" id="star5-1" name="rating1" value="5"><label
+                                for="star5-1">★</label>
+                            <input type="radio" id="star4-1" name="rating1" value="4"><label
+                                for="star4-1">★</label>
+                            <input type="radio" id="star3-1" name="rating1" value="3"><label
+                                for="star3-1">★</label>
+                            <input type="radio" id="star2-1" name="rating1" value="2"><label
+                                for="star2-1">★</label>
+                            <input type="radio" id="star1-1" name="rating1" value="1"><label
+                                for="star1-1">★</label>
+                        </div>
+                        <textarea class="form-control mt-2" rows="2" placeholder="Viết nhận xét..." id="comment1"></textarea>
+                        <button type="button" class="btn btn-success mt-2 w-100" onclick="submitRating(1)">Gửi đánh
+                            giá</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-list">
+                <div class="product-item d-flex align-items-center mb-3">
+                    <img src="{{ asset('client/img/product/product-1.jpg') }}"  alt="Sản phẩm" class="product-image">
+                    <div class="product-info w-100" style="margin-left: 20px">
+                        <h6>Tên sản phẩm 1</h6>
+                        <p>Màu: Đỏ | Size: L</p>
+                        <div class="star-rating">
+                            <input type="radio" id="star5-1" name="rating1" value="5"><label
+                                for="star5-1">★</label>
+                            <input type="radio" id="star4-1" name="rating1" value="4"><label
+                                for="star4-1">★</label>
+                            <input type="radio" id="star3-1" name="rating1" value="3"><label
+                                for="star3-1">★</label>
+                            <input type="radio" id="star2-1" name="rating1" value="2"><label
+                                for="star2-1">★</label>
+                            <input type="radio" id="star1-1" name="rating1" value="1"><label
+                                for="star1-1">★</label>
+                        </div>
+                        <textarea class="form-control mt-2" rows="2" placeholder="Viết nhận xét..." id="comment1"></textarea>
+                        <button type="button" class="btn btn-success mt-2 w-100" onclick="submitRating(1)">Gửi đánh
+                            giá</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-list">
+                <div class="product-item d-flex align-items-center mb-3">
+                    <img src="{{ asset('client/img/product/product-1.jpg') }}"  alt="Sản phẩm" class="product-image">
+                    <div class="product-info w-100" style="margin-left: 20px">
+                        <h6>Tên sản phẩm 1</h6>
+                        <p>Màu: Đỏ | Size: L</p>
+                        <div class="star-rating">
+                            <input type="radio" id="star5-1" name="rating1" value="5"><label
+                                for="star5-1">★</label>
+                            <input type="radio" id="star4-1" name="rating1" value="4"><label
+                                for="star4-1">★</label>
+                            <input type="radio" id="star3-1" name="rating1" value="3"><label
+                                for="star3-1">★</label>
+                            <input type="radio" id="star2-1" name="rating1" value="2"><label
+                                for="star2-1">★</label>
+                            <input type="radio" id="star1-1" name="rating1" value="1"><label
+                                for="star1-1">★</label>
+                        </div>
+                        <textarea class="form-control mt-2" rows="2" placeholder="Viết nhận xét..." id="comment1"></textarea>
+                        <button type="button" class="btn btn-success mt-2 w-100" onclick="submitRating(1)">Gửi đánh
+                            giá</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-list">
+                <div class="product-item d-flex align-items-center mb-3">
+                    <img src="{{ asset('client/img/product/product-1.jpg') }}"  alt="Sản phẩm" class="product-image">
+                    <div class="product-info w-100" style="margin-left: 20px">
+                        <h6>Tên sản phẩm 1</h6>
+                        <p>Màu: Đỏ | Size: L</p>
+                        <div class="star-rating">
+                            <input type="radio" id="star5-1" name="rating1" value="5"><label
+                                for="star5-1">★</label>
+                            <input type="radio" id="star4-1" name="rating1" value="4"><label
+                                for="star4-1">★</label>
+                            <input type="radio" id="star3-1" name="rating1" value="3"><label
+                                for="star3-1">★</label>
+                            <input type="radio" id="star2-1" name="rating1" value="2"><label
+                                for="star2-1">★</label>
+                            <input type="radio" id="star1-1" name="rating1" value="1"><label
+                                for="star1-1">★</label>
+                        </div>
+                        <textarea class="form-control mt-2" rows="2" placeholder="Viết nhận xét..." id="comment1"></textarea>
+                        <button type="button" class="btn btn-success mt-2 w-100" onclick="submitRating(1)">Gửi đánh
+                            giá</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Xác nhận Hủy -->
-    <div class="modal fade" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+    <div class="modal fade cancel-order-modal" id="cancelOrderModal" tabindex="-1"
+        aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
                     <h5 class="modal-title" id="cancelOrderModalLabel">Xác nhận hủy đơn hàng</h5>
-                    <button type="button" class="btn-close btn-close-modal" data-bs-dismiss="modal"
-                        aria-label="Close">X</button>
+                    <button type="button" class="btn-close-modal bg-danger border-0 text-white fw-bold"
+                        data-bs-dismiss="modal" aria-label="Close">X</button>
                 </div>
                 <div class="modal-body">
                     <p>Bạn có chắc chắn muốn hủy đơn hàng này không?</p>
@@ -106,7 +218,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-close-modal" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-secondary btn-close-modal"
+                        data-bs-dismiss="modal">Đóng</button>
                     <button type="button" class="btn btn-danger" onclick="confirmCancel()">Xác nhận hủy</button>
                 </div>
             </div>
@@ -116,47 +229,14 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}" />
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"> --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <style>
-        .input-group .btn {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-        .input-group input {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-
-        .modal-dialog {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: auto;
-            width: 600px;
-        }
-
-        .modal-content {
-            width: 100%;
-        }
-
-        .action-buttons a,
-        .action-buttons button {
-            margin: 0 5px;
-        }
-
-        .toast-success {
-            background-color: #6dff8f;
-        }
-
-        .toast-error {
-            background-color: #dc3545;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('client/css/order-history.css') }}">
 @endsection
 
 
 @section('js')
+    {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> --}}
     @if (Session::has('success'))
         <script src="{{ asset('assets/js/message.js') }}"></script>
     @endif
@@ -180,7 +260,6 @@
 
         function confirmCancel() {
             const reason = document.getElementById('reason').value;
-
             if (!reason.trim()) {
                 showToast('error', 'Vui lòng nhập lý do hủy!');
                 return;
@@ -211,8 +290,40 @@
                     showToast('error', 'Có lỗi xảy ra, vui lòng thử lại!');
                 }
             });
+        }
 
-            $('.btn-close-modal').modal('hide');
+        $(document).ready(function() {
+            $('.btn-close-modal').on("click", function() {
+                $("#cancelOrderModal").modal("hide");
+            });
+        });
+    </script>
+
+    <script>
+        function openSidebar() {
+            document.getElementById("ratingSidebar").classList.add("active");
+        }
+
+        function closeSidebar() {
+            document.getElementById("ratingSidebar").classList.remove("active");
+        }
+
+        function submitRating(productId) {
+            const rating = document.querySelector(`input[name="rating${productId}"]:checked`)?.value;
+            const comment = document.getElementById(`comment${productId}`).value;
+
+            if (!rating) {
+                alert("Vui lòng chọn số sao!");
+                return;
+            }
+
+            if (!comment.trim()) {
+                alert("Vui lòng nhập nhận xét!");
+                return;
+            }
+
+            alert(`Đã gửi đánh giá cho sản phẩm ${productId} với ${rating} sao và nhận xét: ${comment}`);
+            // Xử lý gửi dữ liệu lên server tại đây (AJAX)
         }
     </script>
 @endsection
