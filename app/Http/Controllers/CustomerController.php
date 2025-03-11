@@ -206,6 +206,6 @@ class CustomerController extends Controller
             return response()->json(['message' => 'Có lỗi xảy ra, vui lòng thử lại!'], 500);
         }
     }
-    
-    
+
+
 }

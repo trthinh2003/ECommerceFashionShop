@@ -17,10 +17,9 @@ class DialogflowController extends Controller
     {
         try {
             $projectId = 'chatbotlaravel';
-            $text = $request->input('message');
+            $text = $request->input('message', '');
             $sessionId = $request->input('session_id', session()->getId());
 
-            // Đường dẫn credentials
             $credentialsPath = storage_path('app/dialogflow/chatbotlaravel-f149074225c4.json');
             if (!file_exists($credentialsPath)) {
                 return response()->json(['message' => 'Lỗi: File credentials không tồn tại'], 500);
@@ -30,7 +29,7 @@ class DialogflowController extends Controller
             $sessionClient = new SessionsClient(['credentials' => $credentialsPath]);
             $session = $sessionClient->sessionName($projectId, $sessionId);
 
-            // Tạo truy vấn
+            // Tạo truy vấn Dialogflow
             $textInput = new TextInput();
             $textInput->setText($text);
             $textInput->setLanguageCode('vi');
@@ -42,20 +41,17 @@ class DialogflowController extends Controller
             $detectIntentRequest->setSession($session);
             $detectIntentRequest->setQueryInput($queryInput);
 
-            // Gửi yêu cầu và nhận phản hồi
+            // Gửi request và nhận kết quả
             $response = $sessionClient->detectIntent($detectIntentRequest);
             $queryResult = $response->getQueryResult();
             $intent = $queryResult->getIntent()->getDisplayName();
             $parameters = json_decode($queryResult->getParameters()->serializeToJsonString(), true);
 
-            // Ghi log intent và parameters để debug
             Log::info("📌 Intent xác định: " . $intent);
             Log::info("📌 Tham số nhận được:", $parameters);
 
-            // Xử lý intent
             $replyMessage = $this->handleIntent($intent, $parameters);
 
-            // Đóng session
             $sessionClient->close();
 
             return response()->json(['message' => $replyMessage]);
@@ -65,11 +61,14 @@ class DialogflowController extends Controller
         }
     }
 
+
+
     private function handleIntent($intent, $parameters)
     {
         switch ($intent) {
             case "aboutWeb":
-                return "Shop chuyên bán quần áo nam nữ: áo, quần, váy, phụ kiện. Bạn cần tìm sản phẩm nào?";
+                return "💡 Chào bạn! Shop chuyên bán quần áo nam nữ: áo, quần, váy, phụ kiện.
+                        🎯 Chúng tôi luôn cập nhật mẫu mã mới nhất! Bạn đang tìm sản phẩm nào?";
 
             case "iProducts":
                 Log::info("✅ Intent `iProducts` đã được kích hoạt.");
@@ -81,45 +80,58 @@ class DialogflowController extends Controller
         }
     }
 
+
     private function searchProduct($parameters)
     {
-        $category = $parameters['product_category'] ?? '';
-        $material = $parameters['material'] ?? '';
-        $style = $parameters['style'] ?? '';
-        $color = $parameters['color'] ?? '';
-    
-        // Tạo mảng các từ khóa để tìm kiếm trong tags
-        $keywords = array_filter([$category, $material, $style, $color]);
-    
-        // Truy vấn sản phẩm
+        $productName = !empty($parameters['product_name']) ? implode(" ", $parameters['product_name']) : null;
+        $tags = !empty($parameters['tags']) ? $parameters['tags'] : null;
+        $material = !empty($parameters['material']) ? $parameters['material'] : null;
+        $categoryId = !empty($parameters['category_id']) ? $parameters['category_id'] : null;
+
+        DB::flushQueryLog(); // Xóa cache truy vấn cũ
+
         $query = DB::table('products')
             ->leftJoin('discounts', 'products.discount_id', '=', 'discounts.id')
-            ->select('product_name', 'price', 'image', 'slug', 'discount_id', 'percent_discount');
-    
-        if (!empty($keywords)) {
-            foreach ($keywords as $keyword) {
-                $query->orWhere('tags', 'LIKE', '%' . $keyword . '%');
-            }
+            ->select(
+                'products.product_name',
+                'products.price',
+                'products.image',
+                'products.slug',
+                'products.discount_id',
+                'discounts.percent_discount'
+            );
+
+        // Áp dụng điều kiện nếu giá trị tồn tại
+        if ($productName) {
+            $query->where('products.product_name', 'LIKE', "%$productName%");
         }
-    
+        if ($categoryId) {
+            $query->where('products.category_id', $categoryId);
+        }
+        if ($tags) {
+            $query->where('products.tags', 'LIKE', "%$tags%");
+        }
+        if ($material) {
+            $query->where('products.material', 'LIKE', "%$material%");
+        }
+
         $products = $query->take(5)->get();
-    
+
         if ($products->isNotEmpty()) {
             return $products->map(function ($product) {
-                $price = $product->discount_id ?
-                    $product->price - ($product->price * $product->percent_discount) :
-                    $product->price;
-    
-                return "<a href='" . url('product/' . $product->slug) . "' style='display: flex; align-items: center; gap: 10px; padding: 5px; text-decoration: none; color: #333;'>
+                $price = $product->discount_id
+                    ? $product->price - ($product->price * $product->percent_discount)
+                    : $product->price;
+
+                return "<a href='" . url('product/' . $product->slug) . "'
+                            style='display: flex; align-items: center; gap: 10px; padding: 5px; text-decoration: none; color: #333;'>
                             <img src='uploads/{$product->image}' width='50' height='50' style='border-radius: 5px;'>
                             <span>{$product->product_name} (" . number_format($price, 0, ',', '.') . " đ)</span>
                         </a>";
             })->implode("\n");
         } else {
-            return "Không tìm thấy sản phẩm phù hợp. Bạn có thể thử tìm với từ khóa khác không?";
+            return "Không tìm thấy sản phẩm phù hợp.";
         }
     }
-    
-    
-    
+
 }

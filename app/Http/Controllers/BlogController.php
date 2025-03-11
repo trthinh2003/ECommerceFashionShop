@@ -84,7 +84,33 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
+        $data = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'image' => 'required',
+            'blog_tag' => 'required',
+            'status' => 'required',
+            'staff_id' => 'required',
+        ],[
+            'title.required' => 'Title is required',
+            'content.required' => 'Content is required',
+            'image.required' => 'Image is required',
+            'blog_tag.required' => 'Blog Tag is required',
+            'status.required' => 'Status is required',
+        ]);
 
+        $blog->title = $data['title'];
+        $blog->content = $data['content'];
+        //Xu ly anh
+        $file_name = $request->image->hashName();
+        $request->image->move(public_path('uploads'), $file_name);
+        $blog->image = $file_name;
+
+        $blog->tags = $data['blog_tag'];
+        $blog->status = $data['status'];
+        $blog->staff_id = $data['staff_id'];
+        $blog->save();
+        return redirect()->route('blog.index')->with('success', 'Cập nhật bài viết thành công');
     }
 
     /**

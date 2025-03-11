@@ -7,7 +7,7 @@
     <div class="container">
         <div id="map" class="map mt-3"></div>
     </div>
-   
+
 
     <!-- Map End -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -42,7 +42,7 @@
             // Nội dung popup
             var popupContent = `
                 <div style="font-family: Arial, sans-serif; font-size: 14px;">
-                    <img class="rounded-circle" src="{{ asset('assets/img/TSTShop/LogoTSTFashionShop.webp') }}" 
+                    <img class="rounded-circle" src="{{ asset('assets/img/TSTShop/LogoTSTFashionShop.webp') }}"
                         alt="TST Fashion Shop" width="75">
                     <h3 style="color: #2584d8;">Thông tin địa điểm</h3>
                     <p><strong>Tên địa điểm:</strong> TST Fashion Shop</p>
@@ -102,7 +102,7 @@
             </div>
         </div>
     </section>
-    
+
     <!-- Contact Section End -->
 @endsection
 

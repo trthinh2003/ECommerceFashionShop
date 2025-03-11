@@ -58,8 +58,9 @@
                             <td class="text-center">
                                 <form method="post" action="{{ route('blog.destroy', $model->id) }}">
                                     @csrf @method('DELETE')
-                                    <button type="button" class="btn btn-sm btn-secondary btn-detail" data-bs-toggle="modal"
-                                        data-bs-target="#detailBlogModal" data-id="{{ $model->id }}">
+                                    <button type="button" class="btn btn-sm btn-secondary btn-detail"
+                                        data-bs-toggle="modal" data-bs-target="#detailBlogModal"
+                                        data-id="{{ $model->id }}">
                                         <i class="fa fa-plus"></i> Chi tiết
                                     </button>
                                     <button type="button" class="btn btn-sm btn-primary btn-update" data-bs-toggle="modal"
@@ -137,43 +138,49 @@
     </div>
 
     <!-- Modal blogUpdate-->
-    <div class="modal fade" id="updateBlogModal" tabindex="-1" aria-labelledby="updateBlogModalLabel" aria-hidden="true">
+    <div class="modal fade" id="updateBlogModal" tabindex="-1" aria-labelledby="updateBlogModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="updateBlogModalLabel">Cập Nhật Bài Viết</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('blog.update', '') }}" method="POST" enctype="multipart/form-data">
+                <form action="" method="POST" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="title" class="form-label">Tiêu đề</label>
-                            <input type="text" class="form-control" id="blog-title" name="title" required>
+                            <input type="text" class="form-control" id="blog-title-update" name="title" required>
                         </div>
                         <div class="mb-3">
                             <label for="content" class="form-label">Nội dung</label>
-                            <textarea class="form-control" id="blog-content" name="content" rows="3" required></textarea>
+                            <textarea class="form-control" id="blog-content-update" name="content" rows="3" required></textarea>
                         </div>
                         <div class="mb-3 row">
                             <div class="col-md-6">
                                 <label for="image" class="form-label">Ảnh</label>
-                                <input type="file" class="form-control" id="blog-image" name="image" accept="image/*">
+                                <input type="file" class="form-control" name="image"
+                                    accept="image/*">
                             </div>
                             <div class="col-md-6">
-                                <img src="" alt="" width="100"
-                                    class="img-preview preview-img-item d-none">
+                                <img src="" id="blog-image-update" alt="" width="100"
+                                    class="img-preview preview-img-item">
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="tags" class="form-label">Tags</label>
-                            <input type="text" data-role="tagsinput" id="blog-tag" name="blog_tag" class="form-control"
-                                value="" required>
+                            <input type="text" data-rol="tagsinput" id="blog-tag-update" name="blog_tag"
+                                class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="hidden" class="form-control" value="{{ auth()->user()->id - 1 }}"
+                                id="staff-id-update" name="staff_id">
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">Trạng thái</label>
-                            <select class="form-control" id="blog-status" name="status">
+                            <select class="form-control" id="blog-status-update" name="status">
                                 <option value="1">Hiển thị</option>
                                 <option value="0">Ẩn</option>
                             </select>
@@ -188,62 +195,67 @@
         </div>
     </div>
 
-    <!-- Modal blogDetail -->
+    {{-- Modal blogDetail --}}
     <div class="modal fade" id="detailBlogModal" tabindex="-1" aria-labelledby="detailBlogModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="detailBlogModalLabel">Chi Tiết Bài Viết</h5>
+
+                <div class="modal-header bg-secondary text-white">
+                    <h5 class="modal-title" id="detailBlogModalLabel">Chi Tiết Bài Viết<span id="staff-info"></span></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="title" class="form-label">ID</label>
-                        <input type="text" class="form-control" id="blog-id" name="id" required>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle">
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Mã bài viết:</td>
+                                    <td style="width: 70%;"><span id="blog-id"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Tiêu đề:</td>
+                                    <td style="width: 70%;"><span id="blog-title"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Nội dung:</td>
+                                    <td style="width: 70%;"><span id="blog-content"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Ảnh:</td>
+                                    <td style="width: 70%;"><img width="100" id="blog-image"></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Tags:</td>
+                                    <td style="width: 70%;"><span id="blog-tag"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Tên nhân viên:</td>
+                                    <td style="width: 70%;"><span id="staff-name"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Trạng thái:</td>
+                                    <td style="width: 70%;"><span id="blog-status"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Ngày thêm:</td>
+                                    <td style="width: 70%;"><span id="blog-createDate"></span></td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-start" style="width: 30%;">Ngày cập nhật:</td>
+                                    <td style="width: 70%;"><span id="blog-updateDate"></span></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Tiêu đề</label>
-                        <input type="text" class="form-control" id="blog-title" name="title" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="content" class="form-label">Nội dung</label>
-                        <textarea class="form-control" id="blog-content" name="content" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3 row">
-                        <div class="col-md-6">
-                            <label for="image" class="form-label">Ảnh</label>
-                            <image  id="blog-image" width="100" name="image">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tags" class="form-label">Tags</label>
-                        <input type="text" id="blog-tag" name="blog_tag" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                        <label for="staff_name"  class="form-label">Nhân viên</label>
-                        <input type="text" class="form-control" id="staff-name" name="staff_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <input type="hidden" class="form-control" value="{{ auth()->user()->id - 1 }}" id="staff_id"
-                            name="staff_id">
-                    </div>
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Trạng thái</label>
-                        <input type="text" class="form-control" id="blog-status" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Ngày thêm</label>
-                        <input type="text" class="form-control" id="blog-createDate" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="status" class="form-label">Ngày cập nhật</label>
-                        <input type="text" class="form-control" id="blog-updateDate" required>
+                    <!-- Modal footer -->
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary" value="Lưu thông tin">
-                </div>
+
             </div>
         </div>
     </div>
@@ -268,33 +280,36 @@
             }
         })
     </script>
+
     @if (Session::has('success'))
         <script src="{{ asset('assets/js/message.js') }}"></script>
     @endif
-
 
     <script>
         $(document).ready(function() {
             $(".btn-detail").click(function(event) {
                 event.preventDefault();
+
                 let blogId = $(this).data("id");
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/blog_detail/${blogId}`, //url, type, datatype, success,
+                    url: `http://127.0.0.1:8000/api/blog_detail/${blogId}`,
                     type: "GET",
                     dataType: "json",
                     success: function(response) {
                         if (response.status_code === 200) {
                             let blogInfo = response.data;
-                            $("#blog-id").val(blogInfo.id);
-                            $("#blog-title").val(blogInfo.title);
-                            $("#blog-content").val(blogInfo.content);
-                            $("#blog-image").attr("src", `uploads/${blogInfo.image}`);
-                            $("#blog-tag").val(blogInfo.tags);
-                            $("#staff-name").val(blogInfo.staff.name);
-                            $("#blog-status").val(blogInfo.status) === 0 ? "Hiển thị" : "Ẩn";
-                            $("#blog-createDate").val(new Date(blogInfo.created_at).toLocaleString(
-                                'vi-VN'));
-                            $("#blog-updateDate").val(new Date(blogInfo.updated_at).toLocaleString('vi-VN'));
+                            $("#blog-id").text(blogInfo.id);
+                            $("#blog-title").text(blogInfo.title);
+                            $("#blog-content").text(blogInfo.content);
+                            $("#blog-image").attr("src", `uploads/${blogInfo.image}`).show();
+                            $("#blog-tag").text(blogInfo.tags);
+                            $("#staff-name").text(blogInfo.staff.name);
+                            $("#blog-status").text(blogInfo.status === 1 ? "Hiển thị" : "Ẩn");
+                            $("#blog-createDate").text(new Date(blogInfo.created_at)
+                                .toLocaleString('vi-VN'));
+                            $("#blog-updateDate").text(new Date(blogInfo.updated_at)
+                                .toLocaleString('vi-VN'));
+
                         } else {
                             alert("Không thể lấy dữ liệu chi tiết!");
                         }
@@ -304,25 +319,26 @@
                     }
                 });
             });
-        });
 
-        $(document).ready(function() {
             $(".btn-update").click(function(event) {
                 event.preventDefault();
+
                 let blogId = $(this).data("id");
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/blog_detail/${blogId}`, //url, type, datatype, success,
+                    url: `http://127.0.0.1:8000/api/blog_detail/${blogId}`,
                     type: "GET",
                     dataType: "json",
                     success: function(response) {
                         if (response.status_code === 200) {
                             let blogInfo = response.data;
-                            $("#blog-title").val(blogInfo.title);
-                            $("#blog-content").val(blogInfo.content);
-                            $("#blog-image").attr("src", `uploads/${blogInfo.image}`);
-                            $("#blog-tag").val(blogInfo.tags);
-                            $("#staff-name").val(blogInfo.staff.name);
-                            $("#blog-status").val(blogInfo.status) === 0 ? "Hiển thị" : "Ẩn";
+                            $("#updateBlogModal form").attr("action",
+                                `{{ route('blog.update', '') }}/${blogId}`);
+                            $("#blog-title-update").val(blogInfo.title);
+                            $("#blog-content-update").val(blogInfo.content);
+                            $("#blog-image-update").attr("src", `uploads/${blogInfo.image}`).show();
+                            $("#blog-tag-update").val(blogInfo.tags);
+                            $("#blog-status-update").val(blogInfo.status);
+
                         } else {
                             alert("Không thể lấy dữ liệu chi tiết!");
                         }

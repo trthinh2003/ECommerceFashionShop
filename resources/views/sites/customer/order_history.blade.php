@@ -198,7 +198,7 @@
                     $("#status" + currentOrderId).text("Đã hủy");
                     $("#action" + currentOrderId).html(`
                         <div class="action-buttons">
-                            <a href="{{ route('sites.showOrderDetailOfCustomer', '') }}/${currentOrderId}" 
+                            <a href="{{ route('sites.showOrderDetailOfCustomer', '') }}/${currentOrderId}"
                                 class="btn btn-sm btn-secondary">
                                 <i class="fa fa-eye"></i> Xem
                             </a>

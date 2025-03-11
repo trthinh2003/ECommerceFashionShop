@@ -299,16 +299,16 @@
                                                 <li><a href="{{ url('product') }}/${item.slug}">
                                                     <img src="{{ asset('client/img/icon/search.png') }}"
                                                     alt=""></a>
-                                                  
+
                                                     </ul>
                                                     </div>
 
                                                     <div class="product__item__text">
                                                         <h6>${item.product_name}</h6>
                                                         ` +
-                                                     
+
                                                     (addCartOrNone[item.id] > 0 ? `<a href="javascript:void(0);" class="add-cart" data-id="${item.id}">+ Add To Cart</a>` : `<span class=" badge badge-warning">Hết hàng</span>`)
-                                                    
+
                                                     +`
                                             <div class="rating">
                                                 <i class="fa fa-star-o"></i>

@@ -23,7 +23,7 @@ class ContactController extends Controller
         // SendEmailJob::dispatchSync($data);
         //   Mail::to($data['email'])->send(new ContactMail($data));
         // dd($data);
-        return response()->json(['message' => 'Yêu cầu đã được gửi!']);
+        return view('sites.success.contact');
     }
 
     public function contactSuccess()
