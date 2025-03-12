@@ -18,8 +18,8 @@ Route::post('/chatbot', function (Request $request) {
     return response()->json(['response' => $response]);
 });
 
-Route::get('/test-chatbot', function () {
-    $chatbot = new Ochat();
-    $response = $chatbot->send("Hello");
-    dd($response);
-});
+// Route::get('/test-chatbot', function () {
+//     $chatbot = new Ochat();
+//     $response = $chatbot->send("Hello");
+//     dd($response);
+// });
