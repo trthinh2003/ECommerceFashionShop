@@ -3,7 +3,7 @@ import mysql.connector
 def connect_db():
     return mysql.connector.connect(
         host="localhost",
-        user="root",  # Thay bằng user của bạn
+        user="root",
         password="",
         database="fashionshop_ec"
     )
