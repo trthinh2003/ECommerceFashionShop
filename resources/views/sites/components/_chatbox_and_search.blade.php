@@ -1,3 +1,61 @@
+<style>
+    .modal-container-search {
+        position: relative;
+        max-height: 80vh;
+        overflow-y: auto;
+        padding-right: 15px;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 1100;
+        background: white;
+        padding: 5px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .modal-close i {
+        font-size: 1.5rem;
+        color: #6c757d;
+    }
+
+    .modal-close:hover i {
+        color: #dc3545;
+    }
+
+    #search-history li {
+        font-size: 18px;
+        padding: 12px 16px;
+        border-bottom: 1px solid #ddd;
+        transition: background 0.2s;
+    }
+
+    #search-history li:hover {
+        background: #f1f1f1;
+    }
+
+    #search-history li i {
+        font-size: 20px;
+    }
+
+    #search-history li .text-primary {
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    #suggestion-list li {
+        font-size: 18px;
+        transition: background 0.2s;
+    }
+
+    #suggestion-list li:hover {
+        background: #f9f9f9;
+        cursor: pointer;
+    }
+</style>
 <div class="bg-light d-flex align-items-center justify-content-center">
     <!-- Chatbox Icon -->
     <div class="position-fixed bottom-0 end-0 m-3" id="chatbox-icon">
@@ -38,31 +96,33 @@
 <!-- Start Search Modal -->
 <form id="modal-search" class="modal-search js-modal" method="post" action="{{ route('sites.shopSearch') }}">
     @csrf
-    {{-- <input type="hidden" name="_method" value="POST"> --}}
-    <div class="modal-container-search js-modal-container p-3">
+    <div class="modal-container-search js-modal-container p-4 shadow-lg rounded-lg bg-white position-relative">
+        <!-- Nút đóng -->
         <div class="modal-close js-modal-close">
             <i class="fas fa-times"></i>
         </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <input type="text" name="q" id="search-box" class="form-control"
-                    placeholder="Nhập từ khóa bạn muốn tìm...">
-                <span class="btn btn-success search-modal-btn" onclick="submitSearch()">
-                    <i class="fa fa-fw fa-search text-white"></i>
-                </span>
-            </div>
-            <ul id="search-results" class="list-unstyled"></ul>
-            <h3>Lịch sử tìm kiếm</h3>
-            <ul id="search-history"></ul>
-            <button id="clear-history">Xóa lịch sử tìm kiếm</button>
 
-            <h3>Có thể bạn sẽ thích</h3>
-            <ul id="suggestion-list"></ul>
+        <div class="modal-body">
+            <div class="form-group position-relative d-flex align-items-center">
+                <input type="text" name="q" id="search-box" class="form-control rounded-pill px-4 py-2"
+                    placeholder="Nhập từ khóa bạn muốn tìm...">
+                <button type="button" class="position-absolute btn btn-success rounded-pill ms-2 px-3" onclick="submitSearch()" style="top: 0; right: 0;">
+                    <i class="fa fa-fw fa-search text-white"></i>
+                </button>
+            </div>
+
+            <ul id="search-results" class="list-unstyled mt-3"></ul>
+
+            {{-- <h5 class="mt-4 text-muted">Lịch sử tìm kiếm</h5>
+            <ul id="search-history" class="list-group small"></ul>
+            <button id="clear-history" class="btn btn-outline-danger btn-sm mt-2">Xóa lịch sử tìm kiếm</button> --}}
+
+            <h5 class="mt-4 text-muted">Có thể bạn sẽ thích</h5>
+            <ul id="suggestion-list" class="list-group small"></ul>
         </div>
     </div>
 </form>
 <!-- End Modal Search -->
-
 
 @section('js')
     <script>
@@ -166,12 +226,12 @@
                                         .price * item.discount.percent_discount));
                                 }
                                 results.append(`
-                                        <li class="p-2 search-item"
+                                        <li class="list-group-item d-flex align-items-center p-3 border-bottom"
                                                 style="cursor: pointer;"
                                                 onmouseover="this.style.backgroundColor='#ccc'; this.style.textDecoration='underline';"
                                                 onmouseout="this.style.backgroundColor='#fff'; this.style.textDecoration='none';">
-                                            <a class="text-dark" href="{{ url('product') }}/${item.slug}">
-                                            <img src="{{ asset('uploads/${item.image}') }}" width="30" height="30" alt="">
+                                            <a class="fw-medium text-decoration-none text-dark" href="{{ url('product') }}/${item.slug}">
+                                            <img src="{{ asset('uploads/${item.image}') }}" width="50" height="50" alt="">
                                             ${item.product_name} | <p class="d-inline">Giá:</p> ${price} đ
                                             </a>
                                         </li>
@@ -190,18 +250,25 @@
         });
 
         // Lấy lịch sử tìm kiếm
-        function updateSearchHistory(history) {
-            let historyList = $("#search-history");
-            historyList.empty();
+        // function updateSearchHistory(history) {
+        //     let historyList = $("#search-history");
+        //     historyList.empty();
 
-            if (history.length > 0) {
-                history.forEach(function(item) {
-                    historyList.append("<li>" + item + "</li>");
-                });
-            } else {
-                historyList.append("<li>Chưa có lịch sử tìm kiếm</li>");
-            }
-        }
+        //     if (history.length > 0) {
+        //         history.forEach(function(item, index) {
+        //             let listItem = `
+        //                 <li class="d-flex justify-content-between align-items-center">
+        //                     <span>
+        //                         <i class="fas fa-clock text-secondary me-2"></i> ${item}
+        //                     </span>
+        //                 </li>
+        //             `;
+        //             historyList.append(listItem);
+        //         });
+        //     } else {
+        //         historyList.append('<li class="text-muted p-2">Chưa có lịch sử tìm kiếm</li>');
+        //     }
+        // }
 
         $.get("http://127.0.0.1:8000/api/search-history", function(data) {
             updateSearchHistory(data);
@@ -214,10 +281,18 @@
 
             if (data.length > 0) {
                 data.forEach(function(item) {
-                    suggestions.append("<li>" + item.product_name + "</li>");
+                    let listItem = `
+                        <li class="list-group-item d-flex align-items-center p-3 border-bottom">
+                            <a href="/product/${item.slug}" class="fw-medium text-decoration-none text-dark">
+                                <img src="{{ asset('uploads/${item.image}') }}" width="50" height="50" alt="">
+                                ${item.product_name} | <p class="d-inline">Giá:</p> ${Intl.NumberFormat('vi-VN').format(item.price)} đ
+                            </a>
+                        </li>
+                    `;
+                    suggestions.append(listItem);
                 });
             } else {
-                suggestions.append("<li>Không có gợi ý nào</li>");
+                suggestions.append('<li class="list-group-item text-muted p-3">Không có gợi ý nào</li>');
             }
         });
 
@@ -306,9 +381,12 @@
                                                         <h6>${item.product_name}</h6>
                                                         ` +
 
-                                                    (addCartOrNone[item.id] > 0 ? `<a href="javascript:void(0);" class="add-cart" data-id="${item.id}">+ Add To Cart</a>` : `<span class=" badge badge-warning">Hết hàng</span>`)
+                                (addCartOrNone[item.id] > 0 ?
+                                    `<a href="javascript:void(0);" class="add-cart" data-id="${item.id}">+ Add To Cart</a>` :
+                                    `<span class=" badge badge-warning">Hết hàng</span>`)
 
-                                                    +`
+                                +
+                                `
                                             <div class="rating">
                                                 <i class="fa fa-star-o"></i>
                                                 <i class="fa fa-star-o"></i>
