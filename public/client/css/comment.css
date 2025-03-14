@@ -1,14 +1,73 @@
 .review-section, .comment-section {
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
 }
 
-.comment-section{
-    max-height: 450px; /* Giới hạn chiều cao */
-    overflow-y: auto; /* Thêm thanh cuộn khi quá dài */
+.comment-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.comment-section {
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.comment-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.comment-section li {
+    padding: 15px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.comment-author-info {
+    display: flex;
+    flex-direction: column; /* Đặt ngày nằm dưới tên */
+    gap: 3px;
+}
+
+.comment-author {
+    font-size: 18px;
+    font-weight: 700;
+    color: #444;
+}
+
+.comment-date {
+    font-size: 14px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.comment-content {
+    margin-top: 8px;
+    line-height: 1.6;
+}
+
+.comment-content p {
+    margin: 4px 0;
+}
+
+.comment-section .stars {
+    color: #f39c12;
+    margin-left: 5px;
 }
 
 .rating {
@@ -20,63 +79,4 @@
 .rating .star:hover,
 .rating .star.active {
     color: #f39c12;
-}
-
-textarea {
-    width: 100%;
-    margin-top: 10px;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-}
-
-#submit-review {
-    margin-top: 10px;
-    padding: 8px 15px;
-    border: none;
-    background-color: #28a745;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-#submit-review:hover {
-    background-color: #218838;
-}
-
-.comment-section ul {
-    list-style: none;
-    padding: 0;
-}
-
-.comment-section li {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-.comment-section .stars {
-    color: #f39c12;
-}
-
-button.edit-comment, button.delete-comment {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    margin-top: 5px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 14px;
-}
-
-button.delete-comment {
-    background: #dc3545;
-}
-
-button.edit-comment:hover {
-    background: #0056b3;
-}
-
-button.delete-comment:hover {
-    background: #c82333;
 }

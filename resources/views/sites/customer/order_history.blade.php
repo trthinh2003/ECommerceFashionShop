@@ -68,7 +68,8 @@
                                             <i class="fa fa-times"></i> Hủy
                                         </button>
                                     @elseif ($item->status === 'Đã thanh toán')
-                                        <button type="button" class="btn btn-sm btn-success ms-2" onclick="openSidebar()">
+                                        <button type="button" class="btn btn-sm btn-success ms-2"
+                                            onclick="openSidebar({{ $item->id }})">
                                             <i class="fa fa-comments"></i> Đánh giá
                                         </button>
                                     @endif
@@ -97,16 +98,17 @@
     <div id="ratingSidebar" class="sidebar">
         <div class="sidebar-header">
             <h5 class="text-white fw-bold">Đánh Giá Sản Phẩm</h5>
-            <button type="button" class="btn-close" onclick="closeSidebar()">×</button>
+            <button type="button" class="btn-close" onclick="closeSidebar()">X</button>
         </div>
         <div class="sidebar-body">
             <!-- Danh sách sản phẩm -->
             <div class="product-list">
-                <div class="product-item d-flex align-items-center mb-3">
+                {{-- <div class="product-item d-flex align-items-center mb-3">
                     <img src="{{ asset('client/img/product/product-1.jpg') }}"  alt="Sản phẩm" class="product-image">
                     <div class="product-info w-100" style="margin-left: 20px">
-                        <h6>Tên sản phẩm 1</h6>
-                        <p>Màu: Đỏ | Size: L</p>
+                        <h6 class="product-name-comment">Tên sản phẩm 1</h6>
+                        <p class="product-size-comment mt-2"><span>Màu Sắc: </span>1</p>
+                        <p class="product-color-comment"><span>Size: </span>Đỏ</p>
                         <div class="star-rating">
                             <input type="radio" id="star5-1" name="rating1" value="5"><label
                                 for="star5-1">★</label>
@@ -123,86 +125,14 @@
                         <button type="button" class="btn btn-success mt-2 w-100" onclick="submitRating(1)">Gửi đánh
                             giá</button>
                     </div>
-                </div>
-            </div>
-            <div class="product-list">
-                <div class="product-item d-flex align-items-center mb-3">
-                    <img src="{{ asset('client/img/product/product-1.jpg') }}"  alt="Sản phẩm" class="product-image">
-                    <div class="product-info w-100" style="margin-left: 20px">
-                        <h6>Tên sản phẩm 1</h6>
-                        <p>Màu: Đỏ | Size: L</p>
-                        <div class="star-rating">
-                            <input type="radio" id="star5-1" name="rating1" value="5"><label
-                                for="star5-1">★</label>
-                            <input type="radio" id="star4-1" name="rating1" value="4"><label
-                                for="star4-1">★</label>
-                            <input type="radio" id="star3-1" name="rating1" value="3"><label
-                                for="star3-1">★</label>
-                            <input type="radio" id="star2-1" name="rating1" value="2"><label
-                                for="star2-1">★</label>
-                            <input type="radio" id="star1-1" name="rating1" value="1"><label
-                                for="star1-1">★</label>
-                        </div>
-                        <textarea class="form-control mt-2" rows="2" placeholder="Viết nhận xét..." id="comment1"></textarea>
-                        <button type="button" class="btn btn-success mt-2 w-100" onclick="submitRating(1)">Gửi đánh
-                            giá</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-list">
-                <div class="product-item d-flex align-items-center mb-3">
-                    <img src="{{ asset('client/img/product/product-1.jpg') }}"  alt="Sản phẩm" class="product-image">
-                    <div class="product-info w-100" style="margin-left: 20px">
-                        <h6>Tên sản phẩm 1</h6>
-                        <p>Màu: Đỏ | Size: L</p>
-                        <div class="star-rating">
-                            <input type="radio" id="star5-1" name="rating1" value="5"><label
-                                for="star5-1">★</label>
-                            <input type="radio" id="star4-1" name="rating1" value="4"><label
-                                for="star4-1">★</label>
-                            <input type="radio" id="star3-1" name="rating1" value="3"><label
-                                for="star3-1">★</label>
-                            <input type="radio" id="star2-1" name="rating1" value="2"><label
-                                for="star2-1">★</label>
-                            <input type="radio" id="star1-1" name="rating1" value="1"><label
-                                for="star1-1">★</label>
-                        </div>
-                        <textarea class="form-control mt-2" rows="2" placeholder="Viết nhận xét..." id="comment1"></textarea>
-                        <button type="button" class="btn btn-success mt-2 w-100" onclick="submitRating(1)">Gửi đánh
-                            giá</button>
-                    </div>
-                </div>
-            </div>
-            <div class="product-list">
-                <div class="product-item d-flex align-items-center mb-3">
-                    <img src="{{ asset('client/img/product/product-1.jpg') }}"  alt="Sản phẩm" class="product-image">
-                    <div class="product-info w-100" style="margin-left: 20px">
-                        <h6>Tên sản phẩm 1</h6>
-                        <p>Màu: Đỏ | Size: L</p>
-                        <div class="star-rating">
-                            <input type="radio" id="star5-1" name="rating1" value="5"><label
-                                for="star5-1">★</label>
-                            <input type="radio" id="star4-1" name="rating1" value="4"><label
-                                for="star4-1">★</label>
-                            <input type="radio" id="star3-1" name="rating1" value="3"><label
-                                for="star3-1">★</label>
-                            <input type="radio" id="star2-1" name="rating1" value="2"><label
-                                for="star2-1">★</label>
-                            <input type="radio" id="star1-1" name="rating1" value="1"><label
-                                for="star1-1">★</label>
-                        </div>
-                        <textarea class="form-control mt-2" rows="2" placeholder="Viết nhận xét..." id="comment1"></textarea>
-                        <button type="button" class="btn btn-success mt-2 w-100" onclick="submitRating(1)">Gửi đánh
-                            giá</button>
-                    </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
 
     <!-- Modal Xác nhận Hủy -->
-    <div class="modal fade cancel-order-modal" id="cancelOrderModal" tabindex="-1"
-        aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+    <div class="modal fade cancel-order-modal" id="cancelOrderModal" tabindex="-1" aria-labelledby="cancelOrderModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-danger text-white">
@@ -218,8 +148,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-close-modal"
-                        data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-secondary btn-close-modal" data-bs-dismiss="modal">Đóng</button>
                     <button type="button" class="btn btn-danger" onclick="confirmCancel()">Xác nhận hủy</button>
                 </div>
             </div>
@@ -298,32 +227,131 @@
             });
         });
     </script>
+<script>
+    function closeSidebar() {
+        document.getElementById("ratingSidebar").classList.remove("active");
+    }
 
-    <script>
-        function openSidebar() {
-            document.getElementById("ratingSidebar").classList.add("active");
-        }
+    function openSidebar(orderId) {
+        orderIdComment = orderId;
+        document.getElementById("ratingSidebar").classList.add("active");
 
-        function closeSidebar() {
-            document.getElementById("ratingSidebar").classList.remove("active");
-        }
+        fetch(`http://127.0.0.1:8000/api/rate-order/${orderIdComment}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status_code === 200 && data.data) {
+                    let ratings = data.data;
+                    console.log(ratings);
 
-        function submitRating(productId) {
-            const rating = document.querySelector(`input[name="rating${productId}"]:checked`)?.value;
-            const comment = document.getElementById(`comment${productId}`).value;
+                    // Lấy danh sách sản phẩm
+                    const productList = document.querySelector(".product-list");
+                    productList.innerHTML = "";
 
-            if (!rating) {
-                alert("Vui lòng chọn số sao!");
-                return;
-            }
+                    // Duyệt qua từng sản phẩm và thêm HTML vào
+                    ratings.forEach((rating) => {
+                        const productItem = document.createElement("div");
+                        productItem.classList.add("product-item", "d-flex", "align-items-start", "mb-3");
 
-            if (!comment.trim()) {
-                alert("Vui lòng nhập nhận xét!");
-                return;
-            }
+                        let ratingForm = '';
+                        if (rating.content != null && rating.star != null) {
+                            // Nếu đã đánh giá thì hiển thị thông tin thay vì form
+                            ratingForm = `
+                                <hr>
+                                <div class="review-item border-bottom pb-2 mb-2">
+                                    <h6>Khách hàng: ${rating.customer_name}</h6>
+                                    <div class="text-warning mt-1">
+                                        <small class="text-dark">Đánh giá: </small>
+                                         ${"★".repeat(rating.star)}${"☆".repeat(5 - rating.star)}
+                                         </div>
+                                    <small class="">Ngày gửi: ${rating.created_at}</small>
+                                    <p>Nội dung: ${rating.content}</p>
+                                </div>
+                            `;
+                        } else {
+                            // Nếu chưa đánh giá thì hiển thị form đánh giá
+                            ratingForm = `
+                                <form action="{{ route('comments.store') }}" class="ratingForm" method="POST">
+                                    @csrf
+                                    <div class="star-rating d-flex gap-1 mb-2">
+                                        <input type="radio" id="star5-${rating.product_id}" name="star" value="5"><label for="star5-${rating.product_id}">★</label>
+                                        <input type="radio" id="star4-${rating.product_id}" name="star" value="4"><label for="star4-${rating.product_id}">★</label>
+                                        <input type="radio" id="star3-${rating.product_id}" name="star" value="3"><label for="star3-${rating.product_id}">★</label>
+                                        <input type="radio" id="star2-${rating.product_id}" name="star" value="2"><label for="star2-${rating.product_id}">★</label>
+                                        <input type="radio" id="star1-${rating.product_id}" name="star" value="1"><label for="star1-${rating.product_id}">★</label>
+                                    </div>
+                                    <input type="hidden" name="order_id" value="${orderIdComment}">
+                                    <input type="hidden" name="product_id" value="${rating.product_id}">
+                                    <textarea class="form-control mb-2" rows="2" name="content" placeholder="Viết nhận xét..." required>${rating.content ?? ''}</textarea>
+                                    <input type="submit" class="btn btn-success w-100" value="Gửi đánh giá">
+                                </form>
+                            `;
+                        }
 
-            alert(`Đã gửi đánh giá cho sản phẩm ${productId} với ${rating} sao và nhận xét: ${comment}`);
-            // Xử lý gửi dữ liệu lên server tại đây (AJAX)
-        }
-    </script>
+                        const productContent = `
+                            <div class="d-flex w-100 p-2 rounded shadow-sm align-items-center" style="background-color: #f8f9fa; gap: 20px;">
+                                <div class="image-wrapper" style="flex-shrink: 0;">
+                                    <img src="uploads/${rating.image}" alt="Sản phẩm" class="product-image">
+                                </div>
+                                <div class="product-info ms-3" style="flex-grow: 1;">
+                                    <h6 class="product-name-comment fw-bold mb-1">${rating.product_name}</h6>
+                                    <p class="product-size-comment mb-1"><span class="fw-semibold">Màu Sắc:</span> ${rating.color}</p>
+                                    <p class="product-color-comment mb-1"><span class="fw-semibold">Size:</span> ${rating.size}</p>
+                                    ${ratingForm}
+                                </div>
+                            </div>
+                        `;
+                        productItem.innerHTML = productContent;
+                        productList.appendChild(productItem);
+
+                        // Gắn sự kiện submit cho từng form mới được tạo
+                        const form = productItem.querySelector('.ratingForm');
+                        if (form) {
+                            form.addEventListener('submit', function(event) {
+                                event.preventDefault();
+                                let formData = new FormData(form);
+
+                                fetch(form.action, {
+                                        method: 'POST',
+                                        body: formData,
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                                        }
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log("Dữ liệu nhận từ server:", data);
+                                        if (data.success) {
+                                            alert("Cảm ơn bạn đã đánh giá!");
+
+                                            // Tạo nội dung đánh giá thay thế form
+                                            let newReview = `
+                                                <div class="review-item border-bottom pb-2 mb-2">
+                                                    <h6>${data.review.user_name}</h6>
+                                                    <div class="text-warning">${"★".repeat(data.review.star)}${"☆".repeat(5 - data.review.star)}</div>
+                                                    <small class="text-muted">${data.review.created_at}</small>
+                                                    <p>${data.review.content}</p>
+                                                </div>
+                                            `;
+
+                                            // Thay thế form đánh giá bằng nội dung đánh giá mới
+                                            form.parentElement.innerHTML = newReview;
+                                            form.reset();
+                                        } else {
+                                            alert("Lỗi: " + (data.message || "Đánh giá không thành công!"));
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Lỗi:', error);
+                                        alert("Lỗi kết nối, vui lòng thử lại!");
+                                    });
+                            });
+                        }
+
+                    });
+                }
+            })
+            .catch(error => console.error("Lỗi khi lấy đánh giá:", error));
+    }
+</script>
+
 @endsection

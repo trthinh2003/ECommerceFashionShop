@@ -17,6 +17,8 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\DialogflowController;
 use App\Http\Controllers\FacebookAuthController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\OllamaController;
+use App\Http\Controllers\RateController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\WishListProductController;
 use App\Models\Customer;
@@ -86,9 +88,9 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/add-to-wishlist/{product}', [WishListProductController::class, 'addToWishList'])->name('sites.addToWishList');
     Route::get('/remove-from-wishlist/{id}', [WishListProductController::class, 'removefromWishList'])->name('sites.removefromWishList');
     // Xử lý chatbot
-    Route::post('/chatbot', [DialogflowController::class, 'detectIntent']);
+    Route::post('/chatbot', [OllamaController::class, 'ollamaRequest']);
     // Xử lý chatbot
-    Route::post('/get-product-info/webhook', [DialogflowController::class, 'getProductInfo'])->name('dialogflow.getProductInfo');
+    // Route::post('/get-product-info/webhook', [DialogflowController::class, 'getProductInfo'])->name('dialogflow.getProductInfo');
 
 
     // Xử lý đơn hàng
@@ -106,6 +108,15 @@ Route::group(['prefix' => '/'], function () {
     Route::get('/vnpay-return', [CheckoutController::class, 'vnpayReturn'])->name('payment.vnpay.return');
     Route::get('/momo-return', [CheckoutController::class, 'momoReturn'])->name('payment.momo.return');
     Route::get('/zalopay-return', [CheckoutController::class, 'zalopayReturn'])->name('payment.zalopay.return');
+
+    // xử lý đánh giá đơn hàng
+    Route::resources(
+        [
+            'comments' => RateController::class,
+        ]
+    );
+
+    
 });
 
 // Xử lý cart

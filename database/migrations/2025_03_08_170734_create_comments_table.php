@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commments', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('customer_id');
@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('start');
             $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('order_id')->references('id')->on('orders');
             $table->timestamps();
         });
     }

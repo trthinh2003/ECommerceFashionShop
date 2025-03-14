@@ -1,4 +1,6 @@
 @php
+    // dd((float)$starAvg[0]->star_avg);
+
     $totalProduct = 0;
     if (Session::has('cart')) {
         foreach (Session::get('cart') as $item) {
@@ -117,13 +119,31 @@
                             <div class="product__details__text">
                                 <h4>{{ $productDetail->product_name }}</h4>
                                 <div class="rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <span> - 5 Đánh Giá</span>
+                                    @php
+                                   
+                                        $avgStar = (float)$starAvg[0]->star_avg ?? 0.0; // Ví dụ giá trị trung bình
+                                        $fullStars = floor($avgStar); // Số sao đầy
+                                        $hasHalfStar = ($avgStar - $fullStars) >= 0.5; // Kiểm tra có nửa sao không
+                                        $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0); // Số sao rỗng còn lại
+                                    @endphp
+                                
+                                    {{-- Sao đầy --}}
+                                    @for ($i = 0; $i < $fullStars; $i++)
+                                        <i class="fa fa-star fw-bold" @style('color: #FFD700')></i>
+                                    @endfor
+                                
+                                    {{-- Sao nửa nếu có --}}
+                                    @if ($hasHalfStar)
+                                        <i class="fa fa-star-half-o fw-bold" @style('color: #FFD700')></i>
+                                    @endif
+                                
+                                    {{-- Sao rỗng --}}
+                                    @for ($i = 0; $i < $emptyStars; $i++)
+                                        <i class="fa fa-star-o text-dark"></i>
+                                    @endfor
+                                    <span> - {{ count($commentCustomers) }} Đánh Giá</span>
                                 </div>
+                                
                                 @php
                                     $priceDiscount = $productDetail->price;
                                     $hasDiscount =
@@ -226,7 +246,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Đánh giá của
-                                        khách hàng(5)</a>
+                                        khách hàng({{ count($commentCustomers) }})</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -246,62 +266,45 @@
                                 {{-- phần đánh giá nữa chỉnh giao diện sau --}}
                                 <div class="tab-pane" id="tabs-6" role="tabpanel">
                                     <div class="product__details__tab__content">
-                                        <!-- Đánh giá sao -->
-                                        <div class="review-section" id="review-section-content">
-                                            <h5>Đánh giá sản phẩm</h5>
-                                            <div class="rating">
-                                                <span class="star" data-value="1">&#9733;</span>
-                                                <span class="star" data-value="2">&#9733;</span>
-                                                <span class="star" data-value="3">&#9733;</span>
-                                                <span class="star" data-value="4">&#9733;</span>
-                                                <span class="star" data-value="5">&#9733;</span>
-                                                <input type="hidden" id="rating-value" value="0">
-                                            </div>
-                                            <textarea id="review-comment" placeholder="Nhập bình luận của bạn..." rows="3"></textarea>
-                                            <button id="submit-review">Gửi đánh giá</button>
-                                        </div>
-
                                         <!-- Danh sách bình luận -->
                                         <div class="comment-section">
-                                            <h5>Bình luận</h5>
+                                            <h5 class="comment-title">Đánh giá sản phẩm ({{ count($commentCustomers) }})</h5>
+                                            <hr>
                                             <ul id="review-list">
-                                                <li>
-                                                    <strong>Nguyễn Văn A</strong>
-                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                                                    <p>Nội dung: Sản phẩm rất tốt, chất lượng ổn!</p>
-                                                    <p class="comment-date">Ngày đăng: 2023-08-01</p>
-                                                    <button class="edit-comment">Sửa</button>
-                                                    <button class="delete-comment">Xóa</button>
-                                                </li>
-                                                <li>
-                                                    <strong>Nguyễn Văn A</strong>
-                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                                                    <p>Sản phẩm rất tốt, chất lượng ổn!</p>
-                                                </li>
-                                                <li>
-                                                    <strong>Nguyễn Văn A</strong>
-                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                                                    <p>Sản phẩm rất tốt, chất lượng ổn!</p>
-                                                </li>
-                                                <li>
-                                                    <strong>Nguyễn Văn A</strong>
-                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                                                    <p>Sản phẩm rất tốt, chất lượng ổn!</p>
-                                                </li>
-                                                <li>
-                                                    <strong>Nguyễn Văn A</strong>
-                                                    <div class="stars">⭐⭐⭐⭐⭐</div>
-                                                    <p>Sản phẩm rất tốt, chất lượng ổn!</p>
-                                                </li>
-                                                <li>
-                                                    <strong>Trần Thị B</strong>
-                                                    <div class="stars">⭐⭐⭐⭐</div>
-                                                    <p>Giao hàng nhanh, sản phẩm đẹp nhưng hộp hơi móp.</p>
-                                                </li>
+
+                                                @foreach ($commentCustomers as $commentCustomer)
+                                                    <li>
+                                                        <div class="comment-header">
+                                                            <div class="comment-author-info">
+                                                                <strong
+                                                                    class="comment-author">{{ $commentCustomer->customer_name }}</strong>
+                                                                @for ($i = 0; $i < $commentCustomer->star; $i++)
+                                                                    ★
+                                                                @endfor
+
+                                                                @for ($i = $commentCustomer->star; $i < 5; $i++)
+                                                                    ☆
+                                                                @endfor
+
+
+                                                            </div>
+                                                            <span
+                                                                class="comment-date">{{ $commentCustomer->created_at }}</span>
+                                                        </div>
+                                                        <div class="comment-content">
+                                                            <p><strong>Sản
+                                                                    Phẩm:</strong>{{ $commentCustomer->product_name }}</p>
+                                                            <p><strong>Màu sắc:</strong> {{ $commentCustomer->color }} |
+                                                                <strong>Size:</strong> {{ $commentCustomer->size }}</p>
+                                                            <p>Nội dung: {{ $commentCustomer->content }}</p>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

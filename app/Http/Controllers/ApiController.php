@@ -8,6 +8,7 @@ use App\Models\Blog;
 use App\Models\Category;
 use App\Models\Discount;
 use App\Models\Inventory;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Models\Staff;
@@ -242,5 +243,39 @@ class ApiController extends Controller
         }
         return $this->apiStatus(null, 404, 0, 'Data not found.');
     }
+
+    public function rateOrder($id) {
+        $orderDetail = DB::table('orders as o')
+        ->join('customers as c', 'o.customer_id', '=', 'c.id')
+        ->join('order_details as od', 'o.id', '=', 'od.order_id')
+        ->join('product_variants as pv', 'pv.id', '=', 'od.product_variant_id')
+        ->join('products as p', 'p.id', '=', 'pv.product_id')
+        ->leftJoin('comments as r', function($join) {
+            $join->on('r.product_id', '=', 'p.id')
+                 ->on('r.customer_id', '=', 'c.id')
+                 ->on('r.order_id', '=', 'o.id'); // Thêm điều kiện order_id vào on
+        })
+        ->where('o.id', $id)
+        ->select(
+            'o.id as order_id', 
+            'r.*', 
+            'c.name as customer_name', 
+            'p.product_name as product_name', 
+            'p.id as product_id', 
+            'p.image', 
+            'pv.size', 
+            'pv.color'
+        )
+        ->distinct()
+        ->get();
+        if ($orderDetail) {
+            return $this->apiStatus($orderDetail, 200, 1, 'ok');
+        }
+        return $this->apiStatus(null, 404, 0, 'Data not found.');
+    }
+    
+    
+    
+    
 
 }

@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
@@ -114,7 +115,46 @@ class HomeController extends Controller
         $sizes = $productDetail->ProductVariants->pluck('size')->unique();
         // Lấy danh sách màu của sản phẩm
         $colors = $productDetail->ProductVariants->pluck('color')->unique();
-        return view('sites.product.product_detail', compact('productDetail', 'sizes', 'colors'));
+
+
+        $commentCustomers = DB::table('orders as o')
+        ->join('customers as c', 'o.customer_id', '=', 'c.id')
+        ->join('order_details as od', 'o.id', '=', 'od.order_id')
+        ->join('product_variants as pv', 'pv.id', '=', 'od.product_variant_id')
+        ->join('products as p', 'p.id', '=', 'pv.product_id')
+        ->join('comments as r', function($join) {
+            $join->on('r.product_id', '=', 'p.id')
+                 ->on('r.customer_id', '=', 'c.id')
+                 ->on('r.order_id', '=', 'o.id');
+        })
+        ->where('p.slug', 'ao-so-mi-vai-linen-cao-cap-dai-tay')
+        ->select(
+            'o.id as order_id', 
+            'r.*', 
+            'c.name as customer_name', 
+            'p.product_name as product_name', 
+            'p.id as product_id', 
+            'p.image', 
+            'pv.size', 
+            'pv.color'
+        )
+        ->distinct()
+        ->get();
+
+
+        $starAvg = DB::table('products as p')
+        ->join('comments as r', 'r.product_id', '=', 'p.id')
+        ->where('p.slug', 'ao-so-mi-vai-linen-cao-cap-dai-tay')
+        ->select(
+            'p.id as product_id',
+            DB::raw('AVG(r.star) as star_avg')
+        )
+        ->groupBy('p.id')
+        ->distinct()
+        ->get();
+    
+
+        return view('sites.product.product_detail', compact('productDetail', 'sizes', 'colors', 'commentCustomers', 'starAvg'));
     }
 
     public function successPayment()

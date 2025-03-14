@@ -35,6 +35,6 @@ class Customer extends Authenticatable
 
     public function comments()
     {
-        return $this->hasMany(Commment::class);
+        return $this->hasMany(Comment::class);
     }
 }

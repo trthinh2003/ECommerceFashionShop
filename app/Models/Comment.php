@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Commment extends Model
+class Comment extends Model
 {
     use HasFactory;
 
@@ -13,7 +13,8 @@ class Commment extends Model
         'content',
         'start',
         'product_id',
-        'customer_id'
+        'customer_id',
+        'order_id',
     ];
 
     public function product()
@@ -24,5 +25,11 @@ class Commment extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

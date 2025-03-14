@@ -124,4 +124,10 @@ class BlogController extends Controller
       }
       return redirect()->route('blog.index')->with('success', 'Xoá thất bại');
     }
+
+    public function search(Request $request){
+        $search = $request->input('query');
+        $data = Blog::with('staff')->where('title', 'like', "%$search%")->paginate(3);
+        return view('admin.blog.index', compact('data'));
+    }
 }

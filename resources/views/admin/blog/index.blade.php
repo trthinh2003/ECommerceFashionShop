@@ -12,8 +12,7 @@
             <div class="card-sub">
                 <form method="GET" class="form-inline row" action="{{ route('blog.search') }}">
                     @csrf
-                    <div
-                        class="col-9 navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                    <div class="col-9 navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <button type="submit" class="btn btn-search pe-1">
@@ -61,7 +60,7 @@
                                     <button type="button" class="btn btn-sm btn-secondary btn-detail"
                                         data-bs-toggle="modal" data-bs-target="#detailBlogModal"
                                         data-id="{{ $model->id }}">
-                                        <i class="fa fa-plus"></i> Chi tiết
+                                        <i class="fa fa-eye"></i> Chi tiết
                                     </button>
                                     <button type="button" class="btn btn-sm btn-primary btn-update" data-bs-toggle="modal"
                                         data-bs-target="#updateBlogModal" data-id="{{ $model->id }}">
@@ -147,22 +146,22 @@
                     <h5 class="modal-title" id="updateBlogModalLabel">Cập Nhật Bài Viết</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ route('blog.update') }}" method="POST" enctype="multipart/form-data">
+                <form id="updateBlogForm" action="{{ route('blog.update', ':id') }}" method="POST" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Tiêu đề</label>
+                            <label for="title" class="form-label">Tiêu đề:</label>
                             <input type="text" class="form-control" id="blog-title-update" name="title" required>
                         </div>
                         <div class="mb-3">
-                            <label for="content" class="form-label">Nội dung</label>
+                            <label for="content" class="form-label">Nội dung:</label>
                             <textarea class="form-control" id="blog-content-update" name="content" rows="10" required></textarea>
                         </div>
                         <div class="mb-3 row">
                             <div class="col-md-6">
-                                <label for="image" class="form-label">Ảnh</label>
-                                <input type="file" class="form-control" name="image-update" accept="image/*">
+                                <label for="image" class="form-label">Ảnh:</label>
+                                <input type="file" class="form-control" name="image-update" accept="image/*" required>
                             </div>
                             <div class="col-md-6">
                                 <img src="" id="blog-image-update" alt="" width="100"
@@ -170,8 +169,8 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="tags" class="form-label">Tags</label>
-                            <input type="text" data-rol="tagsinput" id="blog-tag-update" name="blog_tag"
+                            <label for="blog_tag" class="form-label">Tags:</label>
+                            <input type="text" data-role=""="tagsinput" id="blog-tag-update" name="blog_tag"
                                 class="form-control" required>
                         </div>
                         <div class="mb-3">
@@ -180,7 +179,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="status" class="form-label">Trạng thái</label>
-                            <select class="form-control" id="blog-status-update" name="status">
+                            <select class="form-control" id="blog-status-update" name="status" required>
                                 <option value="1">Hiển thị</option>
                                 <option value="0">Ẩn</option>
                             </select>
@@ -324,8 +323,9 @@
             });
             $(".btn-update").click(function(event) {
                 event.preventDefault();
-
                 let blogId = $(this).data("id");
+                let formAction = $("#updateBlogForm").attr("action").replace(':id', blogId);
+                $("#updateBlogForm").attr("action", formAction);
                 $.ajax({
                     url: `http://127.0.0.1:8000/api/blog_detail/${blogId}`,
                     type: "GET",

@@ -107,7 +107,6 @@
                 scrollToBottom(); // Cuộn xuống sau khi gửi tin nhắn
 
                 $.post("/chatbot", {
-                    session_id: "{{ session()->getId() }}",
                     message: message,
                     _token: "{{ csrf_token() }}"
                 }, function(response) {
@@ -116,7 +115,7 @@
                                             <div class="d-flex align-items-start gap-2 mb-3">
                                                 <img class="rounded-circle mt-2" src="{{ asset('client/img/chatbot/bot.avif') }}" width="30">
                                                 <div class="bg-light p-2 rounded">
-                                                    <p class="mb-0">${response.message}</p>
+                                                    <p class="mb-0">${response.response}</p>
                                                 </div>
                                             </div>
                                         `);

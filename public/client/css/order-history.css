@@ -99,7 +99,7 @@
 .sidebar-body {
     padding: 15px;
     overflow-y: auto;
-    max-height: 100vh;
+    max-height: calc(100vh - 60px);
 }
 
 .product-item {
@@ -109,24 +109,31 @@
 }
 
 .product-image {
-    width: 200px;
-    height: 100px;
+    width: 170px;
+    height: 270px;
     object-fit: cover;
     border-radius: 5px;
 }
 
-.star-rating input[type="radio"] {
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    gap: 5px;
+}
+
+.star-rating input {
     display: none;
 }
 
 .star-rating label {
-    font-size: 25px;
-    color: #ddd;
+    font-size: 24px;
     cursor: pointer;
+    color: #ccc;
 }
 
-.star-rating input[type="radio"]:checked ~ label,
+.star-rating input:checked~label,
 .star-rating label:hover,
-.star-rating label:hover ~ label {
+.star-rating label:hover~label {
     color: gold;
 }
