@@ -125,17 +125,22 @@
                             let response = await fetch("http://127.0.0.1:8000/api/product-discount");
                             let data = await response.json();
                             let products = data.data;
+                            // console.log(products);
 
                             let container = document.querySelector('#product-discount-container');
                             container.innerHTML = "";
 
                             products.forEach((product, index) => {
                                 let finalPrice;
+                                // console.log(product.discount.percent_discount, product.discount.id);
 
-                                if (product.discount_id != null) {
+                                if (product.discount.id != null) {
                                     finalPrice = product.price - (product.price * product.discount.percent_discount);
+
                                 } else {
+                                    
                                     finalPrice = product.price ?? 0;
+                                    // console.log(finalPrice);
                                 }
 
                                 let formattedPrice = new Intl.NumberFormat('vi-VN', {
@@ -159,21 +164,7 @@
                                         addCartOrNone[variant.product_id] = true;
                                     };
                                 })
-                                // console.log(addCartOrNone);
 
-                                // console.log(addCartOrNone);
-
-                                // console.log(addCartOrNone);
-                                // product['product-variant'].forEach((variant) => {
-                                //     variant.stock > 0 ?
-
-
-                                // })
-                                // if(product['product-variant']. > 0) va{
-
-                                // }
-
-                                // console.log(formattedPrice); // Kiểm tra giá đã format
 
 
                                 let productItem = document.createElement('div');

@@ -109,50 +109,58 @@ class HomeController extends Controller
     {
         $productDetail = Product::where('slug', $slug)
             ->with(['ProductVariants', 'Category', 'Discount'])
-            ->firstorfail();
+            ->firstOrFail();
         $prices = $productDetail->ProductVariants->pluck('price');
         // Lấy danh sách size của sản phẩm
         $sizes = $productDetail->ProductVariants->pluck('size')->unique();
         // Lấy danh sách màu của sản phẩm
         $colors = $productDetail->ProductVariants->pluck('color')->unique();
 
-
+        // Lấy danh sách bình luận của khách hàng
         $commentCustomers = DB::table('orders as o')
-        ->join('customers as c', 'o.customer_id', '=', 'c.id')
-        ->join('order_details as od', 'o.id', '=', 'od.order_id')
-        ->join('product_variants as pv', 'pv.id', '=', 'od.product_variant_id')
-        ->join('products as p', 'p.id', '=', 'pv.product_id')
-        ->join('comments as r', function($join) {
-            $join->on('r.product_id', '=', 'p.id')
-                 ->on('r.customer_id', '=', 'c.id')
-                 ->on('r.order_id', '=', 'o.id');
-        })
-        ->where('p.slug', 'ao-so-mi-vai-linen-cao-cap-dai-tay')
-        ->select(
-            'o.id as order_id', 
-            'r.*', 
-            'c.name as customer_name', 
-            'p.product_name as product_name', 
-            'p.id as product_id', 
-            'p.image', 
-            'pv.size', 
-            'pv.color'
-        )
-        ->distinct()
-        ->get();
+            ->join('customers as c', 'o.customer_id', '=', 'c.id')
+            ->join('order_details as od', 'o.id', '=', 'od.order_id')
+            ->join('product_variants as pv', 'pv.id', '=', 'od.product_variant_id')
+            ->join('products as p', 'p.id', '=', 'pv.product_id')
+            ->join('comments as r', function ($join) {
+                $join->on('r.product_id', '=', 'p.id')
+                    ->on('r.customer_id', '=', 'c.id')
+                    ->on('r.order_id', '=', 'o.id');
+            })
+            ->where('p.slug', $slug)
+            ->select(
+                'o.id as order_id',
+                'r.*',
+                'c.name as customer_name',
+                'p.product_name as product_name',
+                'p.id as product_id',
+                'p.image',
+                'pv.size',
+                'pv.color'
+            )
+            ->distinct()
+            ->get();
 
+        // Nếu không có bình luận thì trả về mảng rỗng
+        if ($commentCustomers->isEmpty()) {
+            $commentCustomers = [];
+        }
 
+        // Lấy sao trung bình của sản phẩm
         $starAvg = DB::table('products as p')
-        ->join('comments as r', 'r.product_id', '=', 'p.id')
-        ->where('p.slug', 'ao-so-mi-vai-linen-cao-cap-dai-tay')
-        ->select(
-            'p.id as product_id',
-            DB::raw('AVG(r.star) as star_avg')
-        )
-        ->groupBy('p.id')
-        ->distinct()
-        ->get();
-    
+            ->join('comments as r', 'r.product_id', '=', 'p.id')
+            ->where('p.slug', $slug)
+            ->select(
+                'p.id as product_id',
+                DB::raw('AVG(r.star) as star_avg')
+            )
+            ->groupBy('p.id')
+            ->distinct()
+            ->first();
+
+        // Nếu không có sao trung bình thì mặc định là 0
+        $starAvg = $starAvg ? $starAvg->star_avg : 0;
+
 
         return view('sites.product.product_detail', compact('productDetail', 'sizes', 'colors', 'commentCustomers', 'starAvg'));
     }

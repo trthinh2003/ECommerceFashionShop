@@ -1,61 +1,4 @@
-<style>
-    .modal-container-search {
-        position: relative;
-        max-height: 80vh;
-        overflow-y: auto;
-        padding-right: 15px;
-    }
 
-    .modal-close {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        z-index: 1100;
-        background: white;
-        padding: 5px;
-        border-radius: 50%;
-        cursor: pointer;
-    }
-
-    .modal-close i {
-        font-size: 1.5rem;
-        color: #6c757d;
-    }
-
-    .modal-close:hover i {
-        color: #dc3545;
-    }
-
-    #search-history li {
-        font-size: 18px;
-        padding: 12px 16px;
-        border-bottom: 1px solid #ddd;
-        transition: background 0.2s;
-    }
-
-    #search-history li:hover {
-        background: #f1f1f1;
-    }
-
-    #search-history li i {
-        font-size: 20px;
-    }
-
-    #search-history li .text-primary {
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    #suggestion-list li {
-        font-size: 18px;
-        transition: background 0.2s;
-    }
-
-    #suggestion-list li:hover {
-        background: #f9f9f9;
-        cursor: pointer;
-    }
-</style>
 <div class="bg-light d-flex align-items-center justify-content-center">
     <!-- Chatbox Icon -->
     <div class="position-fixed bottom-0 end-0 m-3" id="chatbox-icon">
@@ -102,7 +45,7 @@
             <i class="fas fa-times"></i>
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body" style="overflow-y: hidden;">
             <div class="form-group position-relative d-flex align-items-center">
                 <input type="text" name="q" id="search-box" class="form-control rounded-pill px-4 py-2"
                     placeholder="Nhập từ khóa bạn muốn tìm...">
@@ -124,6 +67,7 @@
 </form>
 <!-- End Modal Search -->
 
+@include('sites.components.css.search-and-chatbot-css')
 @section('js')
     <script>
         $(document).ready(function() {
@@ -243,7 +187,7 @@
                         }
 
                         // Cập nhật lịch sử tìm kiếm
-                        updateSearchHistory(data.history);
+                        // updateSearchHistory(data.history);
                     }
                 });
             }
@@ -270,10 +214,12 @@
         //     }
         // }
 
-        $.get("http://127.0.0.1:8000/api/search-history", function(data) {
-            updateSearchHistory(data);
-        });
+        // $.get("http://127.0.0.1:8000/api/search-history", function(data) {
+        //     updateSearchHistory(data);
+        // });
 
+
+        // phải search thử ở http://127.0.0.1:8000/api/search?q="....." => get ở http://127.0.0.1:8000/api/suggest-content-based thì mới thấy
         // Lấy gợi ý sản phẩm
         $.get("http://127.0.0.1:8000/api/suggest-content-based", function(data) {
             let suggestions = $("#suggestion-list");
@@ -281,11 +227,15 @@
 
             if (data.length > 0) {
                 data.forEach(function(item) {
+                    let price = Intl.NumberFormat('vi-VN').format(item.price);
+                    if(item.discount_id != null){
+                        price = item.price - (item.price * item.discount.percent_discount);
+                    }
                     let listItem = `
                         <li class="list-group-item d-flex align-items-center p-3 border-bottom">
                             <a href="/product/${item.slug}" class="fw-medium text-decoration-none text-dark">
                                 <img src="{{ asset('uploads/${item.image}') }}" width="50" height="50" alt="">
-                                ${item.product_name} | <p class="d-inline">Giá:</p> ${Intl.NumberFormat('vi-VN').format(item.price)} đ
+                                ${item.product_name} | <p class="d-inline">Giá:</p> ${Intl.NumberFormat('vi-VN').format(price)} đ
                             </a>
                         </li>
                     `;
@@ -297,16 +247,16 @@
         });
 
         // Xóa lịch sử tìm kiếm
-        $("#clear-history").on("click", function() {
-            $.ajax({
-                url: "http://127.0.0.1:8000/api/search-history",
-                type: "DELETE",
-                success: function(response) {
-                    alert(response.message);
-                    updateSearchHistory([]);
-                }
-            });
-        });
+        // $("#clear-history").on("click", function() {
+        //     $.ajax({
+        //         url: "http://127.0.0.1:8000/api/search-history",
+        //         type: "DELETE",
+        //         success: function(response) {
+        //             alert(response.message);
+        //             updateSearchHistory([]);
+        //         }
+        //     });
+        // });
 
         $(".dropdown-btn").click(function(event) {
             event.stopPropagation(); // Ngăn chặn sự kiện lan ra ngoài

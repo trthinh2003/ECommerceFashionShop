@@ -1,5 +1,8 @@
 @php
-    // dd((float)$starAvg[0]->star_avg);
+    // dd((float)$starAvg->star_avg);
+    // dd(count($commentCustomers), $starAvg);
+    
+
 
     $totalProduct = 0;
     if (Session::has('cart')) {
@@ -10,20 +13,7 @@
         $totalProduct = 0;
     }
     // Xử lý màu sắc (hơi mủ)
-    function getColorHex($color)
-    {
-        $colorMap = [
-            'Đen' => '#000000',
-            'Vàng' => '#FFD700',
-            'Trắng' => '#FFFFFF',
-            'Xanh' => '#007BFF',
-            'Xanh lá' => '#28a745',
-            'Đỏ' => '#FF0000',
-            'Hồng' => '#FFC0CB',
-            'Cam' => '#FFA500',
-        ];
-        return $colorMap[$color] ?? '#CCCCCC';
-    }
+    // getColorHex($productDetail->color);
 @endphp
 
 @extends('sites.master')
@@ -119,31 +109,34 @@
                             <div class="product__details__text">
                                 <h4>{{ $productDetail->product_name }}</h4>
                                 <div class="rating">
-                                    @php
-                                   
-                                        $avgStar = (float)$starAvg[0]->star_avg ?? 0.0; // Ví dụ giá trị trung bình
+                                    @php    
+                                        $avgStar = $starAvg;
                                         $fullStars = floor($avgStar); // Số sao đầy
-                                        $hasHalfStar = ($avgStar - $fullStars) >= 0.5; // Kiểm tra có nửa sao không
+                                        $hasHalfStar = $avgStar - $fullStars >= 0.5; // Kiểm tra có nửa sao không
                                         $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0); // Số sao rỗng còn lại
+                                        
                                     @endphp
-                                
+                                    
+
+                     
+
                                     {{-- Sao đầy --}}
                                     @for ($i = 0; $i < $fullStars; $i++)
                                         <i class="fa fa-star fw-bold" @style('color: #FFD700')></i>
                                     @endfor
-                                
+
                                     {{-- Sao nửa nếu có --}}
                                     @if ($hasHalfStar)
                                         <i class="fa fa-star-half-o fw-bold" @style('color: #FFD700')></i>
                                     @endif
-                                
+
                                     {{-- Sao rỗng --}}
                                     @for ($i = 0; $i < $emptyStars; $i++)
                                         <i class="fa fa-star-o text-dark"></i>
                                     @endfor
                                     <span> - {{ count($commentCustomers) }} Đánh Giá</span>
                                 </div>
-                                
+
                                 @php
                                     $priceDiscount = $productDetail->price;
                                     $hasDiscount =
@@ -246,7 +239,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Đánh giá của
-                                        khách hàng({{ count($commentCustomers) }})</a>
+                                        khách hàng({{ count($commentCustomers ?? []) }})</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -268,38 +261,56 @@
                                     <div class="product__details__tab__content">
                                         <!-- Danh sách bình luận -->
                                         <div class="comment-section">
-                                            <h5 class="comment-title">Đánh giá sản phẩm ({{ count($commentCustomers) }})</h5>
+                                            <h5 class="comment-title">Đánh giá sản phẩm
+                                                ({{ count($commentCustomers ?? [])}})</h5>
                                             <hr>
                                             <ul id="review-list">
+                                                @if ($commentCustomers != null)
+                                                    @foreach ($commentCustomers as $commentCustomer)
+                                                        <li>
+                                                            <div class="comment-header">
+                                                                <div class="comment-author-info">
+                                                                    <strong
+                                                                        class="comment-author">{{ $commentCustomer->customer_name ?? 'Ẩn danh' }}</strong>
 
-                                                @foreach ($commentCustomers as $commentCustomer)
-                                                    <li>
-                                                        <div class="comment-header">
-                                                            <div class="comment-author-info">
-                                                                <strong
-                                                                    class="comment-author">{{ $commentCustomer->customer_name }}</strong>
-                                                                @for ($i = 0; $i < $commentCustomer->star; $i++)
-                                                                    ★
-                                                                @endfor
+                                                                    {{-- Hiển thị sao đánh giá --}}
+                                                                    @php
+                                                                        $star = $commentCustomer->star ?? 0;
+                                                                    @endphp
+                                                                    @for ($i = 0; $i < $star; $i++)
+                                                                        ★
+                                                                    @endfor
+                                                                    @for ($i = $star; $i < 5; $i++)
+                                                                        ☆
+                                                                    @endfor
 
-                                                                @for ($i = $commentCustomer->star; $i < 5; $i++)
-                                                                    ☆
-                                                                @endfor
-
-
+                                                                </div>
+                                                                <span
+                                                                    class="comment-date">{{ $commentCustomer->created_at ?? 'Không xác định' }}</span>
                                                             </div>
-                                                            <span
-                                                                class="comment-date">{{ $commentCustomer->created_at }}</span>
-                                                        </div>
-                                                        <div class="comment-content">
-                                                            <p><strong>Sản
-                                                                    Phẩm:</strong>{{ $commentCustomer->product_name }}</p>
-                                                            <p><strong>Màu sắc:</strong> {{ $commentCustomer->color }} |
-                                                                <strong>Size:</strong> {{ $commentCustomer->size }}</p>
-                                                            <p>Nội dung: {{ $commentCustomer->content }}</p>
+                                                            <div class="comment-content">
+                                                                <p><strong>Sản Phẩm:</strong>
+                                                                    {{ $commentCustomer->product_name ?? 'Không rõ' }}</p>
+                                                                <p>
+                                                                    <strong>Màu sắc:</strong>
+                                                                    {{ $commentCustomer->color ?? 'Không xác định' }} |
+                                                                    <strong>Size:</strong>
+                                                                    {{ $commentCustomer->size ?? 'Không xác định' }}
+                                                                </p>
+                                                                <p>Nội dung:
+                                                                    {{ $commentCustomer->content ?? 'Không có nội dung' }}
+                                                                </p>
+                                                            </div>
+                                                        </li>
+                                                    @endforeach
+                                                @else
+                                                    <li>
+                                                        <div class="text-center text-muted">Sản phẩm chưa có đánh giá nào!
                                                         </div>
                                                     </li>
-                                                @endforeach
+                                                @endif
+
+
                                             </ul>
                                         </div>
                                     </div>
