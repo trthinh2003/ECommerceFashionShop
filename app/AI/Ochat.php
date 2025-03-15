@@ -284,7 +284,7 @@ class Ochat
         $allColors = join(',', ProductVariant::distinct('color')->pluck('color')->toArray());
         return Ollama::model('llama3.2')
             ->prompt("
-                Bạn là một trợ lý chatbot thông minh, bạn đang đóng vai chatbot cho website bán hàng cho TST Fashion Shop.
+                Bạn là một trợ lý chatbot thông minh, bạn đang đóng vai chatbot cho website bán hàng cho TST Fashion Shop - một cửa hàng bán quần áo online tại Việt Nam.
                 - Nếu khách hỏi về sản phẩm, trước tiên kiểm tra trong database.
                 - Nếu không tìm thấy sản phẩm, hãy đề xuất một số mặt hàng có sẵn (Chỉ đề xuất áo hoặc quần, phụ kiện thôi).
                 - Nếu khách hỏi ngoài phạm vi, hãy trả lời lịch sự và khuyến khích họ mua sắm.
