@@ -281,20 +281,21 @@ class CheckoutController extends Controller
 
     public function momoReturn(Request $request)
     {
-        // $partnerCode = $request->partnerCode;
-        // $orderId = $request->orderId; // Mã đơn hàng
-        // $requestId = $request->requestId;
-        // $amount = $request->amount;
-        // $orderInfo = $request->orderInfo;
-        // $orderType = $request->orderType;
+        $partnerCode = $request->partnerCode;
+        $orderId = $request->orderId; // Mã đơn hàng
+        $requestId = $request->requestId;
+        $amount = $request->amount;
+        $orderInfo = $request->orderInfo;
+        $orderType = $request->orderType;
         $transId = $request->orderId; // Mã giao dịch lấy đại mã đơn hàng từ hàm time() gì của nó ai biết
         $resultCode = $request->resultCode; // Kết quả giao dịch
+        // dd($request->all());
 
-        if ($resultCode == 00) { // 00 là giao dịch thành công
+        if ($resultCode !== "") {
             if (Session::has('order_data')) {
                 $data = Session::get('order_data');
 
-                DB::beginTransaction();
+                // DB::beginTransaction();
                 try {
                     // Tạo đơn hàng
                     $order = new Order();
@@ -368,16 +369,16 @@ class CheckoutController extends Controller
                         'order_id' => $order->id,
                         'total' => $order->total
                     ]);
-                    DB::commit();
+                    // DB::commit();
                     Session::forget('order_data');
                     return redirect()->route('sites.success.payment');
                 } catch (Exception $e) {
                     dd($e->getMessage(), $e->getFile(), $e->getLine());
                 }
             }
+        }else{
+            return redirect()->route('sites.cart')->with('error', 'Thanh toán thất bại hoặc bị hủy!');
         }
-
-        return redirect()->route('sites.cart')->with('error', 'Thanh toán thất bại hoặc bị hủy!');
     }
 
 
