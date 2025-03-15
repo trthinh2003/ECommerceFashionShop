@@ -122,7 +122,7 @@ class Ochat
         }
         return null;
     }
-    
+
     private function handleProductDiscount($message, $sessionKey){
         if (preg_match('/\b(khuyến mãi|sale|giảm giá|khuyen mai|giam gia|chương trình)\b/i', $message)) {
             return $this->getProductDiscountList();
@@ -148,10 +148,10 @@ class Ochat
         if (preg_match('/mẫu số (\d+)/i', $message, $matches)) {
             $index = (int)$matches[1] - 1; // Trừ 1 để khớp index trong mảng
             $products = session($sessionKey . '_products', []);
-    
+
             if (isset($products[$index])) {
                 $product = $products[$index];
-    
+
                 // Truy vấn chi tiết sản phẩm từ database
                 $productDetail = DB::table('products')
                     ->join('product_variants', 'products.id', '=', 'product_variants.product_id')
@@ -159,18 +159,18 @@ class Ochat
                     ->select('products.*', 'product_variants.color', 'categories.category_name', 'product_variants.size', 'product_variants.stock')
                     ->where('products.id', $product->id)
                     ->first();
-    
+
                 if ($productDetail) {
                     return $this->formatProductResponse([$productDetail], "💡 Thông tin chi tiết về mẫu số " . ($index + 1) . ":");
                 }
             }
-    
+
             return "Mẫu số này không tồn tại. Bạn có thể kiểm tra lại danh sách mẫu không?";
         }
-    
+
         return null;
     }
-    
+
 
 
 
@@ -184,12 +184,12 @@ class Ochat
         if ($products->isNotEmpty()) {
             // Lưu danh sách sản phẩm vào session để truy vấn lại khi cần
             session([$sessionKey . '_products' => $products]);
-    
+
             return $this->formatProductResponse($products, "🔹 Đây là một số mẫu $category ở bên mình:");
         }
         return "Hiện tại chúng tôi chưa có $category trong kho. Bạn có muốn tìm sản phẩm khác không?";
     }
-    
+
 
     private function fetchProducts(array $filters, int $limit = 5)
     {
@@ -280,7 +280,7 @@ class Ochat
 
     private function callOllama($message)
     {
-       
+
         $allColors = join(',', ProductVariant::distinct('color')->pluck('color')->toArray());
         return Ollama::model('llama3.2')
             ->prompt("
@@ -292,11 +292,16 @@ class Ochat
                 - Nếu có ai đó khen bạn, không ngần ngại cảm ơn họ và tỏ ra thân thiện.
                 - Nếu có ai đó chửi bạn, hãy nhắc nhở và tỏ ra lịch sự với họ.
                 - Nếu ai đó có những tin nhắn với từ ngữ nhạy cảm hoặc không phù hợp hãy cảnh báo họ một cách nhẹ nhàng và lịch sự.
-                - Chính sách đổi trả của cửa hàng là 7 ngày.
+                - Chính sách đổi trả của cửa hàng là 30 ngày.
                 - Các phương thức thanh toán có ở cửa hàng là COD, ví điện tử (VNPay, Momo, ZaloPay).
                 - Size áo và quần thì có là XS, S, M, L, XL, XXL.
                 - Các màu có là '$allColors'.
                 - Ký tự '2' đơn lẻ được xem là chào nhé.
+                - Trang liên hệ nằm ở đây: http://127.0.0.1:8000/contact (Hãy đổi nó thành thẻ a có tên Contact).
+                - Trang blog nằm ở đây: http://127.0.0.1:8000/blog (Hãy đổi nó thành thẻ a có tên Blog).
+                - Trang mua sản phẩm nằm ở đây: http://127.0.0.1:8000/shop (Hãy đổi nó thành thẻ a có tên Shop).
+                - Các thẻ a có thể mở trong tab mới.
+                - Các thẻ a có thể dùng class='text-dark' để màu chữ đen.
                 Người dùng hỏi: '$message'.
             ")
             ->options(['temperature' => 0.7])
