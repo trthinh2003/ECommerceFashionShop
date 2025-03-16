@@ -93,6 +93,120 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+    // Hàm gốc
+    // public function store(Request $request)
+    // {
+    //     $data = $request->validate([
+    //         'address' => 'required',
+    //         'phone' => 'required',
+    //         'shipping_fee' => 'required|numeric',
+    //         'total' => 'required|numeric',
+    //         'note' => 'required',
+    //         'receiver_name' => 'required',
+    //         'email' => 'required|email',
+    //         'VAT' => 'required|numeric',
+    //         'customer_id' => 'required',
+    //         'payment' => 'required',
+    //     ], [
+    //         'address.required' => 'Vui lòng nhập điểm giao hàng',
+    //         'phone.required' => 'Vui lòng nhập số điện thoại',
+    //         'note.required' => 'Vui lòng nhập ghi chú',
+    //         'receiver_name.required' => 'Vui lòng nhập tên người nhận',
+    //         'email.required' => 'Vui lòng nhập email hợp lệ',
+    //     ]);
+    //     // dd($request->all());
+    //     // Tạo đơn hàng
+    //     $order = new Order();
+    //     $order->address = $data['address'];
+    //     $order->phone = $data['phone'];
+    //     $order->shipping_fee = $data['shipping_fee'];
+    //     $order->total = $data['total'];
+    //     $order->note = $data['note'];
+    //     $order->receiver_name = $data['receiver_name'];
+    //     $order->email = $data['email'];
+    //     $order->VAT = $data['VAT'];
+    //     $order->payment = $data['payment'];
+    //     $order->customer_id = $data['customer_id'];
+    //     $order->save();
+
+    //     // Lấy giỏ hàng từ session
+    //     $cart = session('cart', []);
+
+    //     // Lọc ra các sản phẩm đã được chọn (checked = true)
+    //     $selectedItems = array_filter($cart, function ($item) {
+    //         return !empty($item->checked) && $item->checked;
+    //     });
+
+    //     if (empty($selectedItems)) {
+    //         return redirect()->back()->with('error', 'Không có sản phẩm nào được chọn để thanh toán.');
+    //     }
+
+    //     // Tạo chi tiết đơn hàng từ các sản phẩm đã chọn
+    //     foreach ($selectedItems as $item) {
+    //         OrderDetail::create([
+    //             'order_id' => $order->id,
+    //             'product_id' => $item->id,
+    //             'product_variant_id' => $item->product_variant_id,
+    //             'quantity' => $item->quantity,
+    //             'price' => $item->price,
+    //             'size_and_color' => $item->size . '-' . $item->color,
+    //             'code' => session('percent_discount', 0),
+    //         ]);
+    //     }
+
+    //     // Nếu tất cả sản phẩm trong giỏ đều đã chọn, xóa toàn bộ giỏ hàng
+    //     if (count($selectedItems) === count($cart)) {
+    //         session()->forget('cart');
+    //     } else {
+    //         // Cập nhật lại giỏ hàng chỉ giữ lại sản phẩm chưa chọn
+    //         $cart = array_filter($cart, function ($item) {
+    //             return empty($item->checked) || !$item->checked;
+    //         });
+    //         session(['cart' => $cart]);
+    //     }
+
+    //     session()->forget('percent_discount');
+
+    //     // Xử lý trừ đi số lượng sản phẩm trong kho theo số lượng đã được đặt
+    //     $orderDetails = OrderDetail::where('order_id', $order->id)->get();
+
+    //     foreach ($orderDetails as $detail) {
+    //         // Tách size và color từ chuỗi size_and_color
+    //         [$size, $color] = array_map('trim', explode('-', $detail->size_and_color));
+
+    //         // Tìm đúng variant của sản phẩm trong bảng variant theo product_id, size và color
+    //         $variant = ProductVariant::where('product_id', $detail->product_id)
+    //             ->where('size', trim($size))
+    //             ->where('color', trim($color))
+    //             ->first();
+
+
+    //         if ($variant) {
+    //             $variant->stock -= $detail->quantity;
+    //             $variant->save();
+
+    //         } else {
+    //             // Xử lý trường hợp không tìm thấy variant
+    //             Log::warning("Không tìm thấy variant cho sản phẩm ID: {$detail->product_id}, size: {$size}, color: {$color}");
+    //         }
+    //     }
+    //     Session::put('success_data', [
+    //         'logo' => 'cod.png',
+    //         'receiver_name' => $order->receiver_name,
+    //         'order_id' => $order->id,
+    //         'total' => $order->total
+    //     ]);
+    //     Session::forget('order_data'); // Xóa session sau khi lưu vào db
+    //     return redirect()->route('sites.success.payment');
+
+    //     // return redirect()->route('sites.home')->with('success', "Đặt hàng thành công!");
+    // }
+
+
+    // Pessimistic Lock (Khóa bi quan) là kiểu khóa mà khi một bản ghi đang được truy cập (đọc/ghi), nó sẽ bị khóa lại để ngăn chặn các giao dịch khác đọc hoặc sửa đổi.
+    // Trong Laravel, ->lockForUpdate() sẽ khóa bản ghi được chọn cho đến khi transaction kết thúc. Điều này đảm bảo không có giao dịch nào khác có thể thay đổi dữ liệu trong khi nó đang được xử lý.
+    // Xử lý lưu đơn hàng (bằng transaction và khoá Pessimistic Lock) 
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -113,94 +227,123 @@ class OrderController extends Controller
             'receiver_name.required' => 'Vui lòng nhập tên người nhận',
             'email.required' => 'Vui lòng nhập email hợp lệ',
         ]);
-        // dd($request->all());
-        // Tạo đơn hàng
-        $order = new Order();
-        $order->address = $data['address'];
-        $order->phone = $data['phone'];
-        $order->shipping_fee = $data['shipping_fee'];
-        $order->total = $data['total'];
-        $order->note = $data['note'];
-        $order->receiver_name = $data['receiver_name'];
-        $order->email = $data['email'];
-        $order->VAT = $data['VAT'];
-        $order->payment = $data['payment'];
-        $order->customer_id = $data['customer_id'];
-        $order->save();
 
-        // Lấy giỏ hàng từ session
-        $cart = session('cart', []);
-
-        // Lọc ra các sản phẩm đã được chọn (checked = true)
-        $selectedItems = array_filter($cart, function ($item) {
-            return !empty($item->checked) && $item->checked;
-        });
-
-        if (empty($selectedItems)) {
-            return redirect()->back()->with('error', 'Không có sản phẩm nào được chọn để thanh toán.');
-        }
-
-        // Tạo chi tiết đơn hàng từ các sản phẩm đã chọn
-        foreach ($selectedItems as $item) {
-            OrderDetail::create([
-                'order_id' => $order->id,
-                'product_id' => $item->id,
-                'product_variant_id' => $item->product_variant_id,
-                'quantity' => $item->quantity,
-                'price' => $item->price,
-                'size_and_color' => $item->size . '-' . $item->color,
-                'code' => session('percent_discount', 0),
-            ]);
-        }
-
-        // Nếu tất cả sản phẩm trong giỏ đều đã chọn, xóa toàn bộ giỏ hàng
-        if (count($selectedItems) === count($cart)) {
-            session()->forget('cart');
-        } else {
-            // Cập nhật lại giỏ hàng chỉ giữ lại sản phẩm chưa chọn
-            $cart = array_filter($cart, function ($item) {
-                return empty($item->checked) || !$item->checked;
+        $errors = [];
+        DB::beginTransaction();
+        try {
+            // Lấy giỏ hàng từ session
+            $cart = session('cart', []);
+            // Lọc ra các sản phẩm đã được chọn (checked = true)
+            $selectedItems = array_filter($cart, function ($item) {
+                return !empty($item->checked) && $item->checked;
             });
-            session(['cart' => $cart]);
-        }
 
-        session()->forget('percent_discount');
-
-        // Xử lý trừ đi số lượng sản phẩm trong kho theo số lượng đã được đặt
-        $orderDetails = OrderDetail::where('order_id', $order->id)->get();
-
-        foreach ($orderDetails as $detail) {
-            // Tách size và color từ chuỗi size_and_color
-            [$size, $color] = array_map('trim', explode('-', $detail->size_and_color));
-
-            // Tìm đúng variant của sản phẩm trong bảng variant theo product_id, size và color
-            $variant = ProductVariant::where('product_id', $detail->product_id)
-                ->where('size', trim($size))
-                ->where('color', trim($color))
-                ->first();
-
-
-            if ($variant) {
-                $variant->stock -= $detail->quantity;
-                $variant->save();
-
-            } else {
-                // Xử lý trường hợp không tìm thấy variant
-                Log::warning("Không tìm thấy variant cho sản phẩm ID: {$detail->product_id}, size: {$size}, color: {$color}");
+            if (empty($selectedItems)) {
+                return redirect()->route('sites.cart')->with('error', 'Không có sản phẩm nào được chọn để thanh toán.');
             }
+
+            // Kiểm tra tồn kho và loại bỏ sản phẩm hết hàng
+            foreach ($selectedItems as $key => $item) {
+                // Tìm đúng variant của sản phẩm trong bảng variant
+                $variant = ProductVariant::where('product_id', $item->id)
+                    ->where('size', trim($item->size))
+                    ->where('color', trim($item->color))
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$variant || $variant->stock < $item->quantity) {
+                    // Xóa sản phẩm hết hàng khỏi giỏ
+                    unset($cart[$key]);
+                    $errors[] = 'Sản phẩm "' . $item->product_name . '" đã hết hàng và đã bị xóa khỏi giỏ hàng.';
+                }
+            }
+
+            // Nếu có lỗi, cập nhật lại giỏ hàng và chuyển về trang giỏ
+            if (!empty($errors)) {
+                // Cập nhật lại giỏ hàng sau khi loại bỏ các sản phẩm hết hàng
+                session(['cart' => $cart]);
+
+                // Nếu giỏ hàng trống sau khi loại bỏ hết sản phẩm hết hàng
+                if (empty($cart)) {
+                    return redirect()->route('sites.cart')->with('error', 'Tất cả sản phẩm đã hết hàng.');
+                }
+
+                // Trả về trang giỏ hàng kèm theo thông báo lỗi
+                return redirect()->route('sites.cart')->with('error', implode('<br>', $errors));
+            }
+
+
+            // Tạo đơn hàng
+            $order = new Order();
+            $order->address = $data['address'];
+            $order->phone = $data['phone'];
+            $order->shipping_fee = $data['shipping_fee'];
+            $order->total = $data['total'];
+            $order->note = $data['note'];
+            $order->receiver_name = $data['receiver_name'];
+            $order->email = $data['email'];
+            $order->VAT = $data['VAT'];
+            $order->payment = $data['payment'];
+            $order->customer_id = $data['customer_id'];
+            $order->save();
+
+            // Tạo chi tiết đơn hàng từ các sản phẩm còn lại
+            foreach ($selectedItems as $item) {
+                OrderDetail::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item->id,
+                    'product_variant_id' => $item->product_variant_id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                    'size_and_color' => $item->size . '-' . $item->color,
+                    'code' => session('percent_discount', 0),
+                ]);
+            }
+
+            // Xử lý trừ đi số lượng sản phẩm trong kho theo số lượng đã được đặt
+            foreach ($selectedItems as $item) {
+                $variant = ProductVariant::where('product_id', $item->id)
+                    ->where('size', trim($item->size))
+                    ->where('color', trim($item->color))
+                    ->lockForUpdate()
+                    ->first();
+
+                if ($variant) {
+                    $variant->stock -= $item->quantity;
+                    $variant->save();
+                }
+            }
+
+            // Xóa giỏ hàng sau khi tạo đơn hàng thành công
+            session()->forget('cart');
+            session()->forget('percent_discount');
+
+            // Lưu thông tin thành công vào session
+            Session::put('success_data', [
+                'logo' => 'cod.png',
+                'receiver_name' => $order->receiver_name,
+                'order_id' => $order->id,
+                'total' => $order->total,
+            ]);
+
+            DB::commit();
+
+            return redirect()->route('sites.success.payment');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Log::error("Đặt hàng thất bại: " . $e->getMessage());
+
+            // Cập nhật lại giỏ hàng nếu có sản phẩm hết hàng đã bị xóa
+            session(['cart' => $cart]);
+
+            // Nếu chưa có lỗi nào trước đó, thêm lỗi hệ thống
+            if (empty($errors)) {
+                // Thêm lỗi vào mảng $errors
+                $errors[] = 'Đặt hàng thất bại (Do một số sản phẩm bạn chọn mua có thể đã hết hàng) dẫn đến lỗi trong quá trình tạo đơn hàng, bạn vui lòng thử lại!';
+            }
+            return redirect()->route('sites.cart')->with('error', implode('<br>', $errors));
         }
-        Session::put('success_data', [
-            'logo' => 'cod.png',
-            'receiver_name' => $order->receiver_name,
-            'order_id' => $order->id,
-            'total' => $order->total
-        ]);
-        Session::forget('order_data'); // Xóa session sau khi lưu vào db
-        return redirect()->route('sites.success.payment');
-
-        // return redirect()->route('sites.home')->with('success', "Đặt hàng thành công!");
     }
-
 
 
 

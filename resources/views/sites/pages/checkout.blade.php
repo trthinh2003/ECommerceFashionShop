@@ -1,8 +1,3 @@
-{{-- @php
-    // dd(Session::get('cart'));
-    dd(Auth::guard('customer')->user());
-@endphp --}}
-{{-- @can('customers') --}}
 @extends('sites.master')
 @section('title', 'Thanh toán')
 @section('content')
@@ -211,7 +206,3 @@
         });
     </script>
 @endsection
-{{-- @endcan
-@cannot('customers')
-    {{ redirect()->route('user.login')->send() }}
-@endcannot --}}
