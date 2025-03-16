@@ -78,19 +78,34 @@
                         <div class="blog__details__btns">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item">
-                                        <p><span class="arrow_left"></span>Tin trước đó</p>
-                                        <h5>It S Classified How To Utilize Free Classified Ad Sites</h5>
-                                    </a>
+                                    @if($previousBlog)
+                                        <a href="{{ route('sites.blogDetail', $previousBlog->slug) }}" class="blog__details__btns__item">
+                                            <p><span class="arrow_left"></span>Tin trước đó</p>
+                                            <h5>{{ $previousBlog->title }}</h5>
+                                        </a>
+                                    @else
+                                        <a href="#" class="blog__details__btns__item">
+                                            <p><span class="arrow_left"></span>Không có bài viết trước đó</p>
+                                            <h5></h5>
+                                        </a>
+                                    @endif
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <a href="" class="blog__details__btns__item blog__details__btns__item--next">
-                                        <p>Tin tiếp theo<span class="arrow_right"></span></p>
-                                        <h5>Tips For Choosing The Perfect Gloss For Your Lips</h5>
-                                    </a>
+                                    @if($nextBlog)
+                                        <a href="{{ route('sites.blogDetail', $nextBlog->slug) }}" class="blog__details__btns__item blog__details__btns__item--next">
+                                            <p>Tin tiếp theo<span class="arrow_right"></span></p>
+                                            <h5>{{ $nextBlog->title }}</h5>
+                                        </a>
+                                    @else
+                                        <a href="#" class="blog__details__btns__item blog__details__btns__item--next">
+                                            <p>Không có bài viết tiếp theo<span class="arrow_right"></span></p>
+                                            <h5></h5>
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="blog__details__comment">
                             <h4>Để lại đánh giá</h4>
                             <form action="#">

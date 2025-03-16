@@ -7,12 +7,18 @@
             <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('success') }}
         </div>
     @endif
+    @if (Session::has('error'))
+        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 25rem; display:flex; text-align:center">
+            <i class="fas fa-times p-2 bg-danger text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('error') }}
+        </div>
+    @endif
     <div class="card">
         <div class="card-body">
             <div class="card-sub">
                 <form method="GET" class="form-inline row" action="{{ route('blog.search') }}">
                     @csrf
-                    <div class="col-9 navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+                    <div
+                        class="col-9 navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <button type="submit" class="btn btn-search pe-1">
@@ -79,7 +85,9 @@
             </table>
         </div>
     </div>
-    {{ $data->links() }}
+    <div class="d-flex justify-content-center mt-3">
+        {{ $data->links() }}
+    </div>
 
     <!-- Modal blogAdd-->
     <div class="modal fade" id="addBlogModal" tabindex="-1" aria-labelledby="addBlogModalLabel" aria-hidden="true">
@@ -146,7 +154,8 @@
                     <h5 class="modal-title" id="updateBlogModalLabel">Cập Nhật Bài Viết</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="updateBlogForm" action="{{ route('blog.update', ':id') }}" method="POST" enctype="multipart/form-data">
+                <form id="updateBlogForm" action="{{ route('blog.update', ':id') }}" method="POST"
+                    enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="modal-body">
@@ -161,7 +170,8 @@
                         <div class="mb-3 row">
                             <div class="col-md-6">
                                 <label for="image" class="form-label">Ảnh:</label>
-                                <input type="file" class="form-control" name="image-update" accept="image/*" required>
+                                <input type="file" class="form-control" name="image_update" accept="image/*"
+                                    required>
                             </div>
                             <div class="col-md-6">
                                 <img src="" id="blog-image-update" alt="" width="100"
@@ -170,8 +180,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="blog_tag" class="form-label">Tags:</label>
-                            <input type="text" data-role=""="tagsinput" id="blog-tag-update" name="blog_tag"
-                                class="form-control" required>
+                            <input type="text" id="blog-tag-update" name="blog_tag" class="form-control" data-role="tagsinput" required>
                         </div>
                         <div class="mb-3">
                             <input type="hidden" class="form-control" value="{{ auth()->user()->id - 1 }}"
@@ -260,7 +269,7 @@
 @endsection
 
 @section('js')
-    @if (Session::has('success'))
+    @if (Session::has('success') || Session::has('error'))
         <script src="{{ asset('assets/js/message.js') }}"></script>
     @endif
 
@@ -322,7 +331,7 @@
                 });
             });
             $(".btn-update").click(function(event) {
-                event.preventDefault();
+                // event.preventDefault();
                 let blogId = $(this).data("id");
                 let formAction = $("#updateBlogForm").attr("action").replace(':id', blogId);
                 $("#updateBlogForm").attr("action", formAction);
@@ -335,11 +344,11 @@
                             let blogInfo = response.data;
                             $("#blog-title-update").val(blogInfo.title);
                             $("#blog-content-update").val(blogInfo.content);
-                            $(".preview-img-item").attr("src", `uploads/${blogInfo.image}`);
-                            $("#blog-tag-update").val(blogInfo.tags);
+                            $(".preview-img-item-update").attr("src", `uploads/${blogInfo.image}`);
+                            $("#blog-tag-update").tagsinput('removeAll');
+                            $("#blog-tag-update").tagsinput('add', blogInfo.tags);
                             $("#staff-name-update").val(blogInfo.staff.name);
-                            $("#blog-status-update").val(blogInfo.status) === 1 ? "Hiển thị" :
-                                "Ẩn";
+                            $("#blog-status-update").val(blogInfo.status);
                         } else {
                             alert("Không thể lấy dữ liệu chi tiết!");
                         }
@@ -351,7 +360,6 @@
             });
         });
     </script>
-
 @endsection
 @else
 {{ abort(403, 'Bạn không có quyền truy cập trang này!') }}

@@ -88,9 +88,9 @@ class CategoryController extends Controller
     {
         if ($category->Products->count() == 0) {
             $category->delete();
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Xoá danh mục thành công!');
         }
-        return redirect()->back();
+        return redirect()->back()->with('error', 'Xoá thất bại!');
     }
 
      /**

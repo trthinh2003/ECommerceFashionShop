@@ -53,8 +53,7 @@ class BlogController extends Controller
         $file_name = $request->image->hashName();
         $request->image->move(public_path('uploads'), $file_name);
         $blog->image = $file_name;
-        $blog->slug = Str::slug($data['title']); //"Áo thun Polo XXL"->"ao-thun-polo-xxl"
-
+        $blog->slug = Str::slug($data['title']);
         $blog->tags = $data['blog_tag'];
         $blog->status = $data['status'];
         $blog->staff_id = $data['staff_id'];
@@ -84,33 +83,35 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
+        // dd($request->all());
         $data = $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'image' => 'required',
+            'image_update' => 'required',
             'blog_tag' => 'required',
             'status' => 'required',
             'staff_id' => 'required',
         ],[
             'title.required' => 'Title is required',
             'content.required' => 'Content is required',
-            'image.required' => 'Image is required',
+            'image_update.required' => 'Image is required',
             'blog_tag.required' => 'Blog Tag is required',
             'status.required' => 'Status is required',
         ]);
 
         $blog->title = $data['title'];
+        $blog->slug = Str::slug($data['title']);
         $blog->content = $data['content'];
         //Xu ly anh
-        $file_name = $request->image->hashName();
-        $request->image->move(public_path('uploads'), $file_name);
+        $file_name = $request->image_update->hashName();
+        $request->image_update->move(public_path('uploads'), $file_name);
         $blog->image = $file_name;
 
         $blog->tags = $data['blog_tag'];
         $blog->status = $data['status'];
         $blog->staff_id = $data['staff_id'];
         $blog->save();
-        return redirect()->route('blog.index')->with('success', 'Cập nhật bài viết thành công');
+        return redirect()->route('blog.index')->with('success', 'Cập nhật nội dung bài viết thành công');
     }
 
     /**
@@ -122,7 +123,7 @@ class BlogController extends Controller
         $blog->delete();
         return redirect()->route('blog.index')->with('success', 'Xoá bài viết thành công');
       }
-      return redirect()->route('blog.index')->with('success', 'Xoá thất bại');
+      return redirect()->route('blog.index')->with('error', 'Xoá thất bại');
     }
 
     public function search(Request $request){

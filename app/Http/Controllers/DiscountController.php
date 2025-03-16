@@ -99,11 +99,17 @@ class DiscountController extends Controller
      */
     public function destroy(Discount $discount)
     {
-        //
+        if ($discount->Products->count() == 0) {
+            $discount->delete();
+            return redirect()->back()->with('success', 'Xoá khuyến mãi thành công!');
+        }
+        return redirect()->back()->with('error', 'Xoá khuyến mãi thất bại!');
     }
 
     public function search(Request $request)
     {
-
+        $keyword = $request->input('query');
+        $data = Discount::where('name', 'like', "%$keyword%")->orWhere('id', "%$keyword%")->paginate(3);
+        return view('admin.discount.index', compact('data', 'keyword'));
     }
 }

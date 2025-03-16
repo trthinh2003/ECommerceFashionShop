@@ -47,7 +47,7 @@ class ProviderController extends Controller
         $providers->address = $data['address'];
         $providers->phone = $data['phone'];
         $providers->save();
-        return redirect()->route('provider.index')->with("createSuccess", "Thêm nhà cung cấp mới thành công");
+        return redirect()->route('provider.index')->with("success", "Thêm nhà cung cấp mới thành công");
     }
 
     /**
@@ -87,7 +87,7 @@ class ProviderController extends Controller
         $provider->address = $data['address'];
         $provider->phone = $data['phone'];
         $provider->save();
-        return redirect()->route('provider.index');
+        return redirect()->route('provider.index')->with("success", "Sửa thông tin nhà cung cấp thành công");
     }
 
     /**
@@ -95,11 +95,11 @@ class ProviderController extends Controller
      */
     public function destroy(Provider $provider)
     {
-        // if ($provider->Inventory->count() == 0) {
+        if ($provider->Inventories()->count() == 0) {
             $provider->delete();
-            return redirect()->back();
-        // }
-        // return redirect()->back();
+            return redirect()->back()->with('success', 'Xoá nhà cung cấp thành công!');
+        }
+        return redirect()->back()->with('error', 'Xoá thất bại!');
     }
 
     public function search(Request $request){

@@ -60,7 +60,9 @@
         </div>
     </div>
     </hr>
-    {{ $data->links() }}
+    <div class="d-flex justify-content-center mt-3">
+        {{ $data->links() }}
+    </div>
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}" />

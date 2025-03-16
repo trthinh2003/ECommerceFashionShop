@@ -48,21 +48,21 @@
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">
                                     <div class="product__thumb__pic set-bg"
-                                        data-setbg="{{ 'client/img/shop-details/thumb-2.png' }}">
+                                    data-setbg="{{ asset('uploads/' . $productDetail->image) }}">
                                     </div>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">
                                     <div class="product__thumb__pic set-bg"
-                                        data-setbg="{{ 'client/img/shop-details/thumb-3.png' }}">
+                                    data-setbg="{{ asset('uploads/' . $productDetail->image) }}">
                                     </div>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">
                                     <div class="product__thumb__pic set-bg"
-                                        data-setbg="{{ 'client/img/shop-details/thumb-4.png' }}">
+                                    data-setbg="{{ asset('uploads/' . $productDetail->image) }}">
                                         <i class="fa fa-play"></i>
                                     </div>
                                 </a>

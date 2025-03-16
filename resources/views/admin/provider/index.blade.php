@@ -2,11 +2,16 @@
     @extends('admin.master')
     @section('title', 'Thông tin Nhà cung cấp')
     @section('content')
-        @if (Session::has('success'))
-            <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 26rem; display:flex; text-align:center">
-                <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('success') }}
-            </div>
-        @endif
+    @if (Session::has('success'))
+        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 25rem; display:flex; text-align:center">
+            <i class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('success') }}
+        </div>
+    @endif
+    @if (Session::has('error'))
+        <div class="shadow-lg p-2 move-from-top js-div-dissappear" style="width: 25rem; display:flex; text-align:center">
+            <i class="fas fa-times p-2 bg-danger text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('error') }}
+        </div>
+    @endif
         <div class="card">
             <div class="card-body">
                 <div class="card-sub">
@@ -67,7 +72,9 @@
                 </table>
             </div>
         </div>
-        {{ $data->links() }}
+        <div class="d-flex justify-content-center mt-3">
+            {{ $data->links() }}
+        </div>
     @endsection
 
 
@@ -76,7 +83,7 @@
     @endsection
 
     @section('js')
-        @if (Session::has('success'))
+        @if (Session::has('success') || Session::has('error'))
             <script src="{{ asset('assets/js/message.js') }}"></script>
         @endif
     @endsection

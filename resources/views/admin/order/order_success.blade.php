@@ -42,7 +42,7 @@
                             <td>{{ $model->address }}</td>
                             <td>{{ $model->phone }}</td>
                             <td>{{ $model->total }}</td>
-                            <td>{{ $model->status }}</td>
+                            <td  class="text-success font-weight-bold">{{ $model->status }}</td>
                             <td>{{ $model->created_at }}</td>
                             <td>
                                 <a href="{{ route('order.show', $model->id) }}" class="btn btn-sm btn-secondary"><i
@@ -55,7 +55,9 @@
         </div>
     </div>
     </hr>
-    {{ $data->links() }}
+    <div class="d-flex justify-content-center mt-3">
+        {{ $data->links() }}
+    </div>
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/message.css') }}" />
