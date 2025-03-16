@@ -146,7 +146,7 @@ class Ochat
 
     private function handleProductSelection($context, $message, $sessionKey) {
         if (preg_match('/mẫu số (\d+)/i', $message, $matches)) {
-            $index = (int)$matches[1] - 1; // Trừ 1 để khớp index trong mảng
+            $index = (int)$matches[2] - 1; // Trừ 1 để khớp index trong mảng
             $products = session($sessionKey . '_products', []);
 
             if (isset($products[$index])) {
@@ -295,13 +295,12 @@ class Ochat
                 - Chính sách đổi trả của cửa hàng là 30 ngày.
                 - Các phương thức thanh toán có ở cửa hàng là COD, ví điện tử (VNPay, Momo, ZaloPay).
                 - Size áo và quần thì có là XS, S, M, L, XL, XXL.
-                - Các màu có là '$allColors'.
+                - Các màu của sản phẩm hiện tại trong cửa hàng là '$allColors'.
                 - Ký tự '2' đơn lẻ được xem là chào nhé.
                 - Trang liên hệ nằm ở đây: http://127.0.0.1:8000/contact (Hãy đổi nó thành thẻ a có tên Contact).
                 - Trang blog nằm ở đây: http://127.0.0.1:8000/blog (Hãy đổi nó thành thẻ a có tên Blog).
                 - Trang mua sản phẩm nằm ở đây: http://127.0.0.1:8000/shop (Hãy đổi nó thành thẻ a có tên Shop).
                 - Các thẻ a có thể mở trong tab mới.
-                - Các thẻ a có thể dùng class='text-dark' để màu chữ đen.
                 Người dùng hỏi: '$message'.
             ")
             ->options(['temperature' => 0.7])

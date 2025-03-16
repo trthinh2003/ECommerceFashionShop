@@ -1,5 +1,5 @@
 {{-- @php
-    dd(Session::get('cart'));
+   dd($productRecentInfo);
 @endphp --}}
 
 @extends('sites.master')
@@ -15,6 +15,9 @@
             $totalProduct = 0;
         }
     @endphp
+
+
+
     <!-- Hero Section Begin -->
     <section class="hero">
         <div class="hero__slider owl-carousel">
@@ -108,6 +111,115 @@
     </section>
     <!-- Banner Section End -->
 
+    <!-- Product Recently Section Begin -->
+    @if (!empty($productRecentInfo) && count($productRecentInfo) > 0)
+        <section class="product spad" id="product-recently-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="filter__controls">
+                            <li>Sản Phẩm Bạn Đã Xem Gần Đây</li>
+                        </ul>
+                    </div>
+                </div>
+
+              
+                <div class="row product__filter" id="product-recently-container">
+                    @foreach ($productRecentInfo as $itemRecent)
+                    
+                    @php
+                    // Xử lý khuyến mãi
+                        $discountName = '';
+                        if ($itemRecent->discount_id && $itemRecent->discount_id !== null) {
+                            $itemRecent->price = $itemRecent->price - $itemRecent->price * $itemRecent->Discount->percent_discount;
+                            $discountName = $itemRecent->Discount->name;
+                        } else {
+                            $discountName = 'New';
+                        }
+                        $totalStock = 0;
+                        if ($itemRecent->ProductVariants) {
+                            // Kiểm tra nếu có productVariants
+                            foreach ($itemRecent->ProductVariants as $variant) {
+                                if ($variant) {
+                                    $totalStock += $variant->stock;
+                                }
+                            }
+                        }
+                     @endphp
+                        <div class="col-lg-3 col-md-6 col-sm-6 mix">
+                            <div class="product__item">
+                                <div class="product__item__pic">
+                                    <img src="{{ asset('uploads/' . $itemRecent->image) }}" class="set-bg" width="280"
+                                        height="280" alt="{{ $itemRecent->product_name }}">
+                                    <span class="label name-discount bg-danger text-white">{{$discountName}}</span>
+                                    <ul class="product__hover">
+                                        <li>
+                                            <a href="{{ url('add-to-wishlist/' . $itemRecent->id) }}"
+                                                class="add-to-wishlist">
+                                                <img src="{{ asset('client/img/icon/heart.png') }}" alt="">
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img src="{{ asset('client/img/icon/compare.png') }}"
+                                                    alt="">
+                                                <span>Compare</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('product/' . $itemRecent->slug) }}">
+                                                <img src="{{ asset('client/img/icon/search.png') }}" alt="">
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="product__item__text">
+                                    <h6>{{ $itemRecent->product_name }}</h6>
+                                    @php
+                                        if($totalStock == 0 ) {
+                                            echo '<span class=" badge badge-warning">Hết hàng</span>';
+                                        } else {
+                                            echo '<a href="javascript:void(0);" class="add-cart" data-id="'. $itemRecent->id .'">+Add To Cart</a>';
+                                        }
+                                    @endphp
+                                    {{-- <a href="javascript:void(0);" class="add-cart" data-id="{{ $itemRecent->id }}">
+                                        + Add To Cart
+                                    </a> --}}
+                                    <div class="rating mt-2">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                    <h5>{{ number_format($itemRecent->price) }} đ</h5>
+                                    <div class="product__color__select">
+                                        <label for="pc-1">
+                                            <input type="radio" id="pc-1">
+                                        </label>
+                                        <label class="active black" for="pc-2">
+                                            <input type="radio" id="pc-2">
+                                        </label>
+                                        <label class="grey" for="pc-3">
+                                            <input type="radio" id="pc-3">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+
+    <!-- Product Section Recently End -->
+
+
+
+
+
+
     <!-- Product Discount Section Begin -->
     <section class="product spad">
         <div class="container">
@@ -138,7 +250,7 @@
                                     finalPrice = product.price - (product.price * product.discount.percent_discount);
 
                                 } else {
-                                    
+
                                     finalPrice = product.price ?? 0;
                                     // console.log(finalPrice);
                                 }
@@ -188,9 +300,12 @@
                                                 <div class="product__item__text">
                                                     <h6>${product.name}</h6>` +
 
-                                                    (addCartOrNone[product.id] > 0 ? `<a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>` : `<span class=" badge badge-warning">Hết hàng</span>`)
+                                    (addCartOrNone[product.id] > 0 ?
+                                        `<a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>` :
+                                        `<span class=" badge badge-warning">Hết hàng</span>`)
 
-                                                    +`<div class="rating">
+                                    +
+                                    `<div class="rating">
                                                         <i class="fa fa-star-o"></i>
                                                         <i class="fa fa-star-o"></i>
                                                         <i class="fa fa-star-o"></i>
@@ -312,9 +427,12 @@
                                                 <h6>${product.product_name}</h6>
                                                 ` +
 
-                                                    (addCartOrNone[product.id] > 0 ? `<a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>` : `<span class=" badge badge-warning">Hết hàng</span>`)
+                                    (addCartOrNone[product.id] > 0 ?
+                                        `<a href="javascript:void(0);" class="add-cart" data-id="${product.id}">+ Add To Cart</a>` :
+                                        `<span class=" badge badge-warning">Hết hàng</span>`)
 
-                                                    +`
+                                    +
+                                    `
                                                 <div class="rating">
                                                     <i class="fa fa-star-o"></i>
                                                     <i class="fa fa-star-o"></i>
@@ -486,16 +604,18 @@
             </div>
             <div class="row">
                 @foreach ($data as $model)
-                <div class="col-lg-4 col-md-6 col-sm-6">
-                    <div class="blog__item">
-                        <div class="blog__item__pic set-bg" data-setbg="{{ asset('uploads/'.$model->image) }}"></div>
-                        <div class="blog__item__text">
-                            <span><img src="{{ asset('client/img/icon/calendar.png') }}" alt="">{{$model->created_at}}</span>
-                            <h5>{{$model->title}}</h5>
-                            <a href="{{ route('sites.blogDetail', $model->slug) }}">Đọc thêm</a>
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="blog__item">
+                            <div class="blog__item__pic set-bg" data-setbg="{{ asset('uploads/' . $model->image) }}">
+                            </div>
+                            <div class="blog__item__text">
+                                <span><img src="{{ asset('client/img/icon/calendar.png') }}"
+                                        alt="">{{ $model->created_at }}</span>
+                                <h5>{{ $model->title }}</h5>
+                                <a href="{{ route('sites.blogDetail', $model->slug) }}">Đọc thêm</a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endforeach
             </div>
         </div>

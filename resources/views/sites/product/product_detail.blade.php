@@ -1,9 +1,8 @@
 @php
-    // dd((float)$starAvg->star_avg);
-    // dd(count($commentCustomers), $starAvg);
+    // Session::forget('product_recent');
+    // dd(Session::get('product_recent'));
     
-
-
+    // Xử lý tính tổng số lượng sản phẩm trong giỏ hàng
     $totalProduct = 0;
     if (Session::has('cart')) {
         foreach (Session::get('cart') as $item) {
@@ -12,7 +11,8 @@
     } else {
         $totalProduct = 0;
     }
-    // Xử lý màu sắc (hơi mủ)
+
+    // Xử lý màu sắc(helper.php)
     // getColorHex($productDetail->color);
 @endphp
 
@@ -109,16 +109,15 @@
                             <div class="product__details__text">
                                 <h4>{{ $productDetail->product_name }}</h4>
                                 <div class="rating">
-                                    @php    
+                                    @php
                                         $avgStar = $starAvg;
                                         $fullStars = floor($avgStar); // Số sao đầy
                                         $hasHalfStar = $avgStar - $fullStars >= 0.5; // Kiểm tra có nửa sao không
                                         $emptyStars = 5 - $fullStars - ($hasHalfStar ? 1 : 0); // Số sao rỗng còn lại
-                                        
-                                    @endphp
-                                    
 
-                     
+                                    @endphp
+
+
 
                                     {{-- Sao đầy --}}
                                     @for ($i = 0; $i < $fullStars; $i++)
@@ -262,7 +261,7 @@
                                         <!-- Danh sách bình luận -->
                                         <div class="comment-section">
                                             <h5 class="comment-title">Đánh giá sản phẩm
-                                                ({{ count($commentCustomers ?? [])}})</h5>
+                                                ({{ count($commentCustomers ?? []) }})</h5>
                                             <hr>
                                             <ul id="review-list">
                                                 @if ($commentCustomers != null)

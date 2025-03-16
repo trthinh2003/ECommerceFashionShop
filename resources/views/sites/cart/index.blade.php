@@ -1,7 +1,7 @@
-{{-- @php
+{{-- 
+@php
     dd(Session::get('cart'));
 @endphp --}}
-
 @extends('sites.master')
 @section('content')
     <!-- Breadcrumb Section Begin -->

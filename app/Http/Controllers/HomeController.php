@@ -8,16 +8,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Models\ProductRecent;
 
 class HomeController extends Controller
 {
     public function home()
     {
-        if (Session::has('success_payment')) {
+        if (Session::has('success_payment')) { 
             Session::forget('success_payment');
         }
+
+        // xử lý product recent lưu vào 1 mảng và truyền vào view
+        $productRecentInfo = [];
+        if (Session::has('product_recent') && count(Session::get('product_recent')) > 0) {
+            foreach (Session::get('product_recent') as $item) {
+                $product = Product::with('ProductVariants', 'Discount')->find($item->id_recent);
+                if ($product) {
+                    $productRecentInfo[] = $product;
+                }
+            }
+        }
         $data = Blog::with('staff')->paginate(5);
-        return view('sites.home.index', compact('data'));
+        return view('sites.home.index', compact('data', 'productRecentInfo'));
     }
 
     public function shop(Request $request)
@@ -105,7 +117,7 @@ class HomeController extends Controller
         return view('sites.pages.checkout');
     }
 
-    public function productDetail($slug)
+    public function productDetail(ProductRecent $productRecent, Product $productDetail, $slug)
     {
         $productDetail = Product::where('slug', $slug)
             ->with(['ProductVariants', 'Category', 'Discount'])
@@ -114,7 +126,9 @@ class HomeController extends Controller
         // Lấy danh sách size của sản phẩm
         $sizes = $productDetail->ProductVariants->pluck('size')->unique();
         // Lấy danh sách màu của sản phẩm
+
         $colors = $productDetail->ProductVariants->pluck('color')->unique();
+
 
         // Lấy danh sách bình luận của khách hàng
         $commentCustomers = DB::table('orders as o')
@@ -161,6 +175,8 @@ class HomeController extends Controller
         // Nếu không có sao trung bình thì mặc định là 0
         $starAvg = $starAvg ? $starAvg->star_avg : 0;
 
+        // Thêm sản phẩm vào mảng session để hiển thị ra sản phẩm đã xem
+        $productRecent->addToProductRecent($productDetail);
 
         return view('sites.product.product_detail', compact('productDetail', 'sizes', 'colors', 'commentCustomers', 'starAvg'));
     }

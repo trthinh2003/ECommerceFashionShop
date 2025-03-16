@@ -18,6 +18,7 @@ use App\Http\Controllers\DialogflowController;
 use App\Http\Controllers\FacebookAuthController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\OllamaController;
+use App\Http\Controllers\ProductRecordRecentyController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\RevenueController;
 use App\Http\Controllers\WishListProductController;
@@ -83,6 +84,8 @@ Route::group(['prefix' => '/'], function () {
     Route::post('/contact/send', [ContactController::class, 'sendContact'])->name('contact.send');
     Route::get('/blog', [HomeController::class, 'blog'])->name('sites.blog');
     Route::get('/product/{slug}', [HomeController::class, 'productDetail'])->name('sites.productDetail');
+
+
     // Xử lý danh sách yêu thích
     Route::get('/wishlist', [WishListProductController::class, 'index'])->name('sites.wishlist');
     Route::get('/add-to-wishlist/{product}', [WishListProductController::class, 'addToWishList'])->name('sites.addToWishList');

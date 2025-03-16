@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    public function dashboard()
+    public  function dashboard()
     {
 
         $staffQuantity = DB::table('staff')->count();
