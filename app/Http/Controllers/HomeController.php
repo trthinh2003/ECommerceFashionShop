@@ -36,7 +36,6 @@ class HomeController extends Controller
     {
         // dd($request->all());
         $query = Product::with('category', 'Discount', 'ProductVariants');
-
         if ($request->has('q')) {
             $search = $request->q;
             $query->where('product_name', 'LIKE', "%$search%");

@@ -52,7 +52,7 @@ class CartController extends Controller
 
             $cart->add($product, request()->quantity, $productVariant);
             return redirect()->route('sites.cart');
-        } 
+        }
         // thêm ở bên ngoài 
         else {
             $product = Product::with('Discount')->find($product->id);

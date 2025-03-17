@@ -18,10 +18,16 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb__text">
                         <h4>Shop</h4>
-                        <div class="breadcrumb__links">
+                        <div class="breadcrumb__links mb-3">
                             <a href="{{ route('sites.home') }}">Home</a>
                             <span>Shop</span>
                         </div>
+                        <div class="fw-bold" style="font-size: 2rem">
+                            @if (!empty(request('q')))
+                            Kết quả tìm kiếm của từ khoá "{{ request('q') }}"
+                            @endif
+                        </div>
+                   
                     </div>
                 </div>
             </div>
@@ -30,6 +36,7 @@
     <!-- Breadcrumb Section End -->
     <!-- Shop Section Begin -->
     <section class="shop spad">
+
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
@@ -37,7 +44,7 @@
                         <div class="shop__sidebar__search">
                             <form action="/shop" method="GET">
                                 <input type="text" name="q" placeholder="Search..."
-                                    value="{{ request('search') }}">
+                                    value="{{ request('q') }}">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
                         </div>
