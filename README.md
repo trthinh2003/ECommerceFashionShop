@@ -3,8 +3,6 @@
 ## 📌 Project Overview
 This project is a **Laravel-based E-Commerce System** designed for selling fashion products. The system includes features such as product management, order processing, cart processing, customer authentication, provider tracking, and promotional discounts. The database schema is structured for efficiency and scalability.
 
-## 🏗️ Entity-Relationship Diagram (ERD)
-
 ## 📂 Database Structure
 ### **1. Product Management**
 | Table | Description |
