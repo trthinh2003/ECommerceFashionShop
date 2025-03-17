@@ -12,6 +12,17 @@
     }
 @endphp
 
+@if (Session::has('success'))
+<div class="shadow-lg p-2 move-from-top login-success-notify"
+    style="width: 16rem; position: fixed; text-align: center; border-radius: 8px; 
+    background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin: 0; z-index: 99999;
+    top: 0; left: 40%; opacity: 0.9;">
+    <i
+        class="fas fa-check p-2 bg-success text-white rounded-circle pe-2 mx-2"></i>{{ Session::get('success') }}
+</div>
+@endif
+
 
 <!--************************* Offcanvas Menu Begin Menu ẩn nhé ***************-->
 <div class="offcanvas-menu-overlay"></div>
@@ -50,6 +61,8 @@
     </div>
 </div>
 <!-- Offcanvas Menu End -->
+
+
 
 <!-- Header Section Begin -->
 <header class="header">
@@ -171,4 +184,31 @@
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/css/header.css') }}">
+    <style>
+        .move-from-top {
+            animation: slide-down 0.4s ease-out;
+        }
+
+        @keyframes slide-down {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
 @endsection
+<script>
+    setTimeout(function() {
+        var alert = document.querySelector('.login-success-notify');
+        if (alert) {
+            alert.classList.remove('show'); // Bootstrap ẩn alert
+            alert.classList.add('fade'); // Tạo hiệu ứng mờ dần
+            setTimeout(() => alert.remove(), 500); // Xóa khỏi DOM sau khi mờ dần
+        }
+    }, 2000);
+</script>

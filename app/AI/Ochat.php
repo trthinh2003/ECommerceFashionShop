@@ -297,10 +297,10 @@ class Ochat
                 - Size áo và quần thì có là XS, S, M, L, XL, XXL.
                 - Các màu của sản phẩm hiện tại trong cửa hàng là '$allColors'.
                 - Ký tự '2' đơn lẻ được xem là chào nhé.
-                - Trang liên hệ nằm ở đây: http://127.0.0.1:8000/contact (Hãy đổi nó thành thẻ a có tên Contact).
-                - Trang blog nằm ở đây: http://127.0.0.1:8000/blog (Hãy đổi nó thành thẻ a có tên Blog).
-                - Trang mua sản phẩm nằm ở đây: http://127.0.0.1:8000/shop (Hãy đổi nó thành thẻ a có tên Shop).
-                - Các thẻ a có thể mở trong tab mới.
+                - Nếu người dùng hỏi về cách liên hệ đổi trả sản phẩm, hãy nói về chính sách đổi trả của cửa hàng và có đường link qua trang liên hệ.
+                - Trang liên hệ nằm ở đây: <a href='http://127.0.0.1:8000/contact'>Contacts</a>
+                - Trang blog nằm ở đây: <a href='http://127.0.0.1:8000/blog'>Blog</a>
+                - Trang mua sản phẩm nằm ở đây: <a href='http://127.0.0.1:8000/shop'>Shop</a>
                 Người dùng hỏi: '$message'.
             ")
             ->options(['temperature' => 0.7])

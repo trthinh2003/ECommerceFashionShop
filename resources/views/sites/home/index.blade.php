@@ -2,6 +2,10 @@
    dd($productRecentInfo);
 @endphp --}}
 
+
+
+
+
 @extends('sites.master')
 @section('title', 'Trang chủ')
 @section('content')
@@ -15,8 +19,6 @@
             $totalProduct = 0;
         }
     @endphp
-
-
 
     <!-- Hero Section Begin -->
     <section class="hero">
@@ -123,35 +125,35 @@
                     </div>
                 </div>
 
-              
+
                 <div class="row product__filter" id="product-recently-container">
                     @foreach ($productRecentInfo as $itemRecent)
-                    
-                    @php
-                    // Xử lý khuyến mãi
-                        $discountName = '';
-                        if ($itemRecent->discount_id && $itemRecent->discount_id !== null) {
-                            $itemRecent->price = $itemRecent->price - $itemRecent->price * $itemRecent->Discount->percent_discount;
-                            $discountName = $itemRecent->Discount->name;
-                        } else {
-                            $discountName = 'New';
-                        }
-                        $totalStock = 0;
-                        if ($itemRecent->ProductVariants) {
-                            // Kiểm tra nếu có productVariants
-                            foreach ($itemRecent->ProductVariants as $variant) {
-                                if ($variant) {
-                                    $totalStock += $variant->stock;
+                        @php
+                            // Xử lý khuyến mãi
+                            $discountName = '';
+                            if ($itemRecent->discount_id && $itemRecent->discount_id !== null) {
+                                $itemRecent->price =
+                                    $itemRecent->price - $itemRecent->price * $itemRecent->Discount->percent_discount;
+                                $discountName = $itemRecent->Discount->name;
+                            } else {
+                                $discountName = 'New';
+                            }
+                            $totalStock = 0;
+                            if ($itemRecent->ProductVariants) {
+                                // Kiểm tra nếu có productVariants
+                                foreach ($itemRecent->ProductVariants as $variant) {
+                                    if ($variant) {
+                                        $totalStock += $variant->stock;
+                                    }
                                 }
                             }
-                        }
-                     @endphp
+                        @endphp
                         <div class="col-lg-3 col-md-6 col-sm-6 mix">
                             <div class="product__item">
                                 <div class="product__item__pic">
                                     <img src="{{ asset('uploads/' . $itemRecent->image) }}" class="set-bg" width="280"
                                         height="280" alt="{{ $itemRecent->product_name }}">
-                                    <span class="label name-discount bg-danger text-white">{{$discountName}}</span>
+                                    <span class="label name-discount bg-danger text-white">{{ $discountName }}</span>
                                     <ul class="product__hover">
                                         <li>
                                             <a href="{{ url('add-to-wishlist/' . $itemRecent->id) }}"
@@ -175,10 +177,12 @@
                                 <div class="product__item__text">
                                     <h6>{{ $itemRecent->product_name }}</h6>
                                     @php
-                                        if($totalStock == 0 ) {
+                                        if ($totalStock == 0) {
                                             echo '<span class=" badge badge-warning">Hết hàng</span>';
                                         } else {
-                                            echo '<a href="javascript:void(0);" class="add-cart" data-id="'. $itemRecent->id .'">+Add To Cart</a>';
+                                            echo '<a href="javascript:void(0);" class="add-cart" data-id="' .
+                                                $itemRecent->id .
+                                                '">+Add To Cart</a>';
                                         }
                                     @endphp
                                     {{-- <a href="javascript:void(0);" class="add-cart" data-id="{{ $itemRecent->id }}">
@@ -622,7 +626,6 @@
     </section>
     <!-- Latest Blog Section End -->
 @endsection
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('client/css/cart-add.css') }}">
 @endsection

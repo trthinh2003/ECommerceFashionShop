@@ -37,7 +37,7 @@ class GoogleAuthController extends Controller
             Auth::guard('customer')->login($user);
 
             // Chuyển hướng về trang trước đó hoặc trang chủ
-            return redirect()->intended('/')->with('success', 'Đăng nhập Google thành công!');
+            return redirect()->intended('/')->with('success', 'Đăng nhập thành công!');
         } catch (\Exception $e) {
             return redirect('/user/login')->with('error', 'Đăng nhập Google thất bại!');
         }
