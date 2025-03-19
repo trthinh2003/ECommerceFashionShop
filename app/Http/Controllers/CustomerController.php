@@ -132,18 +132,19 @@ class CustomerController extends Controller
 
     public function getHistoryOrderOfCustomer()
     {
-        if (request()->has('query')) {
+        if (request()->has('query') && request()->query('query') != '') {
             $query = request()->query('query');
 
             $historyOrder = DB::table('orders as o')
                 ->join('customers as c', 'o.customer_id', '=', 'c.id')
                 ->orderBy('o.id', 'ASC')
+                ->where('o.customer_id', Auth::guard('customer')->user()->id)
                 ->where(function ($q) use ($query) {
                     if (is_numeric($query)) {
                         $q->where('o.id', $query) // Tìm chính xác theo ID
-                            ->orWhere('o.phone', 'like', "%$query%"); // Tìm theo số điện thoại
+                            ->orWhere('o.phone', 'like', "$query"); // Tìm theo số điện thoại
                     } else {
-                        $q->where('o.phone', 'like', "%$query%");
+                        $q->where('o.phone', 'like', "$query");
                     }
                 })
                 ->select('o.*', 'c.name as customer_name')
@@ -151,7 +152,6 @@ class CustomerController extends Controller
 
             return view('sites.customer.order_history', compact('historyOrder'));
         } else {
-
             if (Auth::guard('customer')->check()) {
                 $customer_id = Auth::guard('customer')->user()->id;
                 $historyOrder = DB::table('orders as o')

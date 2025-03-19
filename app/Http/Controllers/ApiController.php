@@ -78,7 +78,9 @@ class ApiController extends Controller
             'Provider',
             'InventoryDetails.Product.Category',
             'InventoryDetails.Product.ProductVariants'
-        ])->paginate(10);
+        ])
+        ->orderBy('id', 'DESC')
+        ->paginate(10);
 
         return response()->json([
             'status_code' => 200,

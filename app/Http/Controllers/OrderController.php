@@ -24,7 +24,7 @@ class OrderController extends Controller
         $data = DB::table('orders as o')
             ->join('customers as c', 'o.customer_id', '=', 'c.id')
             ->whereIn('o.status', ['Chờ xử lý', 'Đã huỷ đơn hàng']) // Sửa lại đúng logic
-            ->orderBy('o.id', 'ASC')
+            ->orderBy('o.id', 'DESC')
             ->select('o.*', 'c.name as customer_name')
             ->paginate(5);
 
@@ -37,7 +37,7 @@ class OrderController extends Controller
         $data = DB::table('orders as o')
             ->join('customers as c', 'o.customer_id', '=', 'c.id')
             ->where('o.status', 'Đã xử lý')
-            ->orderBy('o.id', 'ASC')
+            ->orderBy('o.id', 'DESC')
             ->select('o.*', 'c.name as customer_name')
             ->paginate(5);
         return view('admin.order.order_approved', compact('data'));
@@ -48,7 +48,7 @@ class OrderController extends Controller
         $data = DB::table('orders as o')
             ->join('customers as c', 'o.customer_id', '=', 'c.id')
             ->where('o.status', 'Đã thanh toán')
-            ->orderBy('o.id', 'ASC')
+            ->orderBy('o.id', 'DESC')
             ->select('o.*', 'c.name as customer_name')
             ->paginate(5);
         return view('admin.order.order_success', compact('data'));

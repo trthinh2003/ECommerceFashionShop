@@ -63,7 +63,7 @@
                             </div>
                             <div class="checkout__input">
                                 <p>Ghi chú<span></span></p>
-                                <input type="text" placeholder="Ghi chú cho đơn hàng (nếu có)" name="note">
+                                <input type="text" placeholder="Ghi chú cho đơn hàng (nếu có)" name="note" required>
                             </div>
                             <div class="checkout__input__checkbox">
                                 <a href="{{ route('admin.login') }}">Tạo tài khoản mua hàng?</a>
