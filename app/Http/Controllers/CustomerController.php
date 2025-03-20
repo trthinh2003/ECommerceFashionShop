@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -183,29 +185,55 @@ class CustomerController extends Controller
     public function searchOrderHistory() {}
 
 
-    // public function cancelOrder(Request $request, $id) {
-    //     $order = Order::find($id);
-    //     if (!$order) {
-    //         return redirect()->back()->with('error', 'Không tìm thấy đơn hàng!');
-    //     }
-    //     $order->status = "Đã huỷ đơn hàng";
-    //     $order->save();
 
-    //     return redirect()->back()->with('cancel', 'Huỷ đơn hàng thành công!');
+    // public function cancelOrder(Request $request, $id)
+    // {
+    //     try {
+    //         $order = Order::findOrFail($id);
+    //         $order->status = 'Đã huỷ đơn hàng';
+    //         $order->reason = $request->reason;
+    //         $order->save();
+    //         return response()->json(['message' => 'Hủy đơn hàng thành công!']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['message' => 'Có lỗi xảy ra, vui lòng thử lại!'], 500);
+    //     }
     // }
 
+
     public function cancelOrder(Request $request, $id)
-    {
-        try {
-            $order = Order::findOrFail($id);
-            $order->status = 'Đã huỷ đơn hàng';
-            $order->reason = $request->reason;
-            $order->save();
-            return response()->json(['message' => 'Hủy đơn hàng thành công!']);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Có lỗi xảy ra, vui lòng thử lại!'], 500);
+{
+    try {
+        DB::beginTransaction();
+
+        $order = Order::findOrFail($id);
+        $order->status = 'Đã huỷ đơn hàng';
+        $order->reason = $request->reason;
+        $order->save();
+
+        // Lấy danh sách chi tiết đơn hàng
+        $orderDetails = OrderDetail::where('order_id', $order->id)->get();
+
+        // Cộng ngược lại số lượng vào kho
+        foreach ($orderDetails as $detail) {
+            $variant = ProductVariant::where('product_id', $detail->product_id)
+                ->where('id', $detail->product_variant_id)
+                ->lockForUpdate()
+                ->first();
+
+            if ($variant) {
+                $variant->stock += $detail->quantity;
+                $variant->save();
+            }
         }
+
+        DB::commit();
+        return response()->json(['message' => 'Hủy đơn hàng thành công!']);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(['message' => 'Có lỗi xảy ra, vui lòng thử lại!'], 500);
     }
+}
+
 
 
 }
