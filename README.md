@@ -39,7 +39,7 @@ This project is a **Laravel-based E-Commerce System** designed for selling fashi
 ## 🛠️ Tech Stack
 - **Backend:** Laravel 10, PHP 8
 - **Database:** MySQL
-- **Frontend:** JQuery 3.7, Bootstrap 5
+- **Frontend:** jQuery 3.7, Bootstrap 5
 - **Authorization** Laravel Gate
 - **ORM:** Eloquent
 - **Payment** VNPAY, Momo, ZaloPay
