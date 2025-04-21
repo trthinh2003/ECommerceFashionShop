@@ -296,13 +296,14 @@
 
 
     <script>
+        const API_URL = "{{ config('app.api_url') }}";
         $(document).ready(function() {
             $(".btn-detail").click(function(event) {
                 event.preventDefault();
 
                 let blogId = $(this).data("id");
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/blog_detail/${blogId}`,
+                    url: `${API_URL}/blog_detail/${blogId}`,
                     type: "GET",
                     dataType: "json",
                     success: function(response) {
@@ -336,7 +337,7 @@
                 let formAction = $("#updateBlogForm").attr("action").replace(':id', blogId);
                 $("#updateBlogForm").attr("action", formAction);
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/blog_detail/${blogId}`,
+                    url: `${API_URL}/blog_detail/${blogId}`,
                     type: "GET",
                     dataType: "json",
                     success: function(response) {

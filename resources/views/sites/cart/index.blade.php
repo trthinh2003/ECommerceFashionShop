@@ -1,5 +1,5 @@
 {{--
-1. còn vấn đề lỗi khi thêm số lượng từ product_detail qua cart nó cứ cộng số lượng vô tư 
+1. còn vấn đề lỗi khi thêm số lượng từ product_detail qua cart nó cứ cộng số lượng vô tư
 2. Chỗ cart icon bị vấn đề là nếu chỉ còn 1 sản phẩm còn hàng vd 5 thì dù click 6 lần vẫn đc :))))
 --}}
 
@@ -175,7 +175,7 @@
                             <li>Phí Ship:<span>{{ number_format($ship, 0, ',', '.') . ' đ' }}</span></li>
                             <li>Thành tiền:<span>{{ number_format($total, 0, ',', '.') . ' đ' }}</span></li>
                         </ul>
-     
+
                         <a href="{{ route('sites.checkout') }}" id="checkout-form" class="primary-btn">Thanh Toán</a>
                     </div>
                     <div class="mt-3">
@@ -306,12 +306,13 @@
     </script>
 
     <script>
+        const API_URL = "{{ config('app.api_url') }}";
         $(document).ready(function() {
             $('#apply-code-discount').click(function(e) {
                 e.preventDefault();
                 var code = $('input[name="code_discount"]').val();
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/discount-code/${code}`,
+                    url: `${API_URL}/discount-code/${code}`,
                     type: "GET",
                     dataType: "json",
                     success: function(response) {
@@ -464,7 +465,7 @@
             $(".product-checkbox").change(function() {
                 if (!$(this).prop("checked")) {
                     $("#check-all").prop("checked", false); // Vô hiệu hoá 1 hoặc tất cả checkbox
-                } 
+                }
                 // else {
                 //     $("#check-all").prop("checked", true); // chọn tất cả nếu tất cả checkbox đc chọn
                 // }

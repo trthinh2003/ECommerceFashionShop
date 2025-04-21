@@ -70,6 +70,7 @@
 @include('sites.components.css.search-and-chatbot-css')
 @section('js')
     <script>
+        const API_URL = "{{ config('app.api_url') }}";
         $(document).ready(function() {
             const chatboxIcon = $("#chatbox-icon");
             const chatboxMessages = $("#chatbox-messages");
@@ -151,7 +152,7 @@
             console.log(query);
             if (query.length > 1) {
                 $.ajax({
-                    url: "http://127.0.0.1:8000/api/search",
+                    url: `${API_URL}/search`,
                     type: "GET",
                     data: {
                         q: query
@@ -221,7 +222,7 @@
 
         // phải search thử ở http://127.0.0.1:8000/api/search?q="....." => get ở http://127.0.0.1:8000/api/suggest-content-based thì mới thấy
         // Lấy gợi ý sản phẩm
-        $.get("http://127.0.0.1:8000/api/suggest-content-based", function(data) {
+        $.get(`${API_URL}/suggest-content-based`, function(data) {
             let suggestions = $("#suggestion-list");
             suggestions.empty();
 
@@ -274,7 +275,7 @@
             $("#suggestion-list-product").empty(); // Xóa dữ liệu cũ trước khi cập nhật mới
 
             $.ajax({
-                url: "http://127.0.0.1:8000/api/suggest-content-based", // API lấy danh sách sản phẩm
+                url: `${API_URL}/suggest-content-based`, // API lấy danh sách sản phẩm
                 method: "GET",
                 dataType: "json",
                 success: function(data) {

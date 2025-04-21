@@ -111,13 +111,14 @@
         <script src="{{ asset('assets/js/message.js') }}"></script>
     @endif
     <script>
+        const API_URL = "{{ config('app.api_url') }}";
         $(document).ready(function() {
             fetchInventories(1);
         });
 
         function fetchInventories(page) {
             $.ajax({
-                url: `http://127.0.0.1:8000/api/inventory?page=${page}`,
+                url: `${API_URL}/inventory?page=${page}`,
                 type: "GET",
                 dataType: "json",
                 success: function(response) {
@@ -201,7 +202,7 @@
                 let row = $(this).closest("tr");
                 let inventory_id = row.find("td:first").text().trim();
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/inventoryDetail/${inventory_id}`,
+                    url: `${API_URL}/inventoryDetail/${inventory_id}`,
                     type: "GET",
                     dataType: "json",
                     success: function(response) {

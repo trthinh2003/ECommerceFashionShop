@@ -164,13 +164,14 @@
         </script>
 
         <script>
+            const API_URL = "{{ config('app.api_url') }}";
             $(document).ready(function() {
                 $(".btn-detail").click(function(event) {
                     event.preventDefault();
                     let row = $(this).closest("tr");
                     let productId = row.find("td:first").text().trim();
                     $.ajax({
-                        url: `http://127.0.0.1:8000/api/product/${productId}`, //url, type, datatype, success,
+                        url: `${API_URL}/product/${productId}`, //url, type, datatype, success,
                         type: "GET",
                         dataType: "json",
                         success: function(response) {

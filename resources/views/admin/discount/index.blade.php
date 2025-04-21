@@ -190,13 +190,14 @@
     </script>
 
     <script>
+        const API_URL = "{{ config('app.api_url') }}";
         $(document).ready(function() {
             $(".btn-detail").click(function(event) {
                 event.preventDefault();
                 let row = $(this).closest("tr");
                 let promoId = row.find("td:first").text().trim();
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/discount/${promoId}`, //url, type, datatype, success,
+                    url: `${API_URL}/discount/${promoId}`, //url, type, datatype, success,
                     type: "GET",
                     dataType: "json",
                     success: function(response) {
@@ -238,7 +239,7 @@
                 // console.log(actionUpdate);
                 modalEdit.attr('action', actionUpdate);
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/discount/${promoId}`,
+                    url: `${API_URL}/discount/${promoId}`,
                     type: 'GET',
                     dataType: 'json',
                     success: function(response) {

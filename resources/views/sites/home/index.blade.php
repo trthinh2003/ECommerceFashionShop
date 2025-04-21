@@ -236,9 +236,10 @@
             </div>
             <div class="row product__filter" id="product-discount-container">
                 <script>
+                    const API_URL = "{{ config('app.api_url') }}";
                     async function fetchProductDiscount() {
                         try {
-                            let response = await fetch("http://127.0.0.1:8000/api/product-discount");
+                            let response = await fetch(`${API_URL}/product-discount`);
                             let data = await response.json();
                             let products = data.data;
                             // console.log(products);
@@ -367,7 +368,7 @@
                 <script>
                     async function fetchProduct() {
                         try {
-                            let response = await fetch('http://127.0.0.1:8000/api/product-client');
+                            let response = await fetch(`${API_URL}/product-client`);
                             let data = await response.json();
                             let products = data.data;
 

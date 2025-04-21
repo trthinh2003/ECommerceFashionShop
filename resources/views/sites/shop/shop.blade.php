@@ -27,7 +27,7 @@
                             Kết quả tìm kiếm của từ khoá "{{ request('q') }}"
                             @endif
                         </div>
-                   
+
                     </div>
                 </div>
             </div>
@@ -62,9 +62,10 @@
                                                         <ul class="nice-scroll" id="category-list"></ul>
                                                     </div>
                                                     <script>
+                                                        const API_URL = "{{ config('app.api_url') }}";
                                                         async function fetchCategories() {
                                                             try {
-                                                                let response = await fetch('http://127.0.0.1:8000/api/category');
+                                                                let response = await fetch(`${API_URL}/category`);
                                                                 let data = await response.json();
                                                                 let categories = data.data;
 
@@ -109,7 +110,7 @@
                                                     <script>
                                                         async function fetchBrand() {
                                                             try {
-                                                                let response = await fetch('http://127.0.0.1:8000/api/brand');
+                                                                let response = await fetch(`${API_URL}/brand`);
                                                                 let data = await response.json();
                                                                 let brands = data.data;
 

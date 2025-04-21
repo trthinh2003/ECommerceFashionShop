@@ -58,6 +58,8 @@ return [
 
     'asset_url' => env('ASSET_URL', '/'),
 
+    'api_url' => env('APP_API_URL', 'http://127.0.0.1:8000/api'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

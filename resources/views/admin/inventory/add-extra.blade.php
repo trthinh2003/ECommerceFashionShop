@@ -160,8 +160,9 @@
         @endphp
 
         <script>
+            const API_URL = "{{ config('app.api_url') }}";
             document.addEventListener("DOMContentLoaded", function() {
-                fetch(`http://127.0.0.1:8000/api/inventory/${@json($inventory_id)}`)
+                fetch(`${API_URL}/inventory/${@json($inventory_id)}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.status_code === 200) {

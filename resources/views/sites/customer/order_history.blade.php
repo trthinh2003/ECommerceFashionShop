@@ -228,6 +228,7 @@
         });
     </script>
 <script>
+    const API_URL = "{{ config('app.api_url') }}";
     function closeSidebar() {
         document.getElementById("ratingSidebar").classList.remove("active");
     }
@@ -236,7 +237,7 @@
         orderIdComment = orderId;
         document.getElementById("ratingSidebar").classList.add("active");
 
-        fetch(`http://127.0.0.1:8000/api/rate-order/${orderIdComment}`)
+        fetch(`${API_URL}/rate-order/${orderIdComment}`)
             .then(response => response.json())
             .then(data => {
                 if (data.status_code === 200 && data.data) {

@@ -224,6 +224,7 @@
     </script>
 
     <script>
+        const API_URL = "{{ config('app.api_url') }}";
         document.addEventListener('DOMContentLoaded', function() {
             let btnDetails = document.querySelectorAll(".btn-detail");
             btnDetails.forEach(button => {
@@ -232,7 +233,7 @@
                     let row = button.closest("tr");
                     let staffId = row.querySelector("td:first-child").textContent.trim();
                     try {
-                        let response = await fetch(`http://127.0.0.1:8000/api/staff/${staffId}`);
+                        let response = await fetch(`${API_URL}/staff/${staffId}`);
                         let result = await response.json();
 
                         if (result.status_code === 200) {

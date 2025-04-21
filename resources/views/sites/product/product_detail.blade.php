@@ -1,7 +1,7 @@
 @php
     // Session::forget('product_recent');
     // dd(Session::get('product_recent'));
-    
+
     // Xử lý tính tổng số lượng sản phẩm trong giỏ hàng
     $totalProduct = 0;
     if (Session::has('cart')) {
@@ -322,9 +322,10 @@
             </div>
         </div>
         <script>
+            const API_URL = "{{ config('app.api_url') }}";
             document.querySelectorAll('.color-choice-item').forEach(item => {
                 item.addEventListener('change', async (e) => {
-                    // Xóa viền tất cả label 
+                    // Xóa viền tất cả label
                     document.querySelectorAll('.color-box').forEach(label => label.style.border = 'none');
 
                     // Thêm viền xanh cho label được chọn
@@ -338,7 +339,7 @@
 
                     try {
                         let response = await fetch(
-                            `http://127.0.0.1:8000/api/product-variant-size/${selectedColor}/${productId}`
+                            `${API_URL}/product-variant-size/${selectedColor}/${productId}`
                         );
                         let data = await response.json();
 
@@ -400,7 +401,7 @@
 
                     try {
                         let response = await fetch(
-                            `http://127.0.0.1:8000/api/product-variant-selected/${selectedSize}/${selectedColor}/${productId}`
+                            `${API_URL}/product-variant-selected/${selectedSize}/${selectedColor}/${productId}`
                         );
                         let data = await response.json();
 
