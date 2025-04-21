@@ -1,7 +1,7 @@
 ## File này sử dụng để deploy proj lên Render ##
 services:
   - type: web
-    name: laravel-app
+    name: tstfashionshop
     env: docker
     plan: free
     branch: main
