@@ -4,7 +4,7 @@ services:
     name: tstfashionshop
     env: docker
     plan: free
-    branch: main
+    branch: deploy
     dockerfilePath: ./Dockerfile
     envVars:
       - key: APP_ENV
