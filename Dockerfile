@@ -28,8 +28,6 @@ COPY . .
 
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
-RUN php artisan key:generate
-
 RUN php artisan config:clear && php artisan route:clear
 
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
